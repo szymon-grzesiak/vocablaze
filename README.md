@@ -1,8 +1,35 @@
+
 # Blackfyre - Language Learning Made Fun
 
 ![Blackfyre Logo](/public/assets/images/logo.png)
 
 Blackfyre is an innovative language learning app designed to make learning new languages engaging and enjoyable. Using a combination of flashcards and interactive games such as hangman and word matching, Blackfyre helps users build vocabulary and improve their language skills in a fun and effective way.
+
+## TODO List
+
+### Completed
+- [x] **Google Authentication:**
+  - Implemented Google Sign-In for seamless user authentication.
+- [x] **Credentials Management:**
+  - Set up secure credentials management.
+- [x] **Password Reset:**
+  - Developed a feature for users to reset their passwords.
+- [x] **Two-Factor Authentication (2FA):**
+  - Added 2FA for enhanced security.
+
+### In Progress
+- [ ] **Project Layout:**
+  - Designing the overall layout and user interface of the project.
+- [ ] **Database Structure:**
+  - Design and implement the database structure.
+
+### Upcoming
+- [ ] **Stripe Integration:**
+  - Integrate Stripe for payment processing.
+- [ ] **Google Analytics:**
+  - Add Google Analytics for tracking user interactions and engagement.
+- [ ] **CRUD Operations for WordSet Table:**
+  - Develop Create, Read, Update, and Delete operations for the WordSet table.
 
 ## Features
 
@@ -18,7 +45,7 @@ To get started with Blackfyre, follow these steps:
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/blackfyre.git
+    git clone https://github.com/itsJasberry/blackfyre.git
     ```
 2. **Navigate to the project directory:**
     ```bash
@@ -33,20 +60,6 @@ To get started with Blackfyre, follow these steps:
     npm start
     ```
 
-## Contributing
-
-We welcome contributions from the community! To contribute to Blackfyre, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix.
-3. Make your changes and commit them with descriptive commit messages.
-4. Push your changes to your forked repository.
-5. Open a pull request to the main branch of the original repository.
-
 ## License
 
 Blackfyre is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
-
-## Contact
-
-For questions, feedback, or support, please open an issue on the GitHub repository or contact us at support@blackfyreapp.com.
