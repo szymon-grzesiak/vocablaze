@@ -11,7 +11,7 @@ import * as z from "zod"
 
 import { settings } from "@/lib/actions/settings"
 import { useCurrentUser } from "@/hooks/use-current-user"
-import { Button } from "@/components/ui/button"
+// import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import {
   Form,
@@ -35,6 +35,7 @@ import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { FormError } from "@/components/form-error"
 import { FormSuccess } from "@/components/form-success"
+import { Button } from "@material-tailwind/react";
 
 const SettingsPage = () => {
   const user = useCurrentUser()

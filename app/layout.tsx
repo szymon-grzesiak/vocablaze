@@ -38,7 +38,7 @@ export default async function RootLayout({
 
   return (
     <SessionProvider session={session}>
-      <html lang="en">
+      <html className="light" lang="en">
         <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
           <Toaster />
           <ThemeProvider>{children}</ThemeProvider>
