@@ -1,18 +1,20 @@
-"use client"
+"use client";
 
-import { useState, useTransition } from "react"
-import Link from "next/link"
-import { SettingsSchema } from "@/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { UserRole } from "@prisma/client"
-import { useSession } from "next-auth/react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useState, useTransition } from "react";
+import Link from "next/link";
+import { SettingsSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/button";
+import { Select, SelectItem, Input } from "@nextui-org/react";
+import { UserRole } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { settings } from "@/lib/actions/settings"
-import { useCurrentUser } from "@/hooks/use-current-user"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { settings } from "@/lib/actions/settings";
+import { useCurrentUser } from "@/hooks/use-current-user";
+// import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -21,28 +23,28 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
-import { FormError } from "@/components/form-error"
-import { FormSuccess } from "@/components/form-success"
+} from "@/components/ui/form";
+// import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 
 const SettingsPage = () => {
-  const user = useCurrentUser()
+  const user = useCurrentUser();
 
-  const [error, setError] = useState<string | undefined>()
-  const [success, setSuccess] = useState<string | undefined>()
-  const { update } = useSession()
-  const [isPending, startTransition] = useTransition()
+  const [error, setError] = useState<string | undefined>();
+  const [success, setSuccess] = useState<string | undefined>();
+  const { update } = useSession();
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof SettingsSchema>>({
     resolver: zodResolver(SettingsSchema),
@@ -54,34 +56,26 @@ const SettingsPage = () => {
       role: user?.role || undefined,
       isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
     },
-  })
+  });
 
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
     startTransition(() => {
       settings(values)
         .then((data) => {
           if (data.error) {
-            setError(data.error)
+            setError(data.error);
           }
 
           if (data.success) {
-            update()
-            setSuccess(data.success)
+            update();
+            setSuccess(data.success);
           }
         })
-        .catch(() => setError("Something went wrong!"))
-    })
-  }
+        .catch(() => setError("Something went wrong!"));
+    });
+  };
 
   return (
-    <>
-      <div className="relative top-0 left-0 w-[100px] h-[50px] bg-blue-300 rounded-xl">
-        <div className="flex items-center justify-center w-full h-full">
-          <Link href={"/vault"} className="font-bold ">
-            Vault
-          </Link>
-        </div>
-      </div>
       <Card>
         <CardHeader>
           <p className="text-2xl font-semibold text-center">⚙️ Settings</p>
@@ -96,11 +90,10 @@ const SettingsPage = () => {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="John Doe"
+                          label="Name"
                           disabled={isPending}
                           autoComplete="off"
                           autoCorrect="off"
@@ -118,12 +111,11 @@ const SettingsPage = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email</FormLabel>
                           <FormControl>
                             <Input
                               type="email"
                               {...field}
-                              placeholder="john.doe@example.com"
+                              label="E-mail"
                               disabled={isPending}
                               autoComplete="off"
                               autoCorrect="off"
@@ -144,12 +136,11 @@ const SettingsPage = () => {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Current Password</FormLabel>
                           <FormControl>
                             <Input
                               type="password"
                               {...field}
-                              placeholder="•••••••••"
+                              label="Password"
                               disabled={isPending}
                               autoComplete="off"
                               autoCorrect="off"
@@ -170,12 +161,11 @@ const SettingsPage = () => {
                       name="newPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>New Password</FormLabel>
                           <FormControl>
                             <Input
                               type="password"
                               {...field}
-                              placeholder="•••••••••"
+                              label="New Password"
                               disabled={isPending}
                               autoComplete="off"
                               autoCorrect="off"
@@ -194,22 +184,24 @@ const SettingsPage = () => {
                   name="role"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Role</FormLabel>
-                      <Select
-                        disabled={isPending}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a Role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
-                          <SelectItem value={UserRole.USER}>User</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <FormControl>
+                        <Select
+                          disabled={isPending}
+                          label="Select a role"
+                          className="max-w-xs"
+                          defaultSelectedKeys={[field.value]}
+                        >
+                          <SelectItem
+                            key={UserRole.ADMIN}
+                            value={UserRole.ADMIN}
+                          >
+                            Admin
+                          </SelectItem>
+                          <SelectItem key={UserRole.USER} value={UserRole.USER}>
+                            User
+                          </SelectItem>
+                        </Select>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -255,8 +247,7 @@ const SettingsPage = () => {
           </Form>
         </CardContent>
       </Card>
-    </>
-  )
-}
+  );
+};
 
-export default SettingsPage
+export default SettingsPage;

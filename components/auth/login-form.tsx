@@ -20,9 +20,9 @@ import {
 
 import { FormError } from "../form-error"
 import { FormSuccess } from "../form-success"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
+import { Input, Button } from "@nextui-org/react";
 import { CardWrapper } from "./card-wrapper"
+import { Button as SButon } from "../ui/button"
 
 export const LoginForm = () => {
   const searchParams = useSearchParams()
@@ -115,11 +115,10 @@ export const LoginForm = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="john.doe@example.com"
+                          label="E-mail"
                           type="email"
                           autoCorrect="off"
                           autoComplete="off"
@@ -135,19 +134,18 @@ export const LoginForm = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          placeholder="•••••••••"
+                          label="Password"
                           type="password"
                           autoCorrect="off"
                           disabled={isPending}
                         />
                       </FormControl>
-                      <Button variant="link" size="sm" asChild className="px-0">
+                      <SButon variant="link" size="sm" className="px-0">
                         <Link href="/auth/reset">Forgot password?</Link>
-                      </Button>
+                      </SButon>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -157,7 +155,7 @@ export const LoginForm = () => {
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button type="submit" disabled={isPending} className="w-full">
+          <Button variant="shadow" type="submit" disabled={isPending} className="w-full bg-slate-700 text-white">
             {showTwoFactor ? "Confirm" : "Log In"}
           </Button>
         </form>

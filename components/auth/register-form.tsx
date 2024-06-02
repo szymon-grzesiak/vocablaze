@@ -18,8 +18,7 @@ import {
 
 import { FormError } from "../form-error"
 import { FormSuccess } from "../form-success"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
+import { Input, Button } from "@nextui-org/react";
 import { CardWrapper } from "./card-wrapper"
 
 export const RegisterForm = () => {
@@ -60,13 +59,12 @@ export const RegisterForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
+                      label="Name"
                       type="name"
                       disabled={isPending}
-                      placeholder="John Doe"
                     />
                   </FormControl>
                   <FormMessage />
@@ -78,13 +76,12 @@ export const RegisterForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       disabled={isPending}
-                      placeholder="john.doe@example.com"
+                      label="E-mail"
                     />
                   </FormControl>
                   <FormMessage />
@@ -96,12 +93,11 @@ export const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="password"
-                      placeholder="****"
+                      label="Password"
                       disabled={isPending}
                     />
                   </FormControl>
@@ -112,7 +108,7 @@ export const RegisterForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button type="submit" className="w-full bg-slate-700 text-white" disabled={isPending}>
             Create an account
           </Button>
         </form>
