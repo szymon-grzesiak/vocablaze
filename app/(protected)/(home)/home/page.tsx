@@ -4,30 +4,32 @@ import React from "react";
 import { Button } from "@nextui-org/button";
 //@ts-ignore
 import { useCountries } from "use-react-countries";
-
-import Box from "../../_components/box";
+import { LineChart, LineChartIcon } from "../../_components/line-chart-icon";
 
 const Home = () => {
   const { countries } = useCountries();
-  const wordSets = countries.slice(0, 4); // Get 6 countries to avoid index out of range
+  const wordSets = countries.slice(0, 5); // Get 5 countries to avoid index out of range
 
   return (
     <>
-      <div className="absolute top-0 left-0 px-10 pt-8 ">
+      <div className="absolute top-0 left-0 px-10 pt-8">
         <h1 className="font-bold text-3xl">Welcome, Szymon!</h1>
         <span className="text-lg">Make your day by learning new words</span>
       </div>
 
       <div className="relative flex flex-col w-full justify-center h-screen xl:px-0 mt-8">
-        <div className="flex flex-row w-full h-full gap-4">
-          <div className="flex flex-col w-1/3 gap-4">
-            <Box height="2/5" />
-            <Box height="3/5">
-              <span className="text-2xl font-bold">Word Sets</span>
-              <ul className="pt-5">
-                {wordSets
-                  .slice(0, 5)
-                  .map(
+        <div className="flex flex-col md:flex-row w-full h-full gap-4">
+          <div className="flex flex-col md:w-1/3 gap-4">
+            <div className="relative h-48">
+              <div className="relative h-full p-5 bg-white rounded-lg">
+                <span className="text-2xl font-bold">Quick notes</span>
+              </div>
+            </div>
+            <div className="relative h-fit">
+              <div className="relative h-full p-5 bg-white rounded-lg">
+                <span className="text-2xl font-bold">Word Sets</span>
+                <ul className="pt-5">
+                  {wordSets.map(
                     (
                       { name, emoji }: { name: string; emoji: string },
                       index: number
@@ -52,16 +54,35 @@ const Home = () => {
                       </li>
                     )
                   )}
-              </ul>
-            </Box>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col w-2/3 gap-4">
-            <Box height="2/5" />
-            <div className="flex h-3/5 gap-4">
-              <div className="flex flex-col w-1/2  gap-4">
-                <Box height="2/3" />
-                <Box height="1/3">
-                  <div className=" dark:bg-gray-700">
+          <div className="flex flex-col md:w-2/3 gap-4">
+            <div className="relative h-48">
+              <div className="relative h-full p-5 bg-white rounded-lg">
+                <span className="text-2xl font-bold">Your learning history</span>
+              </div>
+            </div>
+            <div className="flex flex-col md:flex-row md:h-72 gap-4">
+              <div className="flex flex-col w-full md:w-1/2 gap-4">
+                <div className="relative h-fit">
+                  <div className="relative h-full p-5 bg-white rounded-lg">
+                    <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-2">
+                          <LineChartIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                            Monthly Trends
+                          </h3>
+                        </div>
+                      </div>
+                      <LineChart className=" h-[100px]" />
+                    </div>
+                  </div>
+                </div>
+                <div className="relative h-fit">
+                  <div className="relative h-full p-5 bg-white rounded-lg dark:bg-gray-700">
                     <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">
                       Premium Access
                     </h3>
@@ -78,11 +99,10 @@ const Home = () => {
                       </Button>
                     </div>
                   </div>
-                </Box>
+                </div>
               </div>
-              <div className="relative h-full ml-0 mr-0 w-1/2 ">
-                <span className="absolute top-0 left-0 w-full h-full mt-0.5 ml-0.5 bg-black rounded-lg" />
-                <div className="relative h-fit md:h-full p-5 bg-white border-1 border-black rounded-lg">
+              <div className="relative h-fit w-full md:w-1/2">
+                <div className="relative h-full p-5 bg-white  rounded-lg">
                   <span className="text-2xl font-bold">Folders</span>
                   <div className="flex flex-wrap w-full gap-4 mt-4">
                     {Array.from({ length: 12 }).map((_, index) => (
@@ -101,10 +121,10 @@ const Home = () => {
     </>
   );
 };
+
 // jak bede chcial sie pozbyc obramowania to musze usunac relative z boxa
-// <Box height="2/3" />
 {
-  /* <Box height="1/3" /> */
+  /* <div className={`relative h-1/3`}> */
 }
 
 export default Home;
