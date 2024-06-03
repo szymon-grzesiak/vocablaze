@@ -3,19 +3,28 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "@nextui-org/button";
+import { Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 //@ts-ignore
 import { useCountries } from "use-react-countries";
 
 import { LineChart } from "../../_components/line-chart-icon";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+
+const animals = [
+  { label: "dog", value: "dog" },
+  { label: "cat", value: "cat" },
+];
 
 const Home = () => {
   const { countries } = useCountries();
   const wordSets = countries.slice(0, 5); // Get 5 countries to avoid index out of range
+  const { data: session } = useSession();
 
   return (
     <>
       <div className="absolute top-0 left-0 px-10 pt-8 ">
-        <h1 className="font-bold text-3xl">Welcome, Szymon!</h1>
+        <h1 className="font-bold text-3xl">Welcome, {session?.user.name}!</h1>
         <span className="text-lg">Make your day by learning new words</span>
       </div>
       <div className="relative flex flex-col w-full justify-center xl:px-0 mt-8 drop-shadow-lg">
@@ -23,7 +32,19 @@ const Home = () => {
           <div className="flex flex-col lg:w-1/3 gap-4">
             <div className="relative h-full">
               <div className="relative h-full p-5 bg-white rounded-lg">
-                <span className="text-2xl font-bold">🌍Word Sets</span>
+                <span className="flex justify-between">
+                  <span className="text-2xl font-bold">🌍Word Sets</span>
+                  <Input
+                    type="text"
+                    startContent={
+                      <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    }
+                    isClearable
+                    placeholder="Search"
+                    className="max-w-40 w-full"
+                  />
+                </span>
+
                 <ul className="pt-5">
                   {wordSets.map(
                     (
@@ -72,7 +93,7 @@ const Home = () => {
                 </ul>
               </div>
             </div>
-            <div className="relative h-fit p-5 bg-white rounded-lg dark:bg-gray-700">
+            <div className="hidden lg:block relative h-fit p-5 bg-white rounded-lg dark:bg-gray-700">
               <span className="text-2xl font-bold"> 💲Premium Access</span>
               <p className="text-gray-600 dark:text-gray-400">
                 Unlock all language games and features with a Premium
@@ -89,14 +110,14 @@ const Home = () => {
             </div>
           </div>
           <div className="flex flex-col lg:w-2/3 gap-4">
-            <div className="relative h-[350px] w-full bg-white p-5 rounded-lg">
+            <div className="hidden lg:block relative h-[350px] w-full bg-white p-5 rounded-lg">
               <span className="text-2xl font-bold">
                 📚Your learning history
               </span>
             </div>
             <div className="flex flex-col lg:flex-row gap-4">
               <div className="relative h-full w-full lg:w-1/2 gap-4">
-                <div className="flex justify-around flex-col p-5 h-full bg-white rounded-lg">
+                <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-white rounded-lg">
                   <span className="text-2xl font-bold">📈 Monthly trends</span>
                   <div className=" dark:bg-gray-800 rounded-lg p-6">
                     <LineChart className="h-[130px]" />
@@ -113,7 +134,18 @@ const Home = () => {
               </div>
               <div className="relative w-full lg:w-1/2">
                 <div className="relative h-full p-5 bg-white rounded-lg">
+                  <span className="flex justify-between">
                   <span className="text-2xl font-bold">📁Folders</span>
+                  <Input
+                    type="text"
+                    startContent={
+                      <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    }
+                    isClearable
+                    placeholder="Search"
+                    className="max-w-40 w-full"
+                  />
+                </span>
                   <div className="flex flex-wrap w-full gap-4 mt-4">
                     {Array.from({ length: 10 }).map((_, index) => (
                       <div

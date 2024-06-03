@@ -123,7 +123,6 @@ export const LoginForm = () => {
                     <FormItem>
                       <FormControl>
                         <Input
-                          // {...field} jakby cos nie dzialalo to odkomentowac
                           label="E-mail"
                           type="email"
                           autoCorrect="off"
