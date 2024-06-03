@@ -41,9 +41,9 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
+        <body className={`${inter.variable} ${spaceGrotesk.variable} h-full`}>
           <Toaster />
-          <NextUIProvider>
+          <NextUIProvider className="h-full">
             <ThemeProvider>{children}</ThemeProvider>
           </NextUIProvider>
         </body>

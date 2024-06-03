@@ -67,3 +67,22 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.active-theme-sun {
+  filter: invert(53%) sepia(98%) saturate(3332%) hue-rotate(0deg)
+    brightness(104%) contrast(106%) !important;
+}
+
+.active-theme-moon {
+  filter: brightness(80%);
+}
+
+.custom-dropdown-menu {
+  width: auto; /* Adjusts width according to content */
+  min-width: 100%; /* Ensure it's at least as wide as the trigger */
+}
+
+/* This will apply only when the dropdown is open */
+.custom-dropdown-menu.open {
+  width: max-content; /* Expands to the maximum content width */
+}
