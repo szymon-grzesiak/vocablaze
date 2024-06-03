@@ -3,30 +3,25 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "@nextui-org/button";
-import { Autocomplete, AutocompleteItem, Input } from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useSession } from "next-auth/react";
 //@ts-ignore
 import { useCountries } from "use-react-countries";
-
 import { LineChart } from "../../_components/line-chart-icon";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
-const animals = [
-  { label: "dog", value: "dog" },
-  { label: "cat", value: "cat" },
-];
+
 
 const Home = () => {
   const { countries } = useCountries();
   const wordSets = countries.slice(0, 5); // Get 5 countries to avoid index out of range
   const { data: session } = useSession();
+  const link = {
+    icon: "/assets/icons/add-folder.svg",
+  }
 
   return (
     <>
-      <div className="absolute top-0 left-0 px-10 pt-8 ">
-        <h1 className="font-bold text-3xl">Welcome, {session?.user.name}!</h1>
-        <span className="text-lg">Make your day by learning new words</span>
-      </div>
       <div className="relative flex flex-col w-full justify-center xl:px-0 mt-8 drop-shadow-lg">
         <div className="flex flex-col lg:flex-row w-full h-full gap-4">
           <div className="flex flex-col lg:w-1/3 gap-4">
@@ -59,7 +54,7 @@ const Home = () => {
                         className="mb-4 bg-slate-400/20 rounded-md p-2"
                       >
                         <section className="flex gap-x-4">
-                          <p>Zestaw #{index + 1}</p>
+                          <p>Set #{index + 1}</p>
                           <div className="flex justify-between">
                             <div className="flex ">
                               <Image
@@ -127,7 +122,7 @@ const Home = () => {
                       className="border-black text-black hover:bg-black hover:text-white font-bold px-4 rounded-lg transition-colors duration-300 mt-3"
                       variant="flat"
                     >
-                      Check out more ➡️
+                      Check out more ➡️ 
                     </Button>
                   </div>
                 </div>
@@ -135,17 +130,17 @@ const Home = () => {
               <div className="relative w-full lg:w-1/2">
                 <div className="relative h-full p-5 bg-white rounded-lg">
                   <span className="flex justify-between">
-                  <span className="text-2xl font-bold">📁Folders</span>
-                  <Input
-                    type="text"
-                    startContent={
-                      <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                    isClearable
-                    placeholder="Search"
-                    className="max-w-40 w-full"
-                  />
-                </span>
+                    <span className="text-2xl font-bold">📁Folders</span>
+                    <Input
+                      type="text"
+                      startContent={
+                        <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                      }
+                      isClearable
+                      placeholder="Search"
+                      className="max-w-40 w-full"
+                    />
+                  </span>
                   <div className="flex flex-wrap w-full gap-4 mt-4">
                     {Array.from({ length: 10 }).map((_, index) => (
                       <div
