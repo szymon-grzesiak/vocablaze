@@ -18,6 +18,9 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 
+import {EyeOff, Eye} from "lucide-react"
+
+
 import { FormError } from "../form-error"
 import { FormSuccess } from "../form-success"
 import { Input, Button } from "@nextui-org/react";
@@ -25,6 +28,9 @@ import { CardWrapper } from "./card-wrapper"
 import { Button as SButon } from "../ui/button"
 
 export const LoginForm = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const searchParams = useSearchParams()
 
   const callbackUrl = searchParams.get("callbackUrl")
@@ -117,11 +123,12 @@ export const LoginForm = () => {
                     <FormItem>
                       <FormControl>
                         <Input
-                          {...field}
+                          // {...field} jakby cos nie dzialalo to odkomentowac
                           label="E-mail"
                           type="email"
                           autoCorrect="off"
                           autoComplete="off"
+                          isClearable
                           disabled={isPending}
                         />
                       </FormControl>
@@ -138,9 +145,18 @@ export const LoginForm = () => {
                         <Input
                           {...field}
                           label="Password"
-                          type="password"
+                          type={isVisible ? "text" : "password"}
                           autoCorrect="off"
                           disabled={isPending}
+                          endContent={
+                            <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                              {isVisible ? (
+                                <EyeOff className="text-2xl text-default-400 pointer-events-none" />
+                              ) : (
+                                <Eye className="text-2xl text-default-400 pointer-events-none" />
+                              )}
+                            </button>
+                          }
                         />
                       </FormControl>
                       <SButon variant="link" size="sm" className="px-0">
