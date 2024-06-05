@@ -5,20 +5,14 @@ import Image from "next/image";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useSession } from "next-auth/react";
 //@ts-ignore
 import { useCountries } from "use-react-countries";
 import { LineChart } from "../../_components/line-chart-icon";
 
 
-
 const Home = () => {
   const { countries } = useCountries();
   const wordSets = countries.slice(0, 5); // Get 5 countries to avoid index out of range
-  const { data: session } = useSession();
-  const link = {
-    icon: "/assets/icons/add-folder.svg",
-  }
 
   return (
     <>

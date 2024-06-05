@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Space_Grotesk, Roboto_Slab } from "next/font/google";
 import ThemeProvider from "@/context/ThemeProvider";
 import { NextUIProvider } from "@nextui-org/react";
 
@@ -10,16 +10,16 @@ import { SessionProvider } from "next-auth/react";
 
 import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "---font-inter",
-});
-
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "---font-spaceGrotesk",
+  variable: '--font-spaceGrotesk'
+});
+
+const robotoSlab = Roboto_Slab({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: '--font-robotoSlab'
 });
 
 export const metadata: Metadata = {
@@ -41,7 +41,7 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={`${inter.variable} ${spaceGrotesk.variable} h-full`}>
+        <body className={`${spaceGrotesk.className} antialiased h-full`}>
           <Toaster />
           <NextUIProvider className="h-full">
             <ThemeProvider>{children}</ThemeProvider>

@@ -13,7 +13,7 @@ export const Navbar = () => {
     <nav className="mx-auto flex justify-between gap-6 items-center pt-2 rounded-xl">
       <Link href={"/home"} className="flex justify-center items-center">
         <Image src={logo} alt="logo" width={60} height={60} />
-        <h1 className="text-3xl font-bold">Blackfyre</h1>
+        <h1 className="text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">Blackfyre</h1>
       </Link>
 
       <div className="flex justify-end gap-6 items-center">

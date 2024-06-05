@@ -26,6 +26,10 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        // sans: ["var(--font-robotoSlab)"],
+        sans: ["var(--font-spaceGrotesk)"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
