@@ -1,11 +1,11 @@
 "use server";
 
-import { getPasswordResetTokenByToken } from "@/data/password-reset-token";
-import { getUserByEmail } from "@/data/user";
 import { NewPasswordSchema } from "@/schemas";
 import bcrypt from "bcryptjs";
 import * as z from "zod";
 
+import { getPasswordResetTokenByToken } from "@/lib/data/password-reset-token";
+import { getUserByEmail } from "@/lib/data/user";
 import { db } from "@/lib/db";
 
 export const newPassword = async (

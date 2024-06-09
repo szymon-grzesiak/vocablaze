@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Roboto_Slab } from "next/font/google";
+import { Roboto_Slab, Space_Grotesk } from "next/font/google";
 import ThemeProvider from "@/context/ThemeProvider";
 import { NextUIProvider } from "@nextui-org/react";
 
-import './globals.css';
+import "./globals.css";
 
-import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 
+import { auth } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: '--font-spaceGrotesk'
+  variable: "--font-spaceGrotesk",
 });
 
 const robotoSlab = Roboto_Slab({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: '--font-robotoSlab'
+  variable: "--font-robotoSlab",
 });
 
 export const metadata: Metadata = {

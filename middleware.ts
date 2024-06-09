@@ -1,12 +1,12 @@
 import NextAuth from "next-auth";
 
-import authConfig from "./auth.config";
+import authConfig from "./lib/auth.config";
 import {
   apiAuthPrefix,
   authRoutes,
   DEFAULT_LOGIN_REDIRECT,
   publicRoutes,
-} from "./routes";
+} from "./lib/routes";
 
 const { auth } = NextAuth(authConfig);
 
@@ -46,5 +46,5 @@ export default auth((req): any => {
 });
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

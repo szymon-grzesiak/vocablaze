@@ -1,11 +1,11 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { signIn } from "next-auth/react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
+import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
 import { Button } from "@/components/ui/button";
 
 export const Social = () => {
