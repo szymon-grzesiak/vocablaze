@@ -9,7 +9,6 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useCountries } from "use-react-countries";
 import { LineChart } from "../../_components/line-chart-icon";
 
-
 const Home = () => {
   const { countries } = useCountries();
   const wordSets = countries.slice(0, 5); // Get 5 countries to avoid index out of range

@@ -3,7 +3,7 @@ import { Space_Grotesk, Roboto_Slab } from "next/font/google";
 import ThemeProvider from "@/context/ThemeProvider";
 import { NextUIProvider } from "@nextui-org/react";
 
-import "./globals.css";
+import './globals.css';
 
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";

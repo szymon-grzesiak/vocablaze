@@ -22,7 +22,7 @@ export const {
     async linkAccount({ user }) {
       await db.user.update({
         where: { id: user.id },
-        data: { emailVerified: new Date() },
+        data: { emailVerified: new Date },
       });
     },
   },
@@ -57,7 +57,7 @@ export const {
 
       return true;
     },
-    async session({ session, token }) {
+    async session({ token, session }) {
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
@@ -90,9 +90,9 @@ export const {
       const existingAccount = await getAccountByUserId(existingUser.id);
 
       token.isOAuth = !!existingAccount;
-      token.name = existingUser.name;
-      token.email = existingUser.email;
-      token.image = existingUser.image;
+      token.name = existingUser.name,
+      token.email = existingUser.email,
+      token.image = existingUser.image,
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
