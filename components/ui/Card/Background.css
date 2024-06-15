@@ -1,0 +1,38 @@
+.banner {
+	background: url("../../../public/assets/icons/background.svg"),
+	  linear-gradient(90deg, #D269E6 -2.83%, #964DE2 6.62%, #7D2AE8 20.54%, #6420FF 54.99%, #2F68CF 77.47%, #229CBC 91.81%, #B8E48B 102.9%)
+;
+	}
+  
+  .banner-blue {
+	background: url("../../../public/assets/icons/background.svg"),
+	  linear-gradient(90deg, #3A1C71 -2.83%, #D76D77 6.62%, #FFAF7B 20.54%, #FFE29A 54.99%, #FFD194 77.47%, #D3CCE3 91.81%, #E9E4F0 102.9%);
+  }
+  
+  .banner-green {
+	background: url("../../../public/assets/icons/background.svg"),
+	  linear-gradient(90deg, #56ab2f -2.83%, #a8e063 6.62%, #56ab2f 20.54%, #a8e063 54.99%, #56ab2f 77.47%, #a8e063 91.81%, #56ab2f 102.9%);
+  }
+  
+  .banner-red {
+	background: url("../../../public/assets/icons/background.svg"),
+	  linear-gradient(90deg, #ff6f69 -2.83%, #ffcc5c 6.62%, #ffeead 20.54%, #96ceb4 54.99%, #d9534f 77.47%, #f7cac9 91.81%, #d9534f 102.9%);
+  }
+  
+  .banner-custom {
+	background: url("../../../public/assets/icons/background.svg"),
+	  linear-gradient(45deg, rgb(255, 255, 255) 0%, rgb(148, 231, 253) 25%, rgba(222, 230, 245) 50%, rgba(148, 231, 253) 75%, rgba(138, 2, 250, 0.1) 100%);
+  }
+ 
+
+  .divItem div[data-slot="input-wrapper"] {
+	border-bottom: 1px solid #000;
+  }  
+  .divItem div[data-slot="input-wrapper"]:hover {
+	border-bottom: 1px solid #000;
+  }
+
+
+  .after\:bg-default-foreground::after {
+	background-color: rgba(68, 0, 255, 0.647);
+  }

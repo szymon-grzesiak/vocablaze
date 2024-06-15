@@ -56,6 +56,14 @@ body,
   }
 }
 
+.primary-text-gradient {
+  background: radial-gradient(circle, #4e7ef6 0%, #000000 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
 @layer base {
   * {
     @apply border-border;
