@@ -66,7 +66,6 @@ model Folder {
 model Language {
   id             String    @id @default(cuid())
   name           String
-  icon           String?
   wordSetsFirst  WordSet[] @relation("firstLanguage")
   wordSetsSecond WordSet[] @relation("secondLanguage")
 }
@@ -138,15 +137,16 @@ model WordSet {
   isShared         Boolean
   createdAt        DateTime          @default(now())
   userId           String
-  folderId         String
+  folderId         String?
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  folder           Folder            @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folder           Folder?            @relation(fields: [folderId], references: [id], onDelete: Cascade)
   firstLanguage    Language          @relation("firstLanguage", fields: [firstLanguageId], references: [id], onDelete: Cascade)
   secondLanguage   Language          @relation("secondLanguage", fields: [secondLanguageId], references: [id], onDelete: Cascade)
   words            Word[]
   progressSets     ProgressSet[]
   quizTypeWordSets QuizTypeWordSet[]
 }
+
 
 model VerificationToken {
   id      String   @id @default(cuid())

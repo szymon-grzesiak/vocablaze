@@ -110,3 +110,18 @@ export const RegisterSchema = z.object({
     message: "Name is required",
   }),
 });
+
+export const AddWordSetSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  firstLanguageId: z.string().min(1, "First language is required"),
+  secondLanguageId: z.string().min(1, "Second language is required"),
+  words: z
+    .array(
+      z.object({
+        original_word: z.string().min(1, "Original word is required"),
+        translated_word: z.string().min(1, "Translated word is required"),
+      })
+    )
+    .min(1, "You must provide at least 1 word."),
+});
