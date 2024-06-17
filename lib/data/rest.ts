@@ -9,3 +9,13 @@ export const getLanguages = async () => {
     return [];
   }
 };
+
+export const getFolders = async () => {
+  try {
+    const folders = await db.folder.findMany();
+    return folders;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+};

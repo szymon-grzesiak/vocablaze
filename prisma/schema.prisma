@@ -130,7 +130,7 @@ model Word {
 
 model WordSet {
   id               String            @id @default(cuid())
-  title            String
+  title            String       @unique
   description      String?
   firstLanguageId  String
   secondLanguageId String

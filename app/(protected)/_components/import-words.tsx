@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
+import { Import, Paperclip, Trash2, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -52,7 +53,12 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
 
   const handleTextImport = (event: React.FormEvent) => {
     event.preventDefault();
-    const existingWordsSet = new Set(existingWords.map(({ original_word, translated_word }) => `${original_word}-${translated_word}`));
+    const existingWordsSet = new Set(
+      existingWords.map(
+        ({ original_word, translated_word }) =>
+          `${original_word}-${translated_word}`
+      )
+    );
     const lines = fileContent
       .split("\n")
       .map((line) => line.trim())
@@ -82,7 +88,14 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
       {isDesktop ? (
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant="ghost">Import words</Button>
+            <Button
+              color="secondary"
+              variant="flat"
+              startContent={<Import />}
+              className="text-black bg-transparent/10"
+            >
+              Import
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -94,13 +107,16 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
             <div className="mt-4 space-y-4">
               <Button
                 type="button"
-                variant="faded"
+                variant="shadow"
+                color="secondary"
                 size="sm"
                 onClick={() => document.getElementById("file-upload")?.click()}
                 className="w-fit"
+                startContent={<Paperclip className="size-5" />}
               >
-                Import from file
+                Choose file
               </Button>
+              <p>or</p>
               <input
                 id="file-upload"
                 type="file"
@@ -114,20 +130,25 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
                 value={fileContent}
                 onChange={(e) => setFileContent(e.target.value)}
               />
-              <div className="flex gap-2 mt-2">
+              <div className="flex gap-2 mt-2 justify-between">
                 <Button
-                  type="button"
+                  color="secondary"
+                  variant="flat"
+                  startContent={<Import className="size-5"/>}
                   onClick={handleTextImport}
-                  className="w-fit"
+                  className="text-black bg-transparent/10"
                 >
                   Import
                 </Button>
                 <Button
                   type="button"
                   onClick={handleFileRemove}
-                  className="w-fit bg-red-500/20"
+                  color="danger"
+                  variant="shadow"
+                  className="w-fit"
+                  isIconOnly
                 >
-                  Remove File
+                  <Trash2 className="size-5"/>
                 </Button>
               </div>
               {fileName && (

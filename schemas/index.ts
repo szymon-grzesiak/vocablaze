@@ -116,6 +116,7 @@ export const AddWordSetSchema = z.object({
   description: z.string().optional(),
   firstLanguageId: z.string().min(1, "First language is required"),
   secondLanguageId: z.string().min(1, "Second language is required"),
+  folderId: z.string().min(1, "Folder is required"),
   words: z
     .array(
       z.object({
@@ -124,4 +125,8 @@ export const AddWordSetSchema = z.object({
       })
     )
     .min(1, "You must provide at least 1 word."),
+});
+
+export const AddFolderSchema = z.object({
+  name: z.string().min(1, "Folder name is required"),
 });

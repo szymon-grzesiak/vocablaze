@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto_Slab, Space_Grotesk } from "next/font/google";
 import ThemeProvider from "@/context/ThemeProvider";
-import { NextUIProvider } from "@nextui-org/react";
+import { Providers } from "./providers";
 
 import "./globals.css";
 
@@ -43,9 +43,9 @@ export default async function RootLayout({
       <html lang="en">
         <body className={`${spaceGrotesk.className} antialiased h-full`}>
           <Toaster />
-          <NextUIProvider className="h-full">
+          <Providers>
             <ThemeProvider>{children}</ThemeProvider>
-          </NextUIProvider>
+          </Providers>
         </body>
       </html>
     </SessionProvider>

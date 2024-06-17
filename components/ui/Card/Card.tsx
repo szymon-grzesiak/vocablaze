@@ -2,17 +2,9 @@
 
 import { AddWordSetSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Autocomplete,
-  AutocompleteItem,
-  Avatar,
-  Button,
-  Card,
-  CardFooter,
-  Input,
-} from "@nextui-org/react";
+import { Button, Card, CardFooter, Input } from "@nextui-org/react";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { TrashIcon } from "lucide-react";
+import { Plus, PlusCircle, TrashIcon } from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -29,10 +21,28 @@ import { Textarea } from "../textarea";
 
 import "./Background.css";
 
+import { Check, ChevronsUpDown } from "lucide-react";
+
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   className?: string;
   languages: { id: string; name: string }[];
+  folders: { id: string; name: string }[];
   text?: string;
   buttonText?: string;
 }
@@ -43,6 +53,7 @@ export const CardComponent = ({
   buttonText = "Click",
   text = "Welcome to San Diego",
   languages,
+  folders,
   children,
   className,
 }: CardProps) => {
@@ -59,10 +70,11 @@ export const CardComponent = ({
       description: "",
       firstLanguageId: "",
       secondLanguageId: "",
+      folderId: "",
     },
   });
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, prepend, remove, move } = useFieldArray({
     control,
     name: "words",
   });
@@ -91,22 +103,23 @@ export const CardComponent = ({
       // Show error message to the user
     } else {
       console.log(response.success);
-      // Show success message to the user or redirect
+      window.location.href = "/home"; // Using window.location.href for redirection
     }
   };
 
   return (
     <Card
       radius="lg"
-      className="border-none w-full md:w-[70%] banner-custom mb-20"
+      className="border-none flex flex-col gap-6 w-full md:w-[70%] banner-custom mb-20 p-6"
     >
-      <CardFooter className="flex flex-col gap-6 items-start before:bg-white/10 h-fit overflow-hidden px-6 rounded-none z-10">
-        <div className="flex gap-4 justify-center items-center">
-          <Bookmark className="w-10 h-10 text-black fill-white/60" />
-          <h1 className="text-[36px] font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
-            {text}
-          </h1>
-        </div>
+      <div className="flex gap-4 justify-start items-center">
+        <Bookmark className="w-10 h-10 text-black fill-white/60" />
+        <h1 className="text-[36px] font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
+          {text}
+        </h1>
+      </div>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <Input
           type="text"
           variant="bordered"
@@ -120,44 +133,171 @@ export const CardComponent = ({
           className="bg-white/60 rounded-md h-[150px]"
           {...register("description")}
         />
-        <Controller
-          name="firstLanguageId"
-          control={control}
-          render={({ field }) => (
-            <Autocomplete
-            value={field.value}
-            onChange={field.onChange}
-              className="max-w-xs"
-              label="First Language"
-            >
-              {languages.map((language) => (
-                <AutocompleteItem key={language.id} value={language.id}>
-                  {language.name}
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
-          )}
-        />
-        <Controller
-          name="secondLanguageId"
-          control={control}
-          render={({ field }) => (
-            <Autocomplete
-              value={field.value}
-              onChange={field.onChange}
-              className="max-w-xs"
-              label="Second Language"
-            >
-              {languages.map((language) => (
-                <AutocompleteItem key={language.id} value={language.id}>
-                  {language.name}
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
-          )}
-        />
-      </CardFooter>
-      <form onSubmit={handleSubmit(onSubmit)} className="p-6">
+        <div className="flex gap-4">
+          <Controller
+            name="firstLanguageId"
+            control={control}
+            render={({ field }) => (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="shadow"
+                    role="combobox"
+                    className={cn(
+                      "w-[200px] justify-between bg-white/50",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value
+                      ? languages.find(
+                          (language) => language.id === field.value
+                        )?.name
+                      : "Select First Language"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search language..." />
+                    <CommandEmpty>No language found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList>
+                        {languages.map((language) => (
+                          <CommandItem
+                            value={language.id}
+                            key={language.id}
+                            onSelect={() => {
+                              field.onChange(language.id);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                language.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {language.name}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            )}
+          />
+          <Controller
+            name="secondLanguageId"
+            control={control}
+            render={({ field }) => (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="shadow"
+                    role="combobox"
+                    className={cn(
+                      "w-[200px] justify-between bg-white/50",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value
+                      ? languages.find(
+                          (language) => language.id === field.value
+                        )?.name
+                      : "Select Second Language"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search language..." />
+                    <CommandEmpty>No language found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList>
+                        {languages.map((language) => (
+                          <CommandItem
+                            value={language.id}
+                            key={language.id}
+                            onSelect={() => {
+                              field.onChange(language.id);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                language.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {language.name}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            )}
+          />
+            <Controller
+            name="folderId"
+            control={control}
+            render={({ field }) => (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="shadow"
+                    role="combobox"
+                    className={cn(
+                      "w-[200px] justify-between bg-white/50",
+                      !field.value && "text-muted-foreground"
+                    )}
+                  >
+                    {field.value
+                      ? folders.find(
+                          (folder) => folder.id === field.value
+                        )?.name
+                      : "Select folder"}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search folder..." />
+                    <CommandEmpty>No folder found.</CommandEmpty>
+                    <CommandGroup>
+                      <CommandList>
+                        {folders.map((folder) => (
+                          <CommandItem
+                            value={folder.id}
+                            key={folder.id}
+                            onSelect={() => {
+                              field.onChange(folder.id);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                folder.id === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {folder.name}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            )}
+          />
+        </div>
+
         <div className="flex justify-between items-center">
           <div>
             <h4>Word List</h4>
@@ -167,7 +307,7 @@ export const CardComponent = ({
           </div>
           <ImportWords append={append} existingWords={fields} />
         </div>
-        <div className="space-y-2 mt-4">
+        <div className="flex justify-between space-y-2 mt-4">
           <Sortable
             value={fields}
             onMove={({ activeIndex, overIndex }) =>
@@ -197,15 +337,13 @@ export const CardComponent = ({
                     </SortableDragHandle>
                     <Button
                       type="button"
-                      variant="solid"
+                      variant="shadow"
                       isIconOnly
-                      className="size-2 shrink-0 bg-red-500/20"
+                      color="danger"
+                      className="size-2 shrink-0"
                       onClick={() => remove(index)}
                     >
-                      <TrashIcon
-                        className="size-4 text-destructive"
-                        aria-hidden="true"
-                      />
+                      <TrashIcon className="size-4" aria-hidden="true" />
                       <span className="sr-only">Remove</span>
                     </Button>
                   </div>
@@ -213,19 +351,23 @@ export const CardComponent = ({
               ))}
             </div>
           </Sortable>
+        </div>
+        <div className="flex justify-between pt-4">
+          <button type="submit" className="w-fit">
+            Submit
+          </button>
           <Button
             type="button"
-            variant="faded"
+            variant="flat"
+            color="success"
             size="sm"
-            className="w-fit"
+            className="w-fit text-black text-md"
+            startContent={<Plus className="text-emerald-400" />}
             onClick={() => append({ original_word: "", translated_word: "" })}
           >
-            Add word
+            Add a new word
           </Button>
         </div>
-        <Button type="submit" className="w-fit mt-4">
-          Submit
-        </Button>
       </form>
     </Card>
   );

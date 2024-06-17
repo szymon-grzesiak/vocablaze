@@ -138,7 +138,7 @@ const Home = () => {
                     {Array.from({ length: 10 }).map((_, index) => (
                       <div
                         key={index}
-                        className="w-20 h-20 bg-yellow-500/30 rounded-md border-b-1 border-r-1 border-b-gray-400 border-r-gray-400"
+                        className="w-20 h-20 banner-yellow rounded-md border-b-1 border-r-1 border-b-gray-400 cursor-pointer border-r-gray-400 hover:bg-yellow-300/70"
                       />
                     ))}
                   </div>

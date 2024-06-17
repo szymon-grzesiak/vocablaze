@@ -5,7 +5,7 @@ import * as z from "zod";
 
 import { getUserByEmail } from "@/lib/data/user";
 import { sendPasswordResetEmail } from "@/lib/mail";
-import { generatePasswordResetToken } from "@/lib/tokens";
+import { generateResetPasswordToken } from "@/lib//data/tokens";
 
 export const reset = async (values: z.infer<typeof ResetSchema>) => {
   const validatedFields = ResetSchema.safeParse(values);
@@ -21,7 +21,7 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
     return { error: "Email not found" };
   }
 
-  const passwordResetToken = await generatePasswordResetToken(email);
+  const passwordResetToken = await generateResetPasswordToken(email);
   await sendPasswordResetEmail(
     passwordResetToken.email,
     passwordResetToken.token

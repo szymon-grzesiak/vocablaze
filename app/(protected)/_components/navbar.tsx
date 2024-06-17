@@ -7,6 +7,8 @@ import { Folder, Plus } from "lucide-react";
 
 import { UserButton } from "@/components/auth/user-button";
 import Theme from "@/components/shared/navbar/Theme";
+import CustomModal from "./folder-modal";
+import { addFolder } from "@/lib/actions/action";
 
 export const Navbar = () => {
   return (
@@ -20,9 +22,12 @@ export const Navbar = () => {
 
       <div className="flex justify-end gap-6 items-center">
         <Tooltip content="Add a folder">
-          <Button isIconOnly color="secondary" aria-label="folder">
-            <Folder />
-          </Button>
+        <CustomModal
+            triggerIcon={<Folder />}
+            title="Create New Folder"
+            description="Please enter the folder name"
+            handleClick={addFolder}
+          />
         </Tooltip>
         <Tooltip content="Add a words set">
           <Button isIconOnly color="secondary" aria-label="word-set">
