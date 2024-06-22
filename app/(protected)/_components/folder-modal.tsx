@@ -48,7 +48,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
   ) => {
     setIsLoading(true);
     try {
-      await handleClick(values);
+      handleClick(values);
       toast.success("Folder added successfully!");
       reset();
     } catch (error) {
@@ -77,16 +77,16 @@ const CustomModal: React.FC<CustomModalProps> = ({
             <Input label="Folder Name" id="name" {...register("name")} />
             {errors.name && <span>{errors.name.message}</span>}
           </div>
-            <Button
-              color="success"
-              className="font-bold"
-              type="submit"
-              variant="shadow"
-              disabled={isLoading}
-              aria-label="Close"
-            >
-              {isLoading ? <Spinner /> : "Create"}
-            </Button>{" "}
+          <Button
+            color="success"
+            className="font-bold"
+            type="submit"
+            variant="shadow"
+            disabled={isLoading}
+            aria-label="Close"
+          >
+            {isLoading ? <Spinner /> : "Create"}
+          </Button>{" "}
         </form>
       </DialogContent>
     </Dialog>

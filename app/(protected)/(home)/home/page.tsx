@@ -3,13 +3,16 @@ import Image from "next/image";
 import { Button } from "@nextui-org/button";
 import { Input } from "@nextui-org/react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+
+import MobileNavbar from "@/components/shared/navbar/navbar";
+
 import { LineChart } from "../../_components/line-chart-icon";
 import WordSetsList from "./_components/wordset-list";
 
 const Home = () => {
   return (
     <>
-      <div className="relative flex flex-col w-full justify-center xl:px-0 mt-8 drop-shadow-lg">
+      <div className="relative flex flex-col w-full h-full justify-center xl:px-0 drop-shadow-lg">
         <div className="flex flex-col lg:flex-row w-full h-full gap-4">
           <div className="flex flex-col lg:w-1/3 gap-4">
             <div className="relative h-full">
@@ -47,7 +50,7 @@ const Home = () => {
             </div>
           </div>
           <div className="flex flex-col lg:w-2/3 gap-4">
-            <div className="hidden lg:block relative h-[350px] w-full bg-white p-5 rounded-lg">
+            <div className="hidden lg:block relative h-full max-h-[350px] w-full bg-white p-5 rounded-lg">
               <span className="text-2xl font-bold">
                 📚Your learning history
               </span>
@@ -56,7 +59,7 @@ const Home = () => {
               <div className="relative h-full w-full lg:w-1/2 gap-4">
                 <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-white rounded-lg">
                   <span className="text-2xl font-bold">📈 Monthly trends</span>
-                  <div className=" dark:bg-gray-800 rounded-lg p-6">
+                  <div className="dark:bg-gray-800 rounded-lg p-6">
                     {/* <LineChart className="h-[130px]" /> */}
                     Chart
                   </div>

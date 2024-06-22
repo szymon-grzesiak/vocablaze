@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getAllWordSets } from "@/lib/actions/action";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const WordSetsList = async () => {
   const { wordSets, error } = await getAllWordSets();
@@ -10,20 +11,23 @@ const WordSetsList = async () => {
   }
 
   return (
-    <div className="h-[500px] overflow-y-auto">
-      <ul className="flex flex-col gap-4">
+    <ScrollArea className="h-[500px]">
+      <ul className="flex flex-col gap-4 mb-5">
         {wordSets?.map((wordSet) => (
           <Link href={`/wordset/${wordSet.id}`} key={wordSet.id}>
             <li
               key={wordSet.id}
-              className="p-3 flex justify-center banner-custom items-center"
+              className="p-3 flex justift-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer banner-custom"
             >
-              <h1 className="text-2xl font-bold [text-shadow:_1px_1px_1px_rgb(0_0_255_/_20%)]">{wordSet.title}</h1>
+              <div className="text-xl font-bold [text-shadow:_1px_1px_1px_rgb(0_0_255_/_20%)]">
+                {wordSet.title}
+              </div>
+              <p className="text-black/80 text-md">{wordSet.description}</p>
             </li>
           </Link>
         ))}
       </ul>
-    </div>
+    </ScrollArea>
   );
 };
 
