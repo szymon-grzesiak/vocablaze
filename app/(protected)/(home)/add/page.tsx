@@ -1,5 +1,4 @@
 import React from "react";
-import { Card, CardBody, CardFooter, CardHeader } from "@nextui-org/card";
 
 import { CardComponent } from "@/components/ui/Card/Card";
 import { getLanguages } from "@/lib/data/rest";

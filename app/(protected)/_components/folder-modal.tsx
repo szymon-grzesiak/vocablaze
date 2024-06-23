@@ -10,6 +10,7 @@ import { z } from "zod";
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -31,10 +32,12 @@ const CustomModal: React.FC<CustomModalProps> = ({
   handleClick,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<z.infer<typeof AddFolderSchema>>({
     resolver: zodResolver(AddFolderSchema),
@@ -45,16 +48,18 @@ const CustomModal: React.FC<CustomModalProps> = ({
   ) => {
     setIsLoading(true);
     try {
-      await handleClick(values);
+      handleClick(values);
       toast.success("Folder added successfully!");
+      reset();
     } catch (error) {
       toast.error("Failed to add folder.");
     } finally {
       setIsLoading(false);
+      setOpen(false);
     }
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <Tooltip content="Add a folder">
         <DialogTrigger asChild>
           <Button isIconOnly variant="flat">
@@ -78,6 +83,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
             type="submit"
             variant="shadow"
             disabled={isLoading}
+            aria-label="Close"
           >
             {isLoading ? <Spinner /> : "Create"}
           </Button>{" "}

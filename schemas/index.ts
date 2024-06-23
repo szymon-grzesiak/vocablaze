@@ -124,9 +124,26 @@ export const AddWordSetSchema = z.object({
         translated_word: z.string().min(1, "Translated word is required"),
       })
     )
-    .min(1, "You must provide at least 1 word."),
+    .min(5, "You must provide at least 5 word."),
 });
 
 export const AddFolderSchema = z.object({
   name: z.string().min(1, "Folder name is required"),
+});
+
+
+const UpdateWordSetSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
+  firstLanguageId: z.string().min(1, "First language is required"),
+  secondLanguageId: z.string().min(1, "Second language is required"),
+  folderId: z.string().min(1, "Folder is required"),
+  words: z
+    .array(
+      z.object({
+        original_word: z.string().min(1, "Original word is required"),
+        translated_word: z.string().min(1, "Translated word is required"),
+      })
+    )
+    .min(5, "You must provide at least 5 word."),
 });

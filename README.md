@@ -16,20 +16,21 @@ Blackfyre is an innovative language learning app designed to make learning new l
   - Developed a feature for users to reset their passwords.
 - [x] **Two-Factor Authentication (2FA):**
   - Added 2FA for enhanced security.
+- [x] **Project Layout:**
+  - Designing the overall layout and user interface of the project.
+- [x] **Database Structure:**
+  - Design and implement the database structure.
 
 ### In Progress
-- [ ] **Project Layout:**
-  - Designing the overall layout and user interface of the project.
-- [ ] **Database Structure:**
-  - Design and implement the database structure.
+- [ ] **CRUD Operations for WordSet Table:**
+  - Develop Create, Read, Update, and Delete operations for the WordSet table.
 
 ### Upcoming
 - [ ] **Stripe Integration:**
   - Integrate Stripe for payment processing.
 - [ ] **Google Analytics:**
   - Add Google Analytics for tracking user interactions and engagement.
-- [ ] **CRUD Operations for WordSet Table:**
-  - Develop Create, Read, Update, and Delete operations for the WordSet table.
+
 
 ## Features
 
@@ -45,7 +46,7 @@ To get started with Blackfyre, follow these steps:
 
 1. **Clone the repository:**
     ```bash
-    git clone https://github.com/itsJasberry/blackfyre.git
+    git clone xyz
     ```
 2. **Navigate to the project directory:**
     ```bash

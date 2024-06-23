@@ -2,11 +2,18 @@
 
 import { AddWordSetSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, CardFooter, Input } from "@nextui-org/react";
+import { Button, Card, CardFooter, Input, Spinner } from "@nextui-org/react";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { Plus, PlusCircle, TrashIcon } from "lucide-react";
+import {
+  Flag,
+  FlagIcon,
+  Folder,
+  Plus,
+  PlusCircle,
+  TrashIcon,
+} from "lucide-react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { z } from "zod";
+import { set, z } from "zod";
 
 import { addWordSet } from "@/lib/actions/action";
 import {
@@ -21,7 +28,10 @@ import { Textarea } from "../textarea";
 
 import "./Background.css";
 
+import { useState } from "react";
+import { redirect, useRouter } from "next/navigation";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import {
@@ -32,6 +42,15 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Popover,
   PopoverContent,
@@ -50,20 +69,22 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 type Schema = z.infer<typeof AddWordSetSchema>;
 
 export const CardComponent = ({
-  buttonText = "Click",
   text = "Welcome to San Diego",
   languages,
   folders,
-  children,
-  className,
 }: CardProps) => {
-  const { control, handleSubmit, register } = useForm<Schema>({
+  const [isLoading, setIsLoading] = useState(false);
+  const [openFirstLang, setOpenFirstLang] = useState(false);
+  const [openSecLang, setOpenSecLang] = useState(false);
+  const [openFolder, setOpenFolder] = useState(false);
+  const router = useRouter();
+  const form = useForm<Schema>({
     resolver: zodResolver(AddWordSetSchema),
     defaultValues: {
       words: [
         {
-          original_word: "Hello",
-          translated_word: "Hola",
+          original_word: "",
+          translated_word: "",
         },
       ],
       title: "",
@@ -73,13 +94,19 @@ export const CardComponent = ({
       folderId: "",
     },
   });
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = form;
 
   const { fields, append, prepend, remove, move } = useFieldArray({
     control,
     name: "words",
   });
 
-  const onSubmit = async (input: Schema) => {
+  const onSubmit = (input: Schema) => {
     const uniqueWords = new Set<string>();
     const words = input.words.filter(({ original_word, translated_word }) => {
       const key = `${original_word}-${translated_word}`;
@@ -88,25 +115,17 @@ export const CardComponent = ({
       return true;
     });
 
-    console.log({
-      ...input,
-      words,
+    setIsLoading(true);
+    addWordSet({ ...input, words }).then((response) => {
+      if (response.success) {
+        toast.success(response.success);
+        router.push("/home");
+      } else {
+        toast.error(response.error);
+      }
+      setIsLoading(false);
     });
-
-    const response = await addWordSet({
-      ...input,
-      words,
-    });
-
-    if (response.error) {
-      console.error(response.error);
-      // Show error message to the user
-    } else {
-      console.log(response.success);
-      window.location.href = "/home"; // Using window.location.href for redirection
-    }
   };
-
   return (
     <Card
       radius="lg"
@@ -119,256 +138,332 @@ export const CardComponent = ({
         </h1>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-        <Input
-          type="text"
-          variant="bordered"
-          label="Title"
-          size="lg"
-          className="bg-white/60 rounded-md text-3xl text-black dark:text-white"
-          {...register("title")}
-        />
-        <Textarea
-          placeholder="Enter your description"
-          className="bg-white/60 rounded-md h-[150px]"
-          {...register("description")}
-        />
-        <div className="flex gap-4">
-          <Controller
-            name="firstLanguageId"
-            control={control}
+      <Form {...form}>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <FormField
+            control={form.control}
+            name="title"
             render={({ field }) => (
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="shadow"
-                    role="combobox"
-                    className={cn(
-                      "w-[200px] justify-between bg-white/50",
-                      !field.value && "text-muted-foreground"
-                    )}
-                  >
-                    {field.value
-                      ? languages.find(
-                          (language) => language.id === field.value
-                        )?.name
-                      : "Select First Language"}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandInput placeholder="Search language..." />
-                    <CommandEmpty>No language found.</CommandEmpty>
-                    <CommandGroup>
-                      <CommandList>
-                        {languages.map((language) => (
-                          <CommandItem
-                            value={language.id}
-                            key={language.id}
-                            onSelect={() => {
-                              field.onChange(language.id);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                language.id === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {language.name}
-                          </CommandItem>
-                        ))}
-                      </CommandList>
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <FormItem>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    variant="bordered"
+                    label="Title"
+                    size="lg"
+                    className="bg-white/60 rounded-md text-3xl text-black dark:text-white"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
-          <Controller
-            name="secondLanguageId"
+          <FormField
+            name="description"
             control={control}
             render={({ field }) => (
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="shadow"
-                    role="combobox"
-                    className={cn(
-                      "w-[200px] justify-between bg-white/50",
-                      !field.value && "text-muted-foreground"
-                    )}
-                  >
-                    {field.value
-                      ? languages.find(
-                          (language) => language.id === field.value
-                        )?.name
-                      : "Select Second Language"}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandInput placeholder="Search language..." />
-                    <CommandEmpty>No language found.</CommandEmpty>
-                    <CommandGroup>
-                      <CommandList>
-                        {languages.map((language) => (
-                          <CommandItem
-                            value={language.id}
-                            key={language.id}
-                            onSelect={() => {
-                              field.onChange(language.id);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                language.id === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {language.name}
-                          </CommandItem>
-                        ))}
-                      </CommandList>
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
+              <FormItem>
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    placeholder="Enter your description"
+                    className="bg-white/60 rounded-md h-[150px]"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
           />
-            <Controller
-            name="folderId"
-            control={control}
-            render={({ field }) => (
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="shadow"
-                    role="combobox"
-                    className={cn(
-                      "w-[200px] justify-between bg-white/50",
-                      !field.value && "text-muted-foreground"
-                    )}
-                  >
-                    {field.value
-                      ? folders.find(
-                          (folder) => folder.id === field.value
-                        )?.name
-                      : "Select folder"}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandInput placeholder="Search folder..." />
-                    <CommandEmpty>No folder found.</CommandEmpty>
-                    <CommandGroup>
-                      <CommandList>
-                        {folders.map((folder) => (
-                          <CommandItem
-                            value={folder.id}
-                            key={folder.id}
-                            onSelect={() => {
-                              field.onChange(folder.id);
-                            }}
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                folder.id === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                            {folder.name}
-                          </CommandItem>
-                        ))}
-                      </CommandList>
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            )}
-          />
-        </div>
-
-        <div className="flex justify-between items-center">
-          <div>
-            <h4>Word List</h4>
-            <p className="text-[0.8rem] text-muted-foreground">
-              Add your words in different languages
-            </p>
-          </div>
-          <ImportWords append={append} existingWords={fields} />
-        </div>
-        <div className="flex justify-between space-y-2 mt-4">
-          <Sortable
-            value={fields}
-            onMove={({ activeIndex, overIndex }) =>
-              move(activeIndex, overIndex)
-            }
-          >
-            <div className="w-full space-y-2">
-              {fields.map((field, index) => (
-                <SortableItem key={field.id} value={field.id} asChild>
-                  <div className="w-full flex gap-4 items-center">
-                    <div className="w-full flex gap-20 divItem">
-                      <Input
-                        className="h-8 text-blue-500"
-                        {...register(`words.${index}.original_word` as const)}
-                        placeholder="First Language"
-                        variant="underlined"
-                      />
-                      <Input
-                        className="h-8"
-                        {...register(`words.${index}.translated_word` as const)}
-                        placeholder="Second Language"
-                        variant="underlined"
-                      />
-                    </div>
-                    <SortableDragHandle className="cursor-move">
-                      <DragHandleDots2Icon />
-                    </SortableDragHandle>
-                    <Button
-                      type="button"
-                      variant="shadow"
-                      isIconOnly
-                      color="danger"
-                      className="size-2 shrink-0"
-                      onClick={() => remove(index)}
+          <div className="flex gap-4">
+            <FormField
+              name="firstLanguageId"
+              control={control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Popover
+                      open={openFirstLang}
+                      onOpenChange={setOpenFirstLang}
                     >
-                      <TrashIcon className="size-4" aria-hidden="true" />
-                      <span className="sr-only">Remove</span>
-                    </Button>
-                  </div>
-                </SortableItem>
-              ))}
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="shadow"
+                          role="combobox"
+                          startContent={<Flag />}
+                          className={cn(
+                            "w-[250px] justify-between bg-white/50",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? languages.find(
+                                (language) => language.id === field.value
+                              )?.name
+                            : "Select First Language"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search language..." />
+                          <CommandEmpty>No language found.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandList>
+                              {languages.map((language) => (
+                                <CommandItem
+                                  value={language.id}
+                                  key={language.id}
+                                  onSelect={() => {
+                                    field.onChange(language.id);
+                                    setOpenFirstLang(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      language.id === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {language.name}
+                                </CommandItem>
+                              ))}
+                            </CommandList>
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="secondLanguageId"
+              control={control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Popover open={openSecLang} onOpenChange={setOpenSecLang}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="shadow"
+                          role="combobox"
+                          startContent={<Flag className="shrink-0" />}
+                          className={cn(
+                            "w-[270px] justify-between bg-white/50",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? languages.find(
+                                (language) => language.id === field.value
+                              )?.name
+                            : "Select Second Language"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search language..." />
+                          <CommandEmpty>No language found.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandList>
+                              {languages.map((language) => (
+                                <CommandItem
+                                  value={language.id}
+                                  key={language.id}
+                                  onSelect={() => {
+                                    field.onChange(language.id);
+                                    setOpenSecLang(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      language.id === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {language.name}
+                                </CommandItem>
+                              ))}
+                            </CommandList>
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="folderId"
+              control={control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Popover open={openFolder} onOpenChange={setOpenFolder}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="shadow"
+                          role="combobox"
+                          startContent={<Folder />}
+                          className={cn(
+                            "w-[200px] justify-between bg-white/50",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value
+                            ? folders.find(
+                                (folder) => folder.id === field.value
+                              )?.name
+                            : "Select folder"}
+                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search folder..." />
+                          <CommandEmpty>No folder found.</CommandEmpty>
+                          <CommandGroup>
+                            <CommandList>
+                              {folders.map((folder) => (
+                                <CommandItem
+                                  value={folder.id}
+                                  key={folder.id}
+                                  onSelect={() => {
+                                    field.onChange(folder.id);
+                                    setOpenFolder(false);
+                                  }}
+                                >
+                                  <Check
+                                    className={cn(
+                                      "mr-2 h-4 w-4",
+                                      folder.id === field.value
+                                        ? "opacity-100"
+                                        : "opacity-0"
+                                    )}
+                                  />
+                                  {folder.name}
+                                </CommandItem>
+                              ))}
+                            </CommandList>
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex justify-between items-center">
+            <div>
+              <h4>Word List</h4>
+              <p className="text-[0.8rem] text-muted-foreground">
+                Add your words in different languages &#40;min.{" "}
+                <strong>5</strong> words&#41;
+              </p>
             </div>
-          </Sortable>
-        </div>
-        <div className="flex justify-between pt-4">
-          <button type="submit" className="w-fit">
-            Submit
-          </button>
-          <Button
-            type="button"
-            variant="flat"
-            color="success"
-            size="sm"
-            className="w-fit text-black text-md"
-            startContent={<Plus className="text-emerald-400" />}
-            onClick={() => append({ original_word: "", translated_word: "" })}
-          >
-            Add a new word
-          </Button>
-        </div>
-      </form>
+            <ImportWords append={append} existingWords={fields} />
+          </div>
+          <div className="flex justify-between space-y-2 mt-4">
+            <Sortable
+              value={fields}
+              onMove={({ activeIndex, overIndex }) =>
+                move(activeIndex, overIndex)
+              }
+            >
+              <div className="w-full space-y-2">
+                {fields.map((field, index) => (
+                  <SortableItem key={field.id} value={field.id} asChild>
+                    <div className="w-full flex gap-4 items-center">
+                      <div className="w-full flex gap-20 divItem">
+                        <FormField
+                          control={control}
+                          name={`words.${index}.original_word`}
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  type="text"
+                                  variant="underlined"
+                                  placeholder="First Language"
+                                  className="h-8 text-blue-500"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={control}
+                          name={`words.${index}.translated_word`}
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <Input
+                                  {...field}
+                                  type="text"
+                                  variant="underlined"
+                                  placeholder="Second Language"
+                                  className="h-8 text-blue-500"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <SortableDragHandle className="cursor-move">
+                        <DragHandleDots2Icon />
+                      </SortableDragHandle>
+                      <Button
+                        type="button"
+                        variant="shadow"
+                        isIconOnly
+                        color="danger"
+                        className="size-2 shrink-0"
+                        onClick={() => remove(index)}
+                      >
+                        <TrashIcon className="size-4" aria-hidden="true" />
+                        <span className="sr-only">Remove</span>
+                      </Button>
+                    </div>
+                  </SortableItem>
+                ))}
+              </div>
+            </Sortable>
+          </div>
+          {errors.words && (
+            <div className="text-red-500 text-sm">{errors.words.message}</div>
+          )}
+          <div className="flex justify-between pt-4">
+            <Button type="submit" className="w-fit" disabled={isLoading}>
+              {isLoading ? <Spinner /> : "Create"}
+            </Button>
+            <Button
+              type="button"
+              variant="flat"
+              color="success"
+              size="sm"
+              className="w-fit text-black text-md"
+              startContent={<Plus className="text-emerald-400" />}
+              onClick={() => append({ original_word: "", translated_word: "" })}
+            >
+              Add a new word
+            </Button>
+          </div>
+        </form>
+      </Form>
     </Card>
   );
 };
