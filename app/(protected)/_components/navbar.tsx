@@ -25,7 +25,7 @@ export const Navbar = () => {
         <CustomModal
             triggerIcon={<Folder />}
             title="Create New Folder"
-            description="Please enter the folder name"
+            description="Please enter the folder name and choose a color for it."
             handleClick={addFolder}
           />
         </Tooltip>

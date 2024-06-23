@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { getAllWordSets } from "@/lib/actions/action";
+import { getAllWordSets } from "@/lib/data/rest";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const WordSetsList = async () => {

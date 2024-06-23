@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 
 interface CustomModalProps {
   triggerIcon: React.ReactNode;
@@ -74,8 +75,16 @@ const CustomModal: React.FC<CustomModalProps> = ({
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="flex flex-col gap-4">
-            <Input label="Folder Name" id="name" {...register("name")} />
-            {errors.name && <span>{errors.name.message}</span>}
+            <div className="flex flex-col gap-4">
+              <Input label="Folder Name" id="name" {...register("name")} />
+              {errors.name && <span>{errors.name.message}</span>}
+            </div>
+            <input
+              className="w-full rounded-xl cursor-pointer"
+              type="color"
+              id="color"
+              {...register("color")}
+            />
           </div>
           <Button
             color="success"

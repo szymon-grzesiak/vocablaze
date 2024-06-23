@@ -129,8 +129,8 @@ export const AddWordSetSchema = z.object({
 
 export const AddFolderSchema = z.object({
   name: z.string().min(1, "Folder name is required"),
+  color: z.string().nullable(),
 });
-
 
 const UpdateWordSetSchema = z.object({
   title: z.string().min(1, "Title is required"),

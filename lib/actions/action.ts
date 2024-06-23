@@ -87,6 +87,7 @@ export const addFolder = async (values: z.infer<typeof AddFolderSchema>) => {
     const folder = await db.folder.create({
       data: {
         name: validatedFields.data.name,
+        color: validatedFields.data.color,
         userId: userId,
       },
     });
@@ -94,24 +95,6 @@ export const addFolder = async (values: z.infer<typeof AddFolderSchema>) => {
   } catch (error) {
     console.log(error);
     return null;
-  }
-};
-
-export const getAllWordSets = async () => {
-  const user = await currentUser();
-
-  if (!user) {
-    return { error: "You must be logged in to view word sets" };
-  }
-
-  try {
-    const wordSets = await db.wordSet.findMany({
-      where: { userId: user.id as string },
-    });
-    return { wordSets };
-  } catch (error) {
-    console.error("Error fetching word sets:", error);
-    return { error: "An error occurred while fetching the word sets" };
   }
 };
 

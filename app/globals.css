@@ -196,3 +196,32 @@ body,
   background-size: cover;
   z-index: 1000;
 }
+
+.layoutBg::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  bottom: 0; 
+  left: 0;
+  display: flex;
+  right: 0;
+  top: 0;
+  background: radial-gradient(circle 500px at 50% 200px, #C9EBFF, transparent);
+  z-index: -1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 15px;
+}
