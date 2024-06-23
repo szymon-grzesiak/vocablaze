@@ -9,9 +9,10 @@ import { signIn } from "@/lib/auth";
 import { getTwoFactorConfirmationByUserId } from "@/lib/data/two-factor-confirmation";
 import { getTwoFactorTokenByEmail } from "@/lib/data/two-factor-token";
 import { getUserByEmail } from "@/lib/data/user";
-import { db } from "@/lib/db";
+import db from "@/lib/db";
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
+
 import {
   generateTwoFactorToken,
   generateVerificationToken,

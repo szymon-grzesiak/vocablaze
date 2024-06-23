@@ -3,7 +3,7 @@
 import { AddFolderSchema, AddWordSetSchema } from "@/schemas";
 import * as z from "zod";
 
-import { db } from "../db";
+import db from "../db";
 import { currentUser } from "../sessionData";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";

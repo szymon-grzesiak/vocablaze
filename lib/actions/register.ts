@@ -5,8 +5,9 @@ import bcrypt from "bcryptjs";
 import * as z from "zod";
 
 import { getUserByEmail } from "@/lib/data/user";
-import { db } from "@/lib/db";
+import db from "@/lib/db";
 import { sendVerificationEmail } from "@/lib/mail";
+
 import { generateVerificationToken } from "../data/tokens";
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {

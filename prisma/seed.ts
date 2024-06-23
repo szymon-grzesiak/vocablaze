@@ -1,7 +1,8 @@
-import { db } from "@/lib/db";
+import db from "@/lib/db";
+import { Prisma } from "@prisma/client";
 import "dotenv/config";
 
-export const languages = [
+export const languages: Prisma.LanguageCreateInput[] = [
   { name: "Polish" },
   { name: "English" },
   { name: "French" },

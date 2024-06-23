@@ -7,7 +7,7 @@ import { getTwoFactorConfirmationByUserId } from "@/lib/data/two-factor-confirma
 import authConfig from "./auth.config";
 import { getAccountByUserId } from "./data/account";
 import { getUserById } from "./data/user";
-import { db } from "./db";
+import db from "./db";
 
 export const {
   auth,

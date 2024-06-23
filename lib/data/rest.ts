@@ -1,6 +1,7 @@
-import { db } from "@/lib/db";
+import db from "@/lib/db";
+import { cache } from "react";
 
-export const getLanguages = async () => {
+export const getLanguages = cache(async () => {
   try {
     const languages = await db.language.findMany();
     return languages;
@@ -8,9 +9,9 @@ export const getLanguages = async () => {
     console.log(error);
     return [];
   }
-};
+});
 
-export const getFolders = async () => {
+export const getFolders = cache(async () => {
   try {
     const folders = await db.folder.findMany();
     return folders;
@@ -18,4 +19,4 @@ export const getFolders = async () => {
     console.log(error);
     return [];
   }
-};
+});

@@ -46,7 +46,7 @@ model User {
   password              String?
   role                  UserRole               @default(USER)
   isPremium             Boolean?
-  isTwoFactorEnabled    Boolean             @default(false)
+  isTwoFactorEnabled    Boolean                @default(false)
   folders               Folder[]
   wordSets              WordSet[]
   twoFactorConfirmation TwoFactorConfirmation?
@@ -130,23 +130,23 @@ model Word {
 
 model WordSet {
   id               String            @id @default(cuid())
-  title            String       @unique
+  title            String            @unique
   description      String?
   firstLanguageId  String
   secondLanguageId String
   isShared         Boolean
   createdAt        DateTime          @default(now())
+  updatedAt        DateTime?         @updatedAt
   userId           String
   folderId         String?
   user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  folder           Folder?            @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folder           Folder?           @relation(fields: [folderId], references: [id], onDelete: Cascade)
   firstLanguage    Language          @relation("firstLanguage", fields: [firstLanguageId], references: [id], onDelete: Cascade)
   secondLanguage   Language          @relation("secondLanguage", fields: [secondLanguageId], references: [id], onDelete: Cascade)
   words            Word[]
   progressSets     ProgressSet[]
   quizTypeWordSets QuizTypeWordSet[]
 }
-
 
 model VerificationToken {
   id      String   @id @default(cuid())
