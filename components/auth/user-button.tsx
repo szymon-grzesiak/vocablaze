@@ -1,5 +1,6 @@
 "use client";
 
+import { user } from "@nextui-org/theme";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { FaUser, FaUserAlt, FaUserFriends } from "react-icons/fa";
 
@@ -15,13 +16,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Button } from "../ui/button";
+import { LoginButton } from "./login-button";
 import { LogoutButton } from "./logout-button";
 
 export const UserButton = () => {
   const user = useCurrentUser();
 
   if (!user) {
-    return "Unauthorized";
+    return (
+      <LoginButton className="w-1/2">
+        <Button variant="secondary" className="w-full">
+          Sign in
+        </Button>
+      </LoginButton>
+    );
   }
 
   return (

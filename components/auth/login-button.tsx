@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 import { LoginForm } from "./login-form";
+import { cn } from "@/lib/utils";
 
-interface LoginButtonProps {
+interface LoginButtonProps extends React.HTMLProps<HTMLDivElement> {
   children: React.ReactNode;
   mode?: "modal" | "redirect";
   asChild?: boolean;
@@ -14,6 +15,7 @@ interface LoginButtonProps {
 
 export const LoginButton = ({
   children,
+  className,
   mode = "redirect",
   asChild,
 }: LoginButtonProps) => {
@@ -35,7 +37,7 @@ export const LoginButton = ({
   }
 
   return (
-    <span onClick={onClick} className="cursor-pointer">
+    <span onClick={onClick} className={cn("cursor-pointer", className)}>
       {children}
     </span>
   );

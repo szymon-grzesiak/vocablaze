@@ -5,89 +5,64 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
 
-import katana from "../public/assets/images/katana.webp";
+import heroImg from "../public/assets/images/hero-image.jpg";
+import { Navbar } from "./(protected)/_components/navbar";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <header className="bg-primary text-primary-foreground px-4 lg:px-6 h-14 flex items-center">
-        <Link
-          href="#"
-          className="flex items-center justify-center"
-          prefetch={false}
-        >
-          <LanguagesIcon className="h-6 w-6" />
-          <span className="sr-only">Language Learning</span>
-        </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Features
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Pricing
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            About
-          </Link>
-          <Link
-            href="#"
-            className="text-sm font-medium hover:underline underline-offset-4"
-            prefetch={false}
-          >
-            Contact
-          </Link>
-        </nav>
-      </header>
+      <div className="w-full px-4 bg-transparent">
+        <Navbar />
+      </div>
       <main className="">
-        <section className="w-full banner-custom py-12 md:py-24 lg:py-32 bg-primary text-primary-foreground">
-          <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <Image
-                src={katana}
-                width="550"
-                height="550"
-                alt="Hero"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover sm:w-full lg:order-last lg:aspect-square"
-              />
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Learn Languages Interactively
-                  </h1>
-                  <p className="max-w-[600px] text-primary-foreground/80 md:text-xl">
-                    Unlock your language learning potential with our interactive
-                    games and tools. Create custom word sets, practice with
-                    flashcards, and challenge yourself with hangman.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <LoginButton>
-                    <Button variant="secondary" size="lg">
-                      Sign in
-                    </Button>
-                  </LoginButton>
-                  <Link
-                    href="#"
-                    className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-primary text-primary-foreground px-8 text-sm font-medium shadow-sm transition-colors hover:bg-primary-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                    prefetch={false}
-                  >
-                    Pricing
-                  </Link>
+        <section className="w-full flex banner-custom bg-primary text-primary-foreground">
+          <div className="flex justify-center items-center w-1/2">
+            <div className="container flex px-4 md:px-10">
+              <div className="">
+                <div className="flex flex-col justify-center space-y-4">
+                  <div className="flex flex-col gap-4 w-4/5">
+                    <div>
+                      <h1 className="text-3xl font-bold text-balance tracking-tighter sm:text-5xl xl:text-6xl/none">
+                        Learn Languages{" "}
+                        <span className="[text-shadow:_3px_3px_3px_rgb(0_0_255_/_30%)]">
+                          Interactively
+                        </span>
+                      </h1>
+                      <div className="w-[340px] h-2 bg-indigo-500 translate-y-3 rounded-full rotate-[-2deg]" />
+                      <div className="w-[350px] h-2 bg-black rounded-full translate-y-3 translate-x-2 rotate-[-2deg]" />
+                    </div>
+
+                    <p className="max-w-[600px] text-primary-foreground/80 md:text-xl">
+                      Unlock your language learning potential with our
+                      interactive games and tools. Create custom word sets,
+                      practice with flashcards, and challenge yourself with
+                      hangman.
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2 min-[400px]:flex-row w-4/5">
+                    <LoginButton className="w-1/2">
+                      <Button variant="secondary" className="w-full">
+                        Sign in
+                      </Button>
+                    </LoginButton>
+                    <Link
+                      href="#"
+                      className="inline-flex h-10 w-1/2 items-center justify-center rounded-md border border-input bg-primary text-primary-foreground px-8 text-sm font-medium shadow-sm transition-colors hover:bg-primary-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                      prefetch={false}
+                    >
+                      Pricing
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div className="w-1/2">
+            <Image
+              src={heroImg}
+              alt="Hero"
+              className="w-full h-full max-h-[850px]"
+            />
           </div>
         </section>
         <section
@@ -111,7 +86,7 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-              <img
+              <Image
                 src="/placeholder.svg"
                 width="550"
                 height="310"
@@ -150,7 +125,7 @@ export default function Home() {
           id="pricing"
           className="w-full py-12 md:py-24 lg:py-32 bg-muted banner-custom-180"
         >
-          <div className="container px-4 md:px-6">
+          <div className="container flex flex-col gap-y-6 px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
@@ -166,8 +141,8 @@ export default function Home() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl divide-y divide-border rounded-lg border md:grid-cols-2 md:divide-x md:divide-y-0">
-              <div className="grid gap-6 p-8 md:p-10">
+            <div className="mx-auto grid max-w-5xl gap-4 rounded-3xl md:grid-cols-2">
+              <div className="grid gap-6 rounded-xl p-8 md:p-10 bg-white/30 backdrop-blur-xl">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold">Free</h3>
                   <p className="text-muted-foreground">
@@ -198,7 +173,7 @@ export default function Home() {
                 </ul>
                 <Button className="w-full">Start for Free</Button>
               </div>
-              <div className="grid gap-6 p-8 md:p-10">
+              <div className="grid gap-6 rounded-3xl p-8 md:p-10 bg-white/30 backdrop-blur-xl">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold">Premium</h3>
                   <p className="text-muted-foreground">
