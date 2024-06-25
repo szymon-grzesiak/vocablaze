@@ -61,7 +61,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   className?: string;
   languages: { id: string; name: string }[];
-  folders: { id: string; name: string }[];
+  folders: { id: string; name: string; color: string | null; userId: string }[];
   text?: string;
   buttonText?: string;
 }
@@ -332,7 +332,7 @@ export const CardComponent = ({
                           <CommandEmpty>No folder found.</CommandEmpty>
                           <CommandGroup>
                             <CommandList>
-                              {folders.map((folder) => (
+                              {folders?.map((folder) => (
                                 <CommandItem
                                   value={folder.id}
                                   key={folder.id}

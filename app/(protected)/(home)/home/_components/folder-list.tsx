@@ -1,29 +1,26 @@
 import Link from "next/link";
-import { getFolders } from "@/lib/data/rest";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { cn } from "@/lib/utils";
 import { getTextColor } from "@/helpers/file";
 
-const FoldersList = async () => {
-  const { folders, error } = await getFolders();
+import { getFolders } from "@/lib/data/rest";
+import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+const FoldersList = async () => {
+  const folders = await getFolders();
+  console.log(folders);
 
   return (
     <ul className="flex gap-4 mb-5 flex-wrap">
       {folders?.map((folder) => {
         const textColor = getTextColor(folder?.color as string);
         return (
-          <Link href={`/folder/${folder.id}`} key={folder.id}>
+          <Link href={`/collection/folders/${folder.id}`} key={folder.id}>
             <li
               key={folder.id}
               className={cn(
-                "p-3 flex justify-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer",
-                `bg-[${String(folder.color)}]`
+                "p-3 flex justify-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer"
               )}
-              style={{ color: textColor }}
+              style={{ color: textColor, backgroundColor: `${folder?.color}` }}
             >
               <div
                 className="text-xl font-bold [text-shadow:_1px_1px_1px_rgb(0_0_255_/_20%)]"

@@ -18,7 +18,7 @@ const Home = () => {
           <div className="flex flex-col lg:w-1/3 gap-4">
             <section className=" bg-white rounded-lg ">
               <span className="flex justify-between p-5">
-                <span className="text-2xl font-bold">🌍Word Sets</span>
+                <span className="text-2xl font-bold">🌍Latest learning</span>
                 <Input
                   type="text"
                   startContent={

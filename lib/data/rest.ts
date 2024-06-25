@@ -1,14 +1,21 @@
-import db from "@/lib/db";
 import { cache } from "react";
+
+import db from "@/lib/db";
+
 import { currentUser } from "../sessionData";
 
 export const getLanguages = cache(async () => {
+  const user = await currentUser();
+
+  if (!user) {
+    throw new Error("You must be logged in to view folders");
+  }
+
   try {
-    const languages = await db.language.findMany();
-    return languages;
+    return await db.language.findMany();
   } catch (error) {
-    console.log(error);
-    return [];
+    console.error("Error fetching languages:", error);
+    throw new Error("An error occurred while fetching the languages");
   }
 });
 
@@ -16,17 +23,17 @@ export const getFolders = cache(async () => {
   const user = await currentUser();
 
   if (!user) {
-    return { error: "You must be logged in to view folders" };
+    throw new Error("You must be logged in to view folders");
   }
 
   try {
     const folders = await db.folder.findMany({
       where: { userId: user.id as string },
     });
-    return { folders };
+    return folders;
   } catch (error) {
     console.error("Error fetching folders:", error);
-    return { error: "An error occurred while fetching the folders" };
+    throw new Error("An error occurred while fetching the folders");
   }
 });
 
