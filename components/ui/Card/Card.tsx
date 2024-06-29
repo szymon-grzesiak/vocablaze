@@ -2,20 +2,13 @@
 
 import { AddWordSetSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, CardFooter, Input, Spinner } from "@nextui-org/react";
+import { Button, Card, Input, Spinner } from "@nextui-org/react";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import {
-  Flag,
-  FlagIcon,
-  Folder,
-  Plus,
-  PlusCircle,
-  TrashIcon,
-} from "lucide-react";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { Flag, Folder, Plus, TrashIcon } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { addWordSet } from "@/lib/actions/action";
+import { addWordSet, updateWordSet } from "@/lib/actions/action";
 import {
   Sortable,
   SortableDragHandle,
@@ -28,8 +21,8 @@ import { Textarea } from "../textarea";
 
 import "./Background.css";
 
-import { useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 
@@ -45,10 +38,8 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import {
@@ -60,17 +51,21 @@ import {
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
   className?: string;
-  languages: { id: string; name: string }[];
-  folders: { id: string; name: string; color: string | null; userId: string }[];
   text?: string;
   buttonText?: string;
+  languages: { id: string; name: string }[];
+  folders: { id: string; name: string; color: string | null; userId: string }[];
+  wordSets?: any;
+  mode: "add" | "edit";
 }
 
 type Schema = z.infer<typeof AddWordSetSchema>;
 
 export const CardComponent = ({
-  text = "Welcome to San Diego",
+  text,
   languages,
+  mode,
+  wordSets,
   folders,
 }: CardProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -78,53 +73,63 @@ export const CardComponent = ({
   const [openSecLang, setOpenSecLang] = useState(false);
   const [openFolder, setOpenFolder] = useState(false);
   const router = useRouter();
-  const form = useForm<Schema>({
+  const form = useForm<z.infer<typeof AddWordSetSchema>>({
     resolver: zodResolver(AddWordSetSchema),
     defaultValues: {
-      words: [
-        {
-          original_word: "",
-          translated_word: "",
-        },
-      ],
-      title: "",
-      description: "",
-      firstLanguageId: "",
-      secondLanguageId: "",
-      folderId: "",
-    },
+      title: wordSets?.title ?? "",
+      description: wordSets?.description ?? "",
+      firstLanguageId: wordSets?.firstLanguageId ?? "",
+      secondLanguageId: wordSets?.secondLanguageId ?? "",
+      folderId: wordSets?.folderId ?? "",
+      words: wordSets?.words.map((word: any) => ({ ...word })) ?? [],
+    } as {
+      title: string;
+      description: string;
+      firstLanguageId: string;
+      secondLanguageId: string;
+      folderId: string;
+      words: { originalWord: string; translatedWord: string }[];
+    } & {},
   });
+  console.log("wordSets", wordSets)
   const {
     control,
     handleSubmit,
-    register,
     formState: { errors },
   } = form;
 
-  const { fields, append, prepend, remove, move } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     control,
     name: "words",
   });
+  console.log("fields", fields)
 
-  const onSubmit = (input: Schema) => {
+  const onSubmit = async (input: Schema) => {
     const uniqueWords = new Set<string>();
-    const words = input.words.filter(({ original_word, translated_word }) => {
-      const key = `${original_word}-${translated_word}`;
+    const words = input.words.filter(({ originalWord, translatedWord }) => {
+      const key = `${originalWord}-${translatedWord}`;
       if (uniqueWords.has(key)) return false;
       uniqueWords.add(key);
       return true;
     });
 
     setIsLoading(true);
-    addWordSet({ ...input, words }).then((response) => {
-      if (response.success) {
-        toast.success(response.success);
+    try {
+      if(mode === "edit") {
+        await updateWordSet(wordSets?.id as string, { ...input, words });
+        toast.success("Word set updated successfully");
         router.push("/home");
       } else {
-        toast.error(response.error);
+        await addWordSet({ ...input, words });
+        toast.success("Word set added successfully");
+        router.push("/home");
       }
+    } catch (error) {
+      toast.error("An error occurred");
+    } finally {
       setIsLoading(false);
-    });
+    }
+    
   };
   return (
     <Card
@@ -388,7 +393,7 @@ export const CardComponent = ({
                       <div className="w-full flex gap-20 divItem">
                         <FormField
                           control={control}
-                          name={`words.${index}.original_word`}
+                          name={`words.${index}.originalWord`}
                           render={({ field }) => (
                             <FormItem className="w-full">
                               <FormControl>
@@ -406,7 +411,7 @@ export const CardComponent = ({
                         />
                         <FormField
                           control={control}
-                          name={`words.${index}.translated_word`}
+                          name={`words.${index}.translatedWord`}
                           render={({ field }) => (
                             <FormItem className="w-full">
                               <FormControl>
@@ -423,7 +428,7 @@ export const CardComponent = ({
                           )}
                         />
                       </div>
-                      <SortableDragHandle className="cursor-move">
+                      <SortableDragHandle type="button" className="cursor-move">
                         <DragHandleDots2Icon />
                       </SortableDragHandle>
                       <Button
@@ -448,7 +453,7 @@ export const CardComponent = ({
           )}
           <div className="flex justify-between pt-4">
             <Button type="submit" className="w-fit" disabled={isLoading}>
-              {isLoading ? <Spinner /> : "Create"}
+              {isLoading ? <Spinner /> : mode === "edit" ? "Update" : "Add"}
             </Button>
             <Button
               type="button"
@@ -457,7 +462,7 @@ export const CardComponent = ({
               size="sm"
               className="w-fit text-black text-md"
               startContent={<Plus className="text-emerald-400" />}
-              onClick={() => append({ original_word: "", translated_word: "" })}
+              onClick={() => append({ originalWord: "", translatedWord: "" })}
             >
               Add a new word
             </Button>

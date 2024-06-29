@@ -27,8 +27,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 
 interface ImportWordsProps {
-  append: (value: { original_word: string; translated_word: string }) => void;
-  existingWords: { original_word: string; translated_word: string }[];
+  append: (value: { originalWord: string; translatedWord: string }) => void;
+  existingWords: { originalWord: string; translatedWord: string }[];
 }
 
 export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
@@ -55,8 +55,8 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
     event.preventDefault();
     const existingWordsSet = new Set(
       existingWords.map(
-        ({ original_word, translated_word }) =>
-          `${original_word}-${translated_word}`
+        ({ originalWord, translatedWord }) =>
+          `${originalWord}-${translatedWord}`
       )
     );
     const lines = fileContent
@@ -64,12 +64,12 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
       .map((line) => line.trim())
       .filter((line) => line !== "");
     lines.forEach((line) => {
-      const [original_word, translated_word] = line
+      const [originalWord, translatedWord] = line
         .split(",")
         .map((word) => word.trim());
-      const key = `${original_word}-${translated_word}`;
-      if (original_word && translated_word && !existingWordsSet.has(key)) {
-        append({ original_word, translated_word });
+      const key = `${originalWord}-${translatedWord}`;
+      if (originalWord && translatedWord && !existingWordsSet.has(key)) {
+        append({ originalWord, translatedWord });
         existingWordsSet.add(key);
       }
     });

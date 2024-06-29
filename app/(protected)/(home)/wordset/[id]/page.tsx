@@ -9,7 +9,11 @@ import {
   Trash,
 } from "lucide-react";
 
-import { Delete02Icon, PencilEdit02Icon, Share01Icon } from "@/components/icons";
+import {
+  Delete02Icon,
+  PencilEdit02Icon,
+  Share01Icon,
+} from "@/components/icons";
 
 const Page = ({ params }: { params: { id: string } }) => {
   return (
@@ -31,9 +35,11 @@ const Page = ({ params }: { params: { id: string } }) => {
               </div>
             </Button>
             <Button isIconOnly className="p-0 w-fit">
-              <div className=" flex justify-center items-center w-full h-full rounded-md p-1">
-                <PencilEdit02Icon />
-              </div>
+              <Link href={`${params.id}/edit`}>
+                <div className=" flex justify-center items-center w-full h-full rounded-md p-1">
+                  <PencilEdit02Icon />
+                </div>
+              </Link>
             </Button>
             <Button isIconOnly className="p-0 w-fit">
               <div className="bg-red-200 hover:bg-red-400 flex justify-center items-center w-full h-full rounded-md p-1">
@@ -155,4 +161,3 @@ const Page = ({ params }: { params: { id: string } }) => {
 };
 
 export default Page;
-

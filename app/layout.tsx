@@ -5,9 +5,7 @@ import { Providers } from "./providers";
 
 import "./globals.css";
 
-import { SessionProvider } from "next-auth/react";
 
-import { auth } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 
 const spaceGrotesk = Space_Grotesk({
@@ -36,10 +34,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
 
   return (
-    <SessionProvider session={session}>
       <html lang="en">
         <body className={`${spaceGrotesk.className} antialiased h-full`}>
           <Toaster />
@@ -48,6 +44,5 @@ export default async function RootLayout({
           </Providers>
         </body>
       </html>
-    </SessionProvider>
   );
 }

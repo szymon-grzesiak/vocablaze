@@ -46,11 +46,11 @@ export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
     });
 
     await Promise.all(
-      words.map(({ original_word, translated_word }) =>
+      words.map(({ originalWord, translatedWord }) =>
         db.word.create({
           data: {
-            originalWord: original_word,
-            translatedWord: translated_word,
+            originalWord: originalWord,
+            translatedWord: translatedWord,
             wordSetId: newWordSet.id,
           },
         })
@@ -116,7 +116,7 @@ export const getWordSetById = async (id: string) => {
     if (!wordSet) {
       return { error: "Word set not found" };
     }
-    return { wordSet };
+    return wordSet;
   } catch (error) {
     console.error("Error fetching word set:", error);
     return { error: "An error occurred while fetching the word set" };
@@ -156,17 +156,17 @@ export const updateWordSet = async (id: string, values: z.infer<typeof AddWordSe
     });
 
     await Promise.all(
-      words.map(({ original_word, translated_word }) =>
+      words.map(({ originalWord, translatedWord }) =>
         db.word.create({
           data: {
-            originalWord: original_word,
-            translatedWord: translated_word,
+            originalWord: originalWord,
+            translatedWord: translatedWord,
             wordSetId: updatedWordSet.id,
           },
         })
       )
     );
-
+    revalidatePath("/home");
     return { success: "Word set updated successfully!" };
   } catch (error) {
     console.error("Error updating word set:", error);

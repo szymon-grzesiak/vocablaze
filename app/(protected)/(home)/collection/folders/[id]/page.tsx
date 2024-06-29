@@ -1,4 +1,4 @@
-export default function Folder() {
+const DetailsOfFolders = () => {
   return (
     <>
       <div className="flex flex-col items-center justify-center h-screen">
@@ -7,3 +7,5 @@ export default function Folder() {
     </>
   );
 }
+
+export default DetailsOfFolders;

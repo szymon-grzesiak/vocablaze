@@ -6,14 +6,10 @@ import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
 
 import heroImg from "../public/assets/images/hero-image.jpg";
-import { Navbar } from "./(protected)/_components/navbar";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <div className="w-full px-4 bg-transparent">
-        <Navbar />
-      </div>
       <main className="">
         <section className="w-full flex banner-custom bg-primary text-primary-foreground">
           <div className="flex justify-center items-center w-1/2">
