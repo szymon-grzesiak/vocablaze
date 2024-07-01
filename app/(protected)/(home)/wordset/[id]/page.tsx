@@ -14,8 +14,12 @@ import {
   PencilEdit02Icon,
   Share01Icon,
 } from "@/components/icons";
+import DeleteWordSet from "@/app/(protected)/_components/delete-wordset";
+import { getWordSetById } from "@/lib/actions/action";
 
-const Page = ({ params }: { params: { id: string } }) => {
+const Page = async ({ params }: { params: { id: string } }) => {
+  const wordSet = await getWordSetById(params.id);
+  console.log("wordSet", wordSet);
   return (
     <div className="relative bg-white rounded-lg flex flex-col w-full justify-center xl:px-0 mt-8 drop-shadow-lg">
       <div className="px-6 py-8 md:px-12 md:py-12">
@@ -41,11 +45,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                 </div>
               </Link>
             </Button>
-            <Button isIconOnly className="p-0 w-fit">
-              <div className="bg-red-200 hover:bg-red-400 flex justify-center items-center w-full h-full rounded-md p-1">
-                <Delete02Icon />
-              </div>
-            </Button>
+            <div className="bg-red-200 hover:bg-red-400 flex justify-center items-center w-full h-full rounded-md p-1">
+              <DeleteWordSet type="wordset" name={"XD"} />
+            </div>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6">

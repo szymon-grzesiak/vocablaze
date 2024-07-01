@@ -179,3 +179,16 @@ export const updateWordSet = async (id: string, values: z.infer<typeof AddWordSe
     return { error: "An error occurred while updating the word set" };
   }
 };
+
+export const deleteWordSet = async (id: string) => {
+  try {
+    await db.wordSet.delete({
+      where: { id },
+    });
+    revalidatePath("/home");
+    return { success: "Word set deleted successfully!" };
+  } catch (error) {
+    console.error("Error deleting word set:", error);
+    return { error: "An error occurred while deleting the word set" };
+  }
+};

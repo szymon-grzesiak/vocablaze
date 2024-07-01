@@ -13,6 +13,7 @@ const Add = async () => {
   return (
     <div className="drop-shadow-lg border-none flex justify-center">
       <CardComponent
+        mode="add"
         languages={lang}
         folders={fold}
         text="Create a new word set"
