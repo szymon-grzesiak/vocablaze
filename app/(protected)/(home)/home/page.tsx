@@ -13,10 +13,10 @@ import WordSetsList from "./_components/wordset-list";
 const Home = () => {
   return (
     <>
-      <div className="relative flex flex-col w-full  justify-center xl:px-0 drop-shadow-lg">
+      <div className="relative flex flex-col w-full justify-center xl:px-0">
         <div className="flex flex-col lg:flex-row w-full gap-4">
           <div className="flex flex-col lg:w-1/3 gap-4">
-            <section className=" bg-white rounded-lg ">
+            <section className="rounded-lg bg-black/5 backdrop-blur-xl shadow-md">
               <span className="flex justify-between p-5">
                 <span className="text-2xl font-bold">🌍Latest learning</span>
                 <Input
@@ -26,12 +26,12 @@ const Home = () => {
                   }
                   isClearable
                   placeholder="Search"
-                  className="max-w-40 w-full"
-                />
+                  className="max-w-40 w-full [&>div>div]:bg-white"
+                  />
               </span>
               <WordSetsList />
             </section>
-            <section className="hidden lg:block relative p-5 bg-white rounded-lg dark:bg-gray-700">
+            <section className="hidden lg:block relative p-5 bg-black/5 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
               <span className="text-2xl font-bold"> 💲Premium Access</span>
               <p className="text-gray-600 dark:text-gray-400">
                 Unlock all language games and features with a Premium
@@ -48,14 +48,14 @@ const Home = () => {
             </section>
           </div>
           <div className="flex flex-col lg:w-2/3 gap-4">
-            <section className="hidden lg:block relative h-full max-h-[350px] w-full bg-white p-5 rounded-lg">
+            <section className="hidden lg:block relative h-full max-h-[350px] w-full bg-black/5 backdrop-blur-xl shadow-md p-5 rounded-lg">
               <span className="text-2xl font-bold">
                 📚Your learning history
               </span>
             </section>
-            <section className="flex flex-col lg:flex-row gap-4 h-full">
-              <div className="relative h-full w-full lg:w-1/2 gap-4">
-                <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-white rounded-lg">
+            <section className="flex flex-col lg:flex-row gap-4 h-full ">
+              <div className="relative h-full w-full lg:w-1/2 gap-4 ">
+                <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-black/5 backdrop-blur-xl shadow-md rounded-lg">
                   <span className="text-2xl font-bold">📈 Monthly trends</span>
                   <div className="dark:bg-gray-800 rounded-lg p-6">
                     {/* <LineChart className="h-[130px]" /> */}
@@ -72,7 +72,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="relative w-full lg:w-1/2">
-                <div className="relative h-full p-5 bg-white rounded-lg">
+                <div className="relative h-full p-5 bg-black/5 backdrop-blur-xl shadow-md rounded-lg">
                   <span className="flex justify-between">
                     <span className="text-2xl font-bold">📁Folders</span>
                     <Input
@@ -82,7 +82,7 @@ const Home = () => {
                       }
                       isClearable
                       placeholder="Search"
-                      className="max-w-40 w-full"
+                      className="max-w-40 w-full [&>div>div]:bg-white"
                     />
                   </span>
                   <div className="flex flex-wrap w-full gap-4 mt-4">

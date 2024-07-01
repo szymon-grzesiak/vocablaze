@@ -7,6 +7,8 @@ import * as z from "zod";
 
 import db from "../db";
 import { currentUser } from "../sessionData";
+import { redirect } from "next/navigation";
+import { cache } from "react";
 
 export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
   const validatedFields = AddWordSetSchema.safeParse(values);
@@ -98,31 +100,6 @@ export const addFolder = async (values: z.infer<typeof AddFolderSchema>) => {
   }
 };
 
-
-export const getWordSetById = async (id: string) => {
-  const user = await currentUser();
-
-  if (!user) {
-    return { error: "You must be logged in to view this word set" };
-  }
-
-  try {
-    const wordSet = await db.wordSet.findUnique({
-      where: { id: id },
-      include: {
-        words: true,
-      },
-    });
-    if (!wordSet) {
-      return { error: "Word set not found" };
-    }
-    return wordSet;
-  } catch (error) {
-    console.error("Error fetching word set:", error);
-    return { error: "An error occurred while fetching the word set" };
-  }
-};
-
 export const updateWordSet = async (id: string, values: z.infer<typeof AddWordSetSchema>) => {
   const validatedFields = AddWordSetSchema.safeParse(values);
 
@@ -185,10 +162,35 @@ export const deleteWordSet = async (id: string) => {
     await db.wordSet.delete({
       where: { id },
     });
-    revalidatePath("/home");
-    return { success: "Word set deleted successfully!" };
   } catch (error) {
     console.error("Error deleting word set:", error);
     return { error: "An error occurred while deleting the word set" };
+  } finally {
+    revalidatePath("/home");
+    redirect("/home");
+  }
+};
+
+export const getWordSetById = async (id: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "You must be logged in to view this word set" };
+  }
+
+  try {
+    const wordSet = await db.wordSet.findUnique({
+      where: { id: id },
+      include: {
+        words: true,
+      },
+    });
+    if (!wordSet) {
+      return { error: "Word set not found" };
+    }
+    return { wordSet };
+  } catch (error) {
+    console.error("Error fetching word set:", error);
+    return { error: "An error occurred while fetching the word set" };
   }
 };

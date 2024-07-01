@@ -14,7 +14,7 @@ import {
   SortableDragHandle,
   SortableItem,
 } from "@/components/ui/sortable";
-import { Bookmark } from "@/components/icons";
+import { Bookmark, Delete02Icon } from "@/components/icons";
 import { ImportWords } from "@/app/(protected)/_components/import-words";
 
 import { Textarea } from "../textarea";
@@ -134,7 +134,7 @@ export const CardComponent = ({
   return (
     <Card
       radius="lg"
-      className="border-none flex flex-col gap-6 w-full md:w-[70%] banner-custom mb-20 p-6"
+      className="border-none flex flex-col gap-6 w-full md:w-[70%] bg-black/5 backdrop-blur-2xl shadow-md mb-20 p-6"
     >
       <div className="flex gap-4 justify-start items-center">
         <Bookmark className="w-10 h-10 text-black fill-white/60" />
@@ -180,7 +180,7 @@ export const CardComponent = ({
               </FormItem>
             )}
           />
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap">
             <FormField
               name="firstLanguageId"
               control={control}
@@ -428,18 +428,18 @@ export const CardComponent = ({
                           )}
                         />
                       </div>
-                      <SortableDragHandle type="button" className="cursor-move">
-                        <DragHandleDots2Icon />
+                      <SortableDragHandle type="button" className="cursor-move bg-white/20 hover:bg-black/10">
+                        <DragHandleDots2Icon className="text-black" />
                       </SortableDragHandle>
                       <Button
                         type="button"
-                        variant="shadow"
                         isIconOnly
-                        color="danger"
-                        className="size-2 shrink-0"
+                        className="size-2 shrink-0 text-black  hover:text-white"
                         onClick={() => remove(index)}
+                        color="secondary"
+                        variant="flat"
                       >
-                        <TrashIcon className="size-4" aria-hidden="true" />
+                        <Delete02Icon aria-hidden="true" />
                         <span className="sr-only">Remove</span>
                       </Button>
                     </div>
@@ -460,11 +460,11 @@ export const CardComponent = ({
               variant="flat"
               color="success"
               size="sm"
-              className="w-fit text-black text-md"
+              className="w-fit text-black text-sm font-bold"
               startContent={<Plus className="text-emerald-400" />}
               onClick={() => append({ originalWord: "", translatedWord: "" })}
             >
-              Add a new word
+              Add word
             </Button>
           </div>
         </form>

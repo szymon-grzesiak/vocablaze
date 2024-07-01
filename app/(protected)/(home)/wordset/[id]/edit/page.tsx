@@ -6,22 +6,22 @@ import { getFolders, getLanguages } from "@/lib/data/rest";
 import { CardComponent } from "@/components/ui/Card/Card";
 
 const Edit = async ({ params }: { params: { id: string } }) => {
-  const wordSetPromise = await getWordSetById(params.id);
+  const { wordSet } = await getWordSetById(params.id);
   const languagesPromise = getLanguages();
   const foldersPromise = getFolders();
 
-  const [wordSet, languages, folders] = await Promise.all([
-    wordSetPromise,
+  const [wordSetPromise, languages, folders] = await Promise.all([
+    wordSet,
     languagesPromise,
     foldersPromise,
   ]);
 
   return (
-    <div className="drop-shadow-lg border-none flex justify-center">
+    <div className="border-none flex justify-center">
       <CardComponent
         mode="edit"
         text="Edit word set"
-        wordSets={wordSet}
+        wordSets={wordSetPromise}
         languages={languages}
         folders={folders}
       />

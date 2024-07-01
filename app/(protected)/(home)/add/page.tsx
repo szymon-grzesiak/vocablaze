@@ -11,7 +11,7 @@ const Add = async () => {
 
   console.log("folders", fold);
   return (
-    <div className="drop-shadow-lg border-none flex justify-center">
+    <div className="border-none flex justify-center">
       <CardComponent
         mode="add"
         languages={lang}

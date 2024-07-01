@@ -9,19 +9,20 @@ import {
   Trash,
 } from "lucide-react";
 
+import { getWordSetById } from "@/lib/actions/action";
 import {
   Delete02Icon,
   PencilEdit02Icon,
   Share01Icon,
 } from "@/components/icons";
 import DeleteWordSet from "@/app/(protected)/_components/delete-wordset";
-import { getWordSetById } from "@/lib/actions/action";
+import { getFolders } from "@/lib/data/rest";
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const wordSet = await getWordSetById(params.id);
+  const { wordSet } = await getWordSetById(params.id);
   console.log("wordSet", wordSet);
   return (
-    <div className="relative bg-white rounded-lg flex flex-col w-full justify-center xl:px-0 mt-8 drop-shadow-lg">
+    <div className="relative bg-black/5 backdrop-blur-2xl  rounded-lg flex flex-col w-full justify-center xl:px-0 mt-8">
       <div className="px-6 py-8 md:px-12 md:py-12">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <div>
@@ -33,25 +34,19 @@ const Page = async ({ params }: { params: { id: string } }) => {
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex gap-3">
-            <Button isIconOnly className="p-0 w-fit">
-              <div className=" flex bg-blue-200 justify-center items-center w-full h-full rounded-md p-1">
-                <Share01Icon />
-              </div>
+            <Button isIconOnly>
+              <Share01Icon color="teal" />
             </Button>
-            <Button isIconOnly className="p-0 w-fit">
+            <Button isIconOnly>
               <Link href={`${params.id}/edit`}>
-                <div className=" flex justify-center items-center w-full h-full rounded-md p-1">
-                  <PencilEdit02Icon />
-                </div>
+                <PencilEdit02Icon />
               </Link>
             </Button>
-            <div className="bg-red-200 hover:bg-red-400 flex justify-center items-center w-full h-full rounded-md p-1">
-              <DeleteWordSet type="wordset" name={"XD"} />
-            </div>
+            <DeleteWordSet id={params.id} type="wordset" name={wordSet?.title as string} />
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6">
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6">
+          <div className="bg-black/5 backdrop-blur-xl dark:bg-gray-800 rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <BookIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />

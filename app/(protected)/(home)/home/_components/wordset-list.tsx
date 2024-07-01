@@ -17,7 +17,7 @@ const WordSetsList = async () => {
           <Link href={`/wordset/${wordSet.id}`} key={wordSet.id}>
             <li
               key={wordSet.id}
-              className="p-3 flex justift-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer banner-custom"
+              className="p-3 flex justify-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer backdrop-blur-xl bg-transparent"
             >
               <div className="text-xl font-bold [text-shadow:_1px_1px_1px_rgb(0_0_255_/_20%)]">
                 {wordSet.title}

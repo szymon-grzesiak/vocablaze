@@ -60,6 +60,9 @@ export default function Home() {
               className="w-full h-full max-h-[850px]"
             />
           </div>
+          <div className="fixed w-full h-[200px] bg-white/10 backdrop-blur-md top-0 right-0 z-[100]">
+
+          </div>
         </section>
         <section
           id="features"
