@@ -1,19 +1,43 @@
-import Link from "next/link";
+"use client";
 
-import { getAllWordSets } from "@/lib/data/rest";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-const WordSetsList = async () => {
-  const { wordSets, error } = await getAllWordSets();
+const WordSetsList = ({
+  wordSets,
+  error,
+}: {
+  wordSets:
+    | {
+        id: string;
+        title: string;
+        description: string | null;
+        firstLanguageId: string;
+        secondLanguageId: string;
+        isShared: boolean;
+        createdAt: Date;
+        updatedAt: Date | null;
+        userId: string;
+        folderId: string | null;
+      }[]
+    | undefined;
+  error: string;
+}) => {
+  const sets = useSearchParams();
+  const query = sets.get("sets") || "";
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
+  const filteredWordSets = wordSets?.filter((wordSet) => wordSet.title.toLowerCase().includes(query.toLowerCase()));
+
   return (
     <ScrollArea className="h-[500px]">
       <ul className="flex flex-col gap-4 mb-5">
-        {wordSets?.map((wordSet) => (
+        {filteredWordSets?.map((wordSet) => (
           <Link href={`/wordset/${wordSet.id}`} key={wordSet.id}>
             <li
               key={wordSet.id}

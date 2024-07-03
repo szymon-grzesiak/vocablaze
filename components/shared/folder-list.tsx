@@ -1,17 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import { getTextColor } from "@/helpers/file";
 
 import { getFolders } from "@/lib/data/rest";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useSearchParams } from "next/navigation";
 
-const FoldersList = async () => {
-  const folders = await getFolders();
-  console.log(folders);
+const FoldersList = ({
+  folders,
+}: {
+  folders: {
+    id: string;
+    name: string;
+    color: string | null;
+    userId: string;
+  }[];
+}) => {
+  const sets = useSearchParams();
+  const query = sets.get("folders") || "";
+
+  const filteredFolders = folders?.filter((folder) =>
+    folder.name.toLowerCase().includes(query.toLowerCase())
+  );
 
   return (
     <ul className="flex gap-4 mb-5 flex-wrap">
-      {folders?.map((folder) => {
+      {filteredFolders?.map((folder) => {
         const textColor = getTextColor(folder?.color as string);
         return (
           <Link href={`/collection/folders/${folder.id}`} key={folder.id}>

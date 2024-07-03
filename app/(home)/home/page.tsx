@@ -1,16 +1,18 @@
 import React from "react";
-import Image from "next/image";
 import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/react";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 import MobileNavbar from "@/components/shared/navbar/navbar";
+import Search from "@/components/shared/search";
 
 import FoldersList from "../../../components/shared/folder-list";
 import { LineChart } from "../../../components/shared/line-chart-icon";
 import WordSetsList from "../../../components/shared/wordset-list";
+import { getAllWordSets, getFolders } from "@/lib/data/rest";
 
-const Home = () => {
+export default async function Page() {
+  const [wordSetsResponse, folders] = await Promise.all([getAllWordSets(), getFolders()]);
+  const { wordSets, error } = wordSetsResponse;
+
   return (
     <>
       <div className="relative flex flex-col w-full justify-center xl:px-0">
@@ -19,17 +21,9 @@ const Home = () => {
             <section className="rounded-lg bg-black/5 backdrop-blur-xl shadow-md">
               <span className="flex justify-between p-5">
                 <span className="text-2xl font-bold">🌍Latest learning</span>
-                <Input
-                  type="text"
-                  startContent={
-                    <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                  }
-                  isClearable
-                  placeholder="Search"
-                  className="max-w-40 w-full [&>div>div]:bg-white"
-                />
+                <Search queryKey="sets"/>
               </span>
-              <WordSetsList />
+              <WordSetsList wordSets={wordSets} error={error as string}/>
             </section>
             <section className="hidden lg:block relative p-5 bg-black/5 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
               <span className="text-2xl font-bold"> 💲Premium Access</span>
@@ -75,18 +69,10 @@ const Home = () => {
                 <div className="relative h-full p-5 bg-black/5 backdrop-blur-xl shadow-md rounded-lg">
                   <span className="flex justify-between">
                     <span className="text-2xl font-bold">📁Folders</span>
-                    <Input
-                      type="text"
-                      startContent={
-                        <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                      }
-                      isClearable
-                      placeholder="Search"
-                      className="max-w-40 w-full [&>div>div]:bg-white"
-                    />
+                    <Search queryKey="folders"/>
                   </span>
                   <div className="flex flex-wrap w-full gap-4 mt-4">
-                    <FoldersList />
+                    <FoldersList folders={folders}/>
                   </div>
                 </div>
               </div>
@@ -97,5 +83,3 @@ const Home = () => {
     </>
   );
 };
-
-export default Home;

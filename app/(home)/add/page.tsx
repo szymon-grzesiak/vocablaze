@@ -1,7 +1,7 @@
 import React from "react";
 
 import { getFolders, getLanguages } from "@/lib/data/rest";
-import { CardComponent } from "@/components/ui/Card/Card";
+import { CardComponent } from "@/components/shared/card/card";
 
 const Add = async () => {
   const languages = getLanguages();

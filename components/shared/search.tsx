@@ -1,25 +1,50 @@
-'use client';
- 
+"use client";
+
+import { Input } from "@nextui-org/react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
- 
-export default function Search({ placeholder }: { placeholder: string }) {
-  function handleSearch(term: string) {
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+
+
+export default function Search({
+  placeholder = "Search",
+  queryKey
+}: {
+  placeholder?: string;
+  queryKey: string;
+}) {
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const handleSearch = (term: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set(queryKey, term);
+    } else {
+      params.delete(queryKey);
+    }
+    replace(`${pathname}?${params.toString()}`);
+
     console.log(term);
-  }
- 
+  };
+
   return (
-    <div className="relative flex flex-1 flex-shrink-0">
+    <>
       <label htmlFor="search" className="sr-only">
         Search
       </label>
-      <input
-        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-500"
+      <Input
+        type="text"
+        startContent={
+          <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+        }
         placeholder={placeholder}
+        className="max-w-40 w-full [&>div>div]:bg-white"
         onChange={(e) => {
           handleSearch(e.target.value);
         }}
+        defaultValue={searchParams.get('query')?.toString()}
       />
-      <MagnifyingGlassIcon className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-    </div>
+    </>
   );
 }
