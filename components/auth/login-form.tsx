@@ -10,7 +10,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { login } from "@/lib/actions/login";
+import { login } from "@/lib/actions/auth/login";
 import {
   Form,
   FormControl,

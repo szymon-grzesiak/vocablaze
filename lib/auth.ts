@@ -2,11 +2,11 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { UserRole } from "@prisma/client";
 import NextAuth, { type DefaultSession } from "next-auth";
 
-import { getTwoFactorConfirmationByUserId } from "@/lib/data/two-factor-confirmation";
+import { getTwoFactorConfirmationByUserId } from "./data/auth/two-factor-confirmation";
 
 import authConfig from "./auth.config";
-import { getAccountByUserId } from "./data/account";
-import { getUserById } from "./data/user";
+import { getAccountByUserId } from "./data/auth/account";
+import { getUserById } from "./data/auth/user";
 import db from "./db";
 
 export const {

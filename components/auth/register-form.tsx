@@ -1,12 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useTransition } from "react"
-import { RegisterSchema } from "@/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useState, useTransition } from "react";
+import { RegisterSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { register } from "@/lib/actions/register"
+import { register } from "@/lib/actions/auth/register";
 import {
   Form,
   FormControl,
@@ -14,17 +15,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
-import { FormError } from "../form-error"
-import { FormSuccess } from "../form-success"
-import { Input, Button } from "@nextui-org/react";
-import { CardWrapper } from "./card-wrapper"
+import { FormError } from "../form-error";
+import { FormSuccess } from "../form-success";
+import { CardWrapper } from "./card-wrapper";
 
 export const RegisterForm = () => {
-  const [error, setError] = useState<string | undefined>("")
-  const [success, setSuccess] = useState<string | undefined>("")
-  const [isPending, startTransition] = useTransition()
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -32,18 +32,18 @@ export const RegisterForm = () => {
       password: "",
       name: "",
     },
-  })
+  });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    setError("")
-    setSuccess("")
+    setError("");
+    setSuccess("");
     startTransition(() => {
       register(values).then((data) => {
-        setError(data.error)
-        setSuccess(data.success)
-      })
-    })
-  }
+        setError(data.error);
+        setSuccess(data.success);
+      });
+    });
+  };
   return (
     <CardWrapper
       headerLabel="Create an account"
@@ -108,11 +108,15 @@ export const RegisterForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full bg-slate-700 text-white" disabled={isPending}>
+          <Button
+            type="submit"
+            className="w-full bg-slate-700 text-white"
+            disabled={isPending}
+          >
             Create an account
           </Button>
         </form>
       </Form>
     </CardWrapper>
-  )
-}
+  );
+};

@@ -1,6 +1,6 @@
 "use server";
 
-import { currentRole } from "../sessionData";
+import { currentRole } from "../../sessionData";
 
 export const admin = async () => {
   const role = await currentRole();

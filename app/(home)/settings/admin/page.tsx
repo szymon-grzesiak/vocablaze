@@ -1,34 +1,34 @@
-"use client"
+"use client";
 
-import { toast } from "sonner"
+import { toast } from "sonner";
 
-import { admin } from "@/lib/actions/admin"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { RoleGate } from "@/components/auth/role-gate"
-import { FormSuccess } from "@/components/form-success"
+import { admin } from "@/lib/actions/auth/admin";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { RoleGate } from "@/components/auth/role-gate";
+import { FormSuccess } from "@/components/form-success";
 
 const AdminPage = () => {
   const onServerActionClick = () => {
     admin().then((response) => {
       if (response.success) {
-        toast.success(response.success)
+        toast.success(response.success);
       } else {
-        toast.error(response.error)
+        toast.error(response.error);
       }
-    })
-  }
+    });
+  };
 
   const onApiClick = () => {
     fetch("/api/admin").then((response) => {
       if (response.ok) {
-        toast.success("Allowed API Route!")
+        toast.success("Allowed API Route!");
       } else {
-        toast.error("Forbidden")
+        toast.error("Forbidden");
       }
-    })
-  }
+    });
+  };
 
   return (
     <Card>
@@ -50,7 +50,7 @@ const AdminPage = () => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default AdminPage
+export default AdminPage;

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { CircleLoader } from "react-spinners"
 
-import { newVerification } from "@/lib/actions/new-verification"
+import { newVerification } from "@/lib/actions/auth/new-verification"
 
 import { FormError } from "../form-error"
 import { FormSuccess } from "../form-success"

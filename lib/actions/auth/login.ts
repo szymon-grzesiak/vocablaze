@@ -6,9 +6,9 @@ import { AuthError } from "next-auth";
 import * as z from "zod";
 
 import { signIn } from "@/lib/auth";
-import { getTwoFactorConfirmationByUserId } from "@/lib/data/two-factor-confirmation";
-import { getTwoFactorTokenByEmail } from "@/lib/data/two-factor-token";
-import { getUserByEmail } from "@/lib/data/user";
+import { getUserByEmail } from "@/lib/data/auth/user";
+import { getTwoFactorConfirmationByUserId } from "@/lib/data/auth/two-factor-confirmation";
+import { getTwoFactorTokenByEmail } from "@/lib/data/auth/two-factor-token";
 import db from "@/lib/db";
 import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
 import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
@@ -16,7 +16,7 @@ import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
 import {
   generateTwoFactorToken,
   generateVerificationToken,
-} from "../data/tokens";
+} from "./tokens";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,

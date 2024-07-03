@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import { useState, useTransition } from "react"
-import { useSearchParams } from "next/navigation"
-import { NewPasswordSchema } from "@/schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
+import { NewPasswordSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
-import { newPassword } from "@/lib/actions/new-password"
+import { newPassword } from "@/lib/actions/auth/new-password";
 import {
   Form,
   FormControl,
@@ -15,38 +15,38 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
-import { FormError } from "../form-error"
-import { FormSuccess } from "../form-success"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
-import { CardWrapper } from "./card-wrapper"
+import { FormError } from "../form-error";
+import { FormSuccess } from "../form-success";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { CardWrapper } from "./card-wrapper";
 
 export const NewPasswordForm = () => {
-  const searchParams = useSearchParams()
-  const token = searchParams.get("token")
-  const [error, setError] = useState<string | undefined>("")
-  const [success, setSuccess] = useState<string | undefined>("")
-  const [isPending, startTransition] = useTransition()
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
     resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
       password: "",
     },
-  })
+  });
 
   const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
-    setError("")
-    setSuccess("")
+    setError("");
+    setSuccess("");
     startTransition(() => {
       newPassword(values, token).then((data) => {
-        console.log("DATA", data)
-        setError(data?.error)
-        setSuccess(data?.success)
-      })
-    })
-  }
+        console.log("DATA", data);
+        setError(data?.error);
+        setSuccess(data?.success);
+      });
+    });
+  };
   return (
     <CardWrapper
       headerLabel="Enter your new password"
@@ -83,5 +83,5 @@ export const NewPasswordForm = () => {
         </form>
       </Form>
     </CardWrapper>
-  )
-}
+  );
+};
