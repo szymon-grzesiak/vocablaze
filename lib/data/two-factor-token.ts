@@ -1,6 +1,7 @@
 import db from "@/lib/db";
+import { cache } from "react";
 
-export const getTwoFactorTokenByToken = async (token: string) => {
+export const getTwoFactorTokenByToken = cache(async (token: string) => {
   try {
     const twoFactorToken = await db.twoFactorToken.findUnique({
       where: { token },
@@ -10,9 +11,9 @@ export const getTwoFactorTokenByToken = async (token: string) => {
   } catch {
     return null;
   }
-};
+});
 
-export const getTwoFactorTokenByEmail = async (email: string) => {
+export const getTwoFactorTokenByEmail = cache(async (email: string) => {
   try {
     const twoFactorToken = await db.twoFactorToken.findFirst({
       where: { email },
@@ -22,4 +23,4 @@ export const getTwoFactorTokenByEmail = async (email: string) => {
   } catch {
     return null;
   }
-};
+});

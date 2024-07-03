@@ -9,7 +9,7 @@ import {
   Trash,
 } from "lucide-react";
 
-import { getWordSetById } from "@/lib/actions/action";
+import { getWordSetById } from "@/lib/data/rest";
 import { getFolders } from "@/lib/data/rest";
 import {
   Delete02Icon,

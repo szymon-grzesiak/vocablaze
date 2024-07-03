@@ -19,7 +19,7 @@ import { ImportWords } from "@/components/shared/import-words";
 
 import { Textarea } from "@/components/ui/textarea";
 
-import "./Background.css";
+import "./background.css";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";

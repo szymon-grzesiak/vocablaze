@@ -1,5 +1,5 @@
 import React from "react";
-import "./Background.css";
+import "./background.css";
 import { cn } from "@/lib/utils";
 
 interface BackgroundProps extends React.ComponentPropsWithoutRef<"div"> {

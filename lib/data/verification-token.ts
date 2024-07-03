@@ -1,6 +1,7 @@
 import db from "@/lib/db";
+import { cache } from "react";
 
-export const getVerificationTokenByToken = async (token: string) => {
+export const getVerificationTokenByToken = cache(async (token: string) => {
   try {
     const verificationToken = await db.verificationToken.findUnique({
       where: { token },
@@ -10,9 +11,9 @@ export const getVerificationTokenByToken = async (token: string) => {
   } catch (error) {
     return null;
   }
-};
+});
 
-export const getVerificationTokenByEmail = async (email: string) => {
+export const getVerificationTokenByEmail = cache(async (email: string) => {
   try {
     const verificationToken = await db.verificationToken.findFirst({
       where: { email },
@@ -22,4 +23,4 @@ export const getVerificationTokenByEmail = async (email: string) => {
   } catch (error) {
     return null;
   }
-};
+});

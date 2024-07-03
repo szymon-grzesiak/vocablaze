@@ -170,27 +170,3 @@ export const deleteWordSet = async (id: string) => {
     redirect("/home");
   }
 };
-
-export const getWordSetById = async (id: string) => {
-  const user = await currentUser();
-
-  if (!user) {
-    return { error: "You must be logged in to view this word set" };
-  }
-
-  try {
-    const wordSet = await db.wordSet.findUnique({
-      where: { id: id },
-      include: {
-        words: true,
-      },
-    });
-    if (!wordSet) {
-      return { error: "Word set not found" };
-    }
-    return { wordSet };
-  } catch (error) {
-    console.error("Error fetching word set:", error);
-    return { error: "An error occurred while fetching the word set" };
-  }
-};

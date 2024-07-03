@@ -1,9 +1,9 @@
 import React from "react";
 import { z } from "zod";
 
-import { getWordSetById } from "@/lib/actions/action";
+import { getWordSetById } from "@/lib/data/rest";
 import { getFolders, getLanguages } from "@/lib/data/rest";
-import { CardComponent } from "@/components/ui/Card/Card";
+import { CardComponent } from "@/components/shared/card/card";
 
 const Edit = async ({ params }: { params: { id: string } }) => {
   const { wordSet } = await getWordSetById(params.id);
