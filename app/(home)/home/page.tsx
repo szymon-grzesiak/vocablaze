@@ -6,9 +6,9 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
 import MobileNavbar from "@/components/shared/navbar/navbar";
 
-import { LineChart } from "../../_components/line-chart-icon";
-import FoldersList from "./_components/folder-list";
-import WordSetsList from "./_components/wordset-list";
+import FoldersList from "../../../components/shared/folder-list";
+import { LineChart } from "../../../components/shared/line-chart-icon";
+import WordSetsList from "../../../components/shared/wordset-list";
 
 const Home = () => {
   return (
@@ -27,7 +27,7 @@ const Home = () => {
                   isClearable
                   placeholder="Search"
                   className="max-w-40 w-full [&>div>div]:bg-white"
-                  />
+                />
               </span>
               <WordSetsList />
             </section>

@@ -10,13 +10,13 @@ import {
 } from "lucide-react";
 
 import { getWordSetById } from "@/lib/actions/action";
+import { getFolders } from "@/lib/data/rest";
 import {
   Delete02Icon,
   PencilEdit02Icon,
   Share01Icon,
 } from "@/components/icons";
-import DeleteWordSet from "@/app/(protected)/_components/delete-wordset";
-import { getFolders } from "@/lib/data/rest";
+import DeleteWordSet from "@/components/shared/delete-wordset";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const { wordSet } = await getWordSetById(params.id);
@@ -42,7 +42,11 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 <PencilEdit02Icon />
               </Link>
             </Button>
-            <DeleteWordSet id={params.id} type="wordset" name={wordSet?.title as string} />
+            <DeleteWordSet
+              id={params.id}
+              type="wordset"
+              name={wordSet?.title as string}
+            />
           </div>
         </div>
         <div className="grid grid-cols-1 gap-6">

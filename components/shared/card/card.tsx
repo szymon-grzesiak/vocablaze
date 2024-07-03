@@ -15,9 +15,9 @@ import {
   SortableItem,
 } from "@/components/ui/sortable";
 import { Bookmark, Delete02Icon } from "@/components/icons";
-import { ImportWords } from "@/app/(protected)/_components/import-words";
+import { ImportWords } from "@/components/shared/import-words";
 
-import { Textarea } from "../textarea";
+import { Textarea } from "@/components/ui/textarea";
 
 import "./Background.css";
 
@@ -91,7 +91,7 @@ export const CardComponent = ({
       words: { originalWord: string; translatedWord: string }[];
     } & {},
   });
-  console.log("wordSets", wordSets)
+  console.log("wordSets", wordSets);
   const {
     control,
     handleSubmit,
@@ -102,7 +102,7 @@ export const CardComponent = ({
     control,
     name: "words",
   });
-  console.log("fields", fields)
+  console.log("fields", fields);
 
   const onSubmit = async (input: Schema) => {
     const uniqueWords = new Set<string>();
@@ -115,7 +115,7 @@ export const CardComponent = ({
 
     setIsLoading(true);
     try {
-      if(mode === "edit") {
+      if (mode === "edit") {
         await updateWordSet(wordSets?.id as string, { ...input, words });
         toast.success("Word set updated successfully");
         router.push("/home");
@@ -129,7 +129,6 @@ export const CardComponent = ({
     } finally {
       setIsLoading(false);
     }
-    
   };
   return (
     <Card
@@ -428,7 +427,10 @@ export const CardComponent = ({
                           )}
                         />
                       </div>
-                      <SortableDragHandle type="button" className="cursor-move bg-white/20 hover:bg-black/10">
+                      <SortableDragHandle
+                        type="button"
+                        className="cursor-move bg-white/20 hover:bg-black/10"
+                      >
                         <DragHandleDots2Icon className="text-black" />
                       </SortableDragHandle>
                       <Button
