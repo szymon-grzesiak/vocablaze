@@ -4,21 +4,12 @@ import React from "react";
 import Image from "next/image";
 import { themes } from "@/constants";
 import { useTheme } from "@/context/ThemeProvider";
-import { Button } from "@nextui-org/button";
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
-
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
 
 const Theme = () => {
   const { mode, setMode } = useTheme();

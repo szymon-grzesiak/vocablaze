@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@nextui-org/button";
 
-import MobileNavbar from "@/components/shared/navbar/navbar";
+import MobileNavbar from "@/components/shared/navbar/mobile-navbar";
 import Search from "@/components/shared/search";
 
 import FoldersList from "../../../components/shared/folder-list";

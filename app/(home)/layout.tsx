@@ -1,9 +1,9 @@
 import { SessionProvider } from "next-auth/react";
 
 import { auth } from "@/lib/auth";
-import MobileNavbar from "@/components/shared/navbar/navbar";
+import MobileNavbar from "@/components/shared/navbar/mobile-navbar";
 
-import { Navbar } from "../../components/shared/navbar";
+import { Navbar } from "@/components/shared/navbar/navbar";
 
 const ProtectedLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await auth();

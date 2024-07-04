@@ -1,41 +1,52 @@
-"use client";
+import Image from "next/image";
+import Link from "next/link";
+import logo from "@/public/assets/images/logo.png";
+import { Button } from "@nextui-org/button";
+import { Tooltip } from "@nextui-org/react";
+import { Folder, Plus } from "lucide-react";
 
-import React from "react";
-import { Tab, Tabs } from "@nextui-org/react";
-import { AreaChart, CircleUserRound, Home, NotebookText } from "lucide-react";
+import { addFolder } from "@/lib/actions/action";
+import { currentUser } from "@/lib/sessionData";
+import { UserButton } from "@/components/auth/user-button";
+import Theme from "@/components/shared/navbar/Theme";
 
-export default function MobileNavbar() {
+import CustomModal from "../folder-modal";
+
+export const Navbar = async () => {
+  const user = await currentUser();
   return (
-    <div className="fixed bottom-0 left-0 flex w-full flex-col">
-      <Tabs aria-label="Options" color="primary" variant="bordered">
-        <Tab
-          key="photos"
-          title={
-            <div className="flex items-center space-x-2">
-              <Home />
-              <span>Photos</span>
-            </div>
-          }
-        />
-        <Tab
-          key="music"
-          title={
-            <div className="flex items-center space-x-2">
-              <AreaChart />
-              <span>Music</span>
-            </div>
-          }
-        />
-        <Tab
-          key="videos"
-          title={
-            <div className="flex items-center space-x-2">
-              <CircleUserRound />
-              <span>Videos</span>
-            </div>
-          }
-        />
-      </Tabs>
-    </div>
+    <nav className="mx-auto flex justify-between gap-6 items-center pt-2 rounded-xl">
+      <Link href={"/home"} className="flex justify-center items-center">
+        <Image src={logo} alt="logo" width={60} height={60} />
+        <h1 className="text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
+          Blackfyre
+        </h1>
+      </Link>
+
+      <div className="flex justify-end gap-6 items-center">
+        {user && (
+          <CustomModal
+            triggerIcon={<Folder />}
+            title="Create New Folder"
+            description="Please enter the folder name and choose a color for it."
+            handleClick={addFolder}
+          />
+        )}
+
+        <Tooltip content="Add a words set">
+          <Button isIconOnly color="secondary" aria-label="word-set">
+            <Link
+              href="/add"
+              className="w-full h-full flex justify-center items-center"
+            >
+              <Plus />
+            </Link>
+          </Button>
+        </Tooltip>
+
+        <Theme />
+        <UserButton />
+      </div>
+    </nav>
   );
-}
+};
