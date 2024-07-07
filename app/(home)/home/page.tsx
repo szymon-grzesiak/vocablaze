@@ -71,9 +71,7 @@ export default async function Page() {
                     <span className="text-2xl font-bold">📁Folders</span>
                     <Search queryKey="folders"/>
                   </span>
-                  <div className="flex flex-wrap w-full gap-4 mt-4">
-                    <FoldersList folders={folders}/>
-                  </div>
+                    <FoldersList folders={folders} />
                 </div>
               </div>
             </section>

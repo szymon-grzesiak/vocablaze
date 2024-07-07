@@ -80,3 +80,24 @@ export const getWordSetById = unstable_cache(async (id: string) => {
     return { error: "An error occurred while fetching the word set" };
   }
 });
+
+export const getWordSetsByFolder = async (folderId: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    return { error: "You must be logged in to view word sets" };
+  }
+
+  try {
+    const wordSets = await db.wordSet.findMany({
+      where: {
+        userId: user.id as string,
+        folderId: folderId,
+      },
+    });
+    return { wordSets };
+  } catch (error) {
+    console.error("Error fetching word sets by folder:", error);
+    return { error: "An error occurred while fetching the word sets" };
+  }
+};
