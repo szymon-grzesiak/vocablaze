@@ -58,7 +58,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   Vocabulary Words
                 </h3>
               </div>
-              <Progress className="w-32" value={75} />
+              <Progress label='s' className="w-32" value={75} />
             </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -68,7 +68,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   </span>
                   <span className="text-gray-600 dark:text-gray-400">Hola</span>
                 </div>
-                <Progress className="w-24" value={90} />
+                <Progress label='s' className="w-24" value={90} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -79,7 +79,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                     Gracias
                   </span>
                 </div>
-                <Progress className="w-24" value={80} />
+                <Progress label='f' className="w-24" value={80} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -90,7 +90,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                     Perdón
                   </span>
                 </div>
-                <Progress className="w-24" value={75} />
+                <Progress label='b' className="w-24" value={75} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -101,7 +101,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                     Buenos días
                   </span>
                 </div>
-                <Progress className="w-24" value={85} />
+                <Progress label='s' className="w-24" value={85} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -112,7 +112,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                     Adiós
                   </span>
                 </div>
-                <Progress className="w-24" value={92} />
+                <Progress label='g' className="w-24" value={92} />
               </div>
             </div>
           </div>

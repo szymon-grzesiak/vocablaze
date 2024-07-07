@@ -9,7 +9,6 @@ const Add = async () => {
 
   const [lang, fold] = await Promise.all([languages, folders]);
 
-  console.log("folders", fold);
   return (
     <div className="border-none flex justify-center">
       <CardComponent

@@ -1,18 +1,24 @@
 import React from "react";
 import { Button } from "@nextui-org/button";
 
+import { getAllWordSets, getFolders } from "@/lib/data/rest";
 import MobileNavbar from "@/components/shared/navbar/mobile-navbar";
 import Search from "@/components/shared/search";
 
 import FoldersList from "../../../components/shared/folder-list";
 import { LineChart } from "../../../components/shared/line-chart-icon";
 import WordSetsList from "../../../components/shared/wordset-list";
-import { getAllWordSets, getFolders } from "@/lib/data/rest";
 
-export default async function Page() {
-  const [wordSetsResponse, folders] = await Promise.all([getAllWordSets(), getFolders()]);
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string };
+}) {
+  const [wordSetsResponse, folders] = await Promise.all([
+    getAllWordSets(),
+    getFolders(),
+  ]);
   const { wordSets, error } = wordSetsResponse;
-
   return (
     <>
       <div className="relative flex flex-col w-full justify-center xl:px-0">
@@ -21,9 +27,9 @@ export default async function Page() {
             <section className="rounded-lg bg-black/5 backdrop-blur-xl shadow-md">
               <span className="flex justify-between p-5">
                 <span className="text-2xl font-bold">🌍Latest learning</span>
-                <Search queryKey="sets"/>
+                <Search queryKey="sets" />
               </span>
-              <WordSetsList wordSets={wordSets} error={error as string}/>
+              <WordSetsList wordSets={wordSets} error={error as string} />
             </section>
             <section className="hidden lg:block relative p-5 bg-black/5 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
               <span className="text-2xl font-bold"> 💲Premium Access</span>
@@ -69,9 +75,9 @@ export default async function Page() {
                 <div className="relative h-full p-5 bg-black/5 backdrop-blur-xl shadow-md rounded-lg">
                   <span className="flex justify-between">
                     <span className="text-2xl font-bold">📁Folders</span>
-                    <Search queryKey="folders"/>
+                    <Search queryKey="folders" />
                   </span>
-                    <FoldersList folders={folders} />
+                  <FoldersList folders={folders} searchParams={searchParams} />
                 </div>
               </div>
             </section>
@@ -80,4 +86,4 @@ export default async function Page() {
       </div>
     </>
   );
-};
+}

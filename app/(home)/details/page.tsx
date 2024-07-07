@@ -51,7 +51,7 @@ const Details = () => {
                   Vocabulary Words
                 </h3>
               </div>
-              <Progress className="w-32" value={75} />
+              <Progress label='' className="w-32" value={75} />
             </div>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
@@ -61,7 +61,7 @@ const Details = () => {
                   </span>
                   <span className="text-gray-600 dark:text-gray-400">Hola</span>
                 </div>
-                <Progress className="w-24" value={90} />
+                <Progress label='' className="w-24" value={90} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -72,7 +72,7 @@ const Details = () => {
                     Gracias
                   </span>
                 </div>
-                <Progress className="w-24" value={80} />
+                <Progress label='' className="w-24" value={80} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -83,7 +83,7 @@ const Details = () => {
                     Perdón
                   </span>
                 </div>
-                <Progress className="w-24" value={75} />
+                <Progress label='' className="w-24" value={75} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -94,7 +94,7 @@ const Details = () => {
                     Buenos días
                   </span>
                 </div>
-                <Progress className="w-24" value={85} />
+                <Progress label='' className="w-24" value={85} />
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -105,7 +105,7 @@ const Details = () => {
                     Adiós
                   </span>
                 </div>
-                <Progress className="w-24" value={92} />
+                <Progress label='' className="w-24" value={92} />
               </div>
             </div>
           </div>
