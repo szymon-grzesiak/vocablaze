@@ -1,10 +1,23 @@
 "use client";
 
+import dynamic from 'next/dynamic'
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getTextColor, hexToRgb } from "@/helpers/file";
+import { FolderType, IWordSetType } from "@/types";
 
 import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { Button } from "@/components/ui/button";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import {
   Sheet,
   SheetContent,
@@ -13,44 +26,44 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-interface FolderType {
-  id: string;
-  name: string;
-  color: string | null;
-  userId: string;
-}
-
-interface WordSet {
-  id: string;
-  title: string;
-  description: string;
-}
+import WordSetsList from "./wordset-list";
 
 const SheetOpen = ({
   folder,
   wordSets,
 }: {
   folder: FolderType;
-  wordSets: WordSet[];
+  wordSets: IWordSetType[];
 }) => {
+  const [open, setOpen] = useState<boolean>(false);
   const pathname = usePathname();
   const router = useRouter();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  const [selectedFolder, setSelectedFolder] = useState<FolderType | null>(null);
   const searchParams = useSearchParams();
 
   const handleFolderClick = (folder: FolderType) => {
-    setSelectedFolder(folder);
+    setOpen(true);
     const params = new URLSearchParams(searchParams);
     params.set("folder", folder.id);
     router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleCloseSheet = () => {
-    setSelectedFolder(null);
+    setOpen(false);
     const params = new URLSearchParams(searchParams);
     params.delete("folder");
     router.replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleOpenDrawer = (isOpen: boolean) => {
+    if (isOpen) {
+      const params = new URLSearchParams(searchParams);
+      params.set("folder", folder.id);
+      router.replace(`${pathname}?${params.toString()}`);
+    } else {
+      handleCloseSheet();
+    }
   };
 
   const textColor = getTextColor(folder?.color as string);
@@ -75,28 +88,45 @@ const SheetOpen = ({
           {folder.name}
         </div>
       </li>
-      <Sheet open={!!selectedFolder} onOpenChange={handleCloseSheet}>
-        <SheetContent side="left">
-          <SheetHeader>
-            <SheetTitle>{selectedFolder?.name}</SheetTitle>
-            <SheetDescription>
-              <>
-                <span>Folder ID: {selectedFolder?.id}</span>
-                {wordSets?.length > 0 ? (
-                  wordSets?.map((word) => (
-                    <span key={word.id}>
-                      <span>{word.title}</span>
-                      <span>{word.description}</span>
-                    </span>
-                  ))
+      {isDesktop ? (
+        <Sheet open={open} onOpenChange={handleCloseSheet}>
+          <SheetContent side="left">
+            <SheetHeader>
+              <SheetTitle>{folder?.name}</SheetTitle>
+              
+                {wordSets.length > 0 ? (
+                  <WordSetsList wordSets={wordSets} />
                 ) : (
                   <span>No word sets found in this folder</span>
                 )}
-              </>
-            </SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
+   
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      ) : (
+        <Drawer open={open} onOpenChange={handleOpenDrawer}>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>{folder?.name}</DrawerTitle>
+              <DrawerDescription>
+                <>
+                  <span>Folder ID: {folder?.id}</span>
+                  {wordSets.length > 0 ? (
+                    <WordSetsList wordSets={wordSets} />
+                  ) : (
+                    <span>No word sets found in this folder</span>
+                  )}
+                </>
+              </DrawerDescription>
+            </DrawerHeader>
+            <DrawerFooter className="pt-2">
+              <DrawerClose asChild>
+                <Button variant="outline">Cancel</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
+      )}
     </>
   );
 };

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_cache } from "next/cache";
 import { AddFolderSchema, AddWordSetSchema } from "@/schemas";
 import { Prisma } from "@prisma/client";
 import * as z from "zod";
@@ -170,3 +170,21 @@ export const deleteWordSet = async (id: string) => {
     redirect("/home");
   }
 };
+
+export const getWordSetsByFolder = unstable_cache(async (folderId: string) => {
+  const user = await currentUser();
+
+  if (!user) {
+    console.log("User not logged in");
+  }
+  try {
+    const wordSet = await db.wordSet.findMany({
+      where: {
+        folderId: folderId,
+      },
+    });
+    return wordSet;
+  } catch (error) {
+    console.error("Error fetching word sets by folder:", error);
+  }
+});

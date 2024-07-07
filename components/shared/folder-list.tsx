@@ -1,5 +1,6 @@
-import { getWordSetsByFolder } from "@/lib/data/rest";
+import { getWordSetsByFolder } from "@/lib/actions/action";
 import SheetOpen from "./sheet-open";
+import { IWordSetType } from "@/types";
 
 interface FolderType {
   id: string;
@@ -17,7 +18,7 @@ const FoldersList = async ({
 }) => {
   const query = searchParams.folders || ""; 
   const folderId = searchParams.folder || "";
-  const wordSetsResponse = await getWordSetsByFolder(folderId);
+  const wordSetResponse = await getWordSetsByFolder(folderId);
 
   const filteredFolders = folders?.filter((folder) =>
     folder.name.toLowerCase().includes(query.toLowerCase())
@@ -26,9 +27,8 @@ const FoldersList = async ({
     <div className="relative h-full w-full overflow-auto">
       <ul className="flex flex-wrap justify-start items-center gap-3 max-h-80 overflow-y-auto">
         {filteredFolders?.map((folder) => {
-         
           return (
-            <SheetOpen folder={folder} key={folder.id} wordSets={wordSetsResponse}/>
+            <SheetOpen folder={folder} key={folder.id} wordSets={wordSetResponse as IWordSetType[]} />
           );
         })}
       </ul>
