@@ -44,7 +44,7 @@ export const UserButton = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72" align="center">
         <DropdownMenuLabel>
-          <div className="py-2 px-4 rounded-md bg-slate-100">
+          <div className="py-2 px-4 rounded-md">
             <div>
               <h4 className="font-semibold text-lg tracking-tight">
                 {user.name}
@@ -56,12 +56,12 @@ export const UserButton = () => {
         <DropdownMenuSeparator />
         <DropdownMenuItem className="cursor-pointer">
           <FaUserFriends className="h-4 w-4" />
-          <Button className="ml-2">Profile</Button>
+          <Button className="ml-2 w-full">Profile</Button>
         </DropdownMenuItem>
         <LogoutButton>
           <DropdownMenuItem className="cursor-pointer">
             <ExitIcon className="h-4 w-4" />
-            <Button className="ml-2">Sign Out</Button>
+            <Button className="ml-2 w-full">Sign Out</Button>
           </DropdownMenuItem>
         </LogoutButton>
       </DropdownMenuContent>
