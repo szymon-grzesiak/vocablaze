@@ -9,15 +9,17 @@ import { currentUser } from "@/lib/sessionData";
 
 const Edit = async ({ params }: { params: { id: string } }) => {
   const currUser = await currentUser();
-  const { wordSet } = await getWordSetById(params.id, currUser?.id as string);
+  const wordsetPromise =  getWordSetById(params.id, currUser?.id as string);
   const languagesPromise = getLanguages();
   const foldersPromise = getFolders();
 
   const [wordSetPromise, languages, folders] = await Promise.all([
-    wordSet,
+    wordsetPromise,
     languagesPromise,
     foldersPromise,
   ]);
+
+  const wordSet = wordSetPromise.wordSet;
 
   if (!wordSet) return <NotFound />;
   return (
