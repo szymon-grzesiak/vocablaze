@@ -26,7 +26,7 @@ export const Navbar = async () => {
       <div className="flex justify-end gap-6 items-center">
         {user && (
           <CustomModal
-            triggerIcon={<Folder />}
+            triggerIcon={<Folder className="dark:text-gray-400" />}
             title="Create New Folder"
             description="Please enter the folder name and choose a color for it."
             handleClick={addFolder}
@@ -39,7 +39,7 @@ export const Navbar = async () => {
               href="/add"
               className="w-full h-full flex justify-center items-center"
             >
-              <Plus />
+              <Plus className="dark:text-gray-400" />
             </Link>
           </Button>
         </Tooltip>

@@ -38,7 +38,8 @@ export default function DeleteModal({
   };
 
   return (
-    <>
+    <>           
+
       <Button isIconOnly onPress={onOpen}>
         <Delete02Icon />
       </Button>

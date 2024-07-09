@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from 'next/dynamic'
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getTextColor, hexToRgb } from "@/helpers/file";
@@ -21,7 +20,6 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";

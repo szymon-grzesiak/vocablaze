@@ -92,7 +92,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
               color="secondary"
               variant="flat"
               startContent={<Import />}
-              className="text-black bg-transparent/10"
+              className="text-black dark:text-gray-200 bg-transparent/10"
             >
               Import
             </Button>

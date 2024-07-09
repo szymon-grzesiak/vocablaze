@@ -152,7 +152,7 @@ body,
   } */
 
 .banner-custom {
-  background: url("../public/assets/images/waves.svg");
+  background: url("../public/assets/images/tiles-bg.jpg");
   background-size: cover;
 }
 .banner-custom-90 {

@@ -4,64 +4,55 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/login-button";
-
-import heroImg from "../public/assets/images/hero-image.jpg";
+import logo from "@/public/assets/images/logo.png";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="">
-        <section className="w-full flex banner-custom bg-primary text-primary-foreground">
-          <div className="flex justify-center items-center w-1/2">
+      <Link href={"/home"} className="absolute top-2 left-10 z-[100] flex justify-center items-center">
+        <Image src={logo} alt="logo" width={60} height={60} />
+        <h1 className="text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
+          Blackfyre
+        </h1>
+      </Link>
+        <section className="w-full flex banner-custom bg-primary text-primary-foreground h-screen">
+          <div className="flex justify-center items-center backdrop-blur-lg w-full">
             <div className="container flex px-4 md:px-10">
               <div className="">
-                <div className="flex flex-col justify-center space-y-4">
-                  <div className="flex flex-col gap-4 w-4/5">
+                <div className="flex flex-col justify-center space-y-4 items-center">
+                  <div className="flex flex-col gap-20 w-4/5">
                     <div>
-                      <h1 className="text-3xl font-bold text-balance tracking-tighter sm:text-5xl xl:text-6xl/none">
+                      <h1 className="text-3xl font-bold text-balance tracking-tighter sm:text-5xl xl:text-7xl/none [text-shadow:_3px_3px_3px_rgb(0_0_0_/_30%)]">
                         Learn Languages{" "}
-                        <span className="[text-shadow:_3px_3px_3px_rgb(0_0_255_/_30%)]">
+                        <span className="[text-shadow:_3px_3px_3px_rgb(0_0_255_/_30%)] xl:text-9xl">
                           Interactively
                         </span>
                       </h1>
-                      <div className="w-[340px] h-2 bg-indigo-500 translate-y-3 rounded-full rotate-[-2deg]" />
-                      <div className="w-[350px] h-2 bg-black rounded-full translate-y-3 translate-x-2 rotate-[-2deg]" />
+                      <div className="w-full max-w-[700px] h-2 bg-indigo-500 translate-y-3 rounded-full rotate-[-2deg]" />
+                      <div className="w-full max-w-[700px] h-2 bg-black rounded-full translate-y-3 translate-x-2 rotate-[-2deg]" />
                     </div>
 
-                    <p className="max-w-[600px] text-primary-foreground/80 md:text-xl">
+                    <p className="max-w-[600px] text-primary-foreground/80 md:text-xl text-gray-500">
                       Unlock your language learning potential with our
                       interactive games and tools. Create custom word sets,
                       practice with flashcards, and challenge yourself with
                       hangman.
                     </p>
                   </div>
-                  <div className="flex flex-col gap-2 min-[400px]:flex-row w-4/5">
-                    <LoginButton className="w-1/2">
-                      <Button variant="secondary" className="w-full">
+                  <div className="flex flex-col gap-10 min-[400px]:flex-row w-4/5">
+                    <LoginButton className="w-full">
+                      <Button variant="default" className="w-full">
                         Sign in
                       </Button>
                     </LoginButton>
-                    <Link
-                      href="#"
-                      className="inline-flex h-10 w-1/2 items-center justify-center rounded-md border border-input bg-primary text-primary-foreground px-8 text-sm font-medium shadow-sm transition-colors hover:bg-primary-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                      prefetch={false}
-                    >
-                      Pricing
-                    </Link>
+                    <Button variant="secondary" className="w-full">
+                        Pricing
+                      </Button>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="w-1/2">
-            <Image
-              src={heroImg}
-              alt="Hero"
-              className="w-full h-full max-h-[850px]"
-            />
-          </div>
-          <div className="fixed w-full h-[200px] bg-white/10 backdrop-blur-md top-0 right-0 z-[100]">
-
           </div>
         </section>
         <section
@@ -85,13 +76,7 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-              <Image
-                src="/placeholder.svg"
-                width="550"
-                height="310"
-                alt="Flashcards"
-                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center sm:w-full lg:order-last"
-              />
+             Image to add
               <div className="flex flex-col justify-center space-y-4">
                 <div className="grid gap-1">
                   <h3 className="text-xl font-bold">Flashcards</h3>

@@ -133,7 +133,7 @@ export const CardComponent = ({
   return (
     <Card
       radius="lg"
-      className="border-none flex flex-col gap-6 w-full md:w-[70%] bg-black/5 backdrop-blur-2xl shadow-md mb-20 p-6"
+      className="border-none flex flex-col gap-6 w-full md:w-[70%] bg-black/5 dark:bg-slate-900/90 backdrop-blur-2xl shadow-md mb-20 p-6"
     >
       <div className="flex gap-4 justify-start items-center">
         <Bookmark className="w-10 h-10 text-black fill-white/60" />
@@ -156,7 +156,7 @@ export const CardComponent = ({
                     variant="bordered"
                     label="Title"
                     size="lg"
-                    className="bg-white/60 rounded-md text-3xl text-black dark:text-white"
+                    className="bg-white/60 dark:bg-slate-800 dark:bg-none rounded-md text-3xl text-black dark:text-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -172,7 +172,7 @@ export const CardComponent = ({
                   <Textarea
                     {...field}
                     placeholder="Enter your description"
-                    className="bg-white/60 rounded-md h-[150px]"
+                    className="bg-white/60 dark:bg-slate-800 rounded-md h-[150px]"
                   />
                 </FormControl>
                 <FormMessage />
@@ -196,8 +196,8 @@ export const CardComponent = ({
                           role="combobox"
                           startContent={<Flag />}
                           className={cn(
-                            "w-[250px] justify-between bg-white/50",
-                            !field.value && "text-muted-foreground"
+                            "w-[250px] justify-between bg-white/50 dark:bg-slate-800",
+                            !field.value && "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -257,8 +257,8 @@ export const CardComponent = ({
                           role="combobox"
                           startContent={<Flag className="shrink-0" />}
                           className={cn(
-                            "w-[270px] justify-between bg-white/50",
-                            !field.value && "text-muted-foreground"
+                            "w-[270px] justify-between bg-white/50 dark:bg-slate-800",
+                            !field.value && "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -318,8 +318,8 @@ export const CardComponent = ({
                           role="combobox"
                           startContent={<Folder />}
                           className={cn(
-                            "w-[200px] justify-between bg-white/50",
-                            !field.value && "text-muted-foreground"
+                            "w-[200px] justify-between bg-white/50 dark:bg-slate-800",
+                            !field.value && "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -431,12 +431,12 @@ export const CardComponent = ({
                         type="button"
                         className="cursor-move bg-white/20 hover:bg-black/10"
                       >
-                        <DragHandleDots2Icon className="text-black" />
+                        <DragHandleDots2Icon className="text-black dark:text-white" />
                       </SortableDragHandle>
                       <Button
                         type="button"
                         isIconOnly
-                        className="size-2 shrink-0 text-black  hover:text-white"
+                        className="size-2 shrink-0 text-black  hover:text-white hover:bg-white/20"
                         onClick={() => remove(index)}
                         color="secondary"
                         variant="flat"

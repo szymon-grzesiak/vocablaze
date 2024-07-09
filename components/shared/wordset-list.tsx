@@ -42,13 +42,13 @@ const WordSetsList = ({
         {filteredWordSets?.map((wordSet) => (
           <li
             key={wordSet.id}
-            className="p-3 flex justify-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer backdrop-blur-xl bg-transparent"
+            className="p-3 flex justify-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer backdrop-blur-xl bg-transparent dark:hover:bg-white/10"
           >
             <Link href={`/wordset/${wordSet.id}`} key={wordSet.id}>
               <p className="text-xl font-bold [text-shadow:_1px_1px_1px_rgb(0_0_255_/_20%)]">
                 {wordSet.title}
               </p>
-              <p className="text-black/80 text-md">{wordSet.description}</p>
+              <p className="text-black/80 dark:text-gray-500 text-md">{wordSet.description}</p>
             </Link>
           </li>
         ))}
