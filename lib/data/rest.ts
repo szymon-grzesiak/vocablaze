@@ -57,16 +57,19 @@ export const getAllWordSets = cache(async () => {
 });
 
 
-export const getWordSetById = unstable_cache(async (id: string) => {
+export const getWordSetById = unstable_cache(async (id: string, userId: string) => {
   const user = await currentUser();
 
   if (!user) {
     return { error: "You must be logged in to view this word set" };
   }
+  if(user.id !== userId) {
+    return { error: "You do not have permission to view this word set" };
+  }
 
   try {
     const wordSet = await db.wordSet.findUnique({
-      where: { id: id },
+      where: { id: id, userId: userId},
       include: {
         words: true,
       },

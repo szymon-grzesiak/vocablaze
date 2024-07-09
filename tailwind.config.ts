@@ -71,6 +71,26 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        'bounce-horizontal': {
+          '0%, 100%': {
+            transform: 'translateX(-25%)',
+            animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)',
+          },
+          '50%': {
+            transform: 'none',
+            animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+          },
+        },
+        'bounce-vertical-reverse': {
+          '0%, 100%': {
+            transform: 'translateY(25%)',
+            animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)',
+          },
+          '50%': {
+            transform: 'none',
+            animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)',
+          },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -92,6 +112,8 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         aurora: "aurora 60s linear infinite",
+        'bounce-horizontal': 'bounce-horizontal 1s infinite',
+        'bounce-vertical-reverse': 'bounce-vertical-reverse 1s infinite',
       },
     },
   },
