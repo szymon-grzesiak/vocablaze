@@ -81,7 +81,7 @@ export const CardComponent = ({
       firstLanguageId: wordSets?.firstLanguageId ?? "",
       secondLanguageId: wordSets?.secondLanguageId ?? "",
       folderId: wordSets?.folderId ?? "",
-      words: wordSets?.words.map((word: any) => ({ ...word })) ?? [],
+      words: wordSets?.words?.map((word: any) => ({ ...word })) ?? [],
     } as {
       title: string;
       description: string;

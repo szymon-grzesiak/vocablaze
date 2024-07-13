@@ -29,8 +29,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const { wordSet } = await getWordSetById(params.id, currUser?.id as string);
   if (!wordSet) return <NotFound />;
   return (
-    <div className="relative bg-black/5 backdrop-blur-2xl dark:bg-slate-900/90  rounded-lg flex flex-col w-full justify-center xl:px-0 mt-8">
-      <div className="px-6 py-8 md:px-12 md:py-12">
+    <div className=" bg-black/5 px-6 py-7 backdrop-blur-2xl dark:bg-slate-900/90 rounded-lg flex flex-col w-full justify-center">
         <div className="flex flex-col md:flex-row items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
@@ -170,7 +169,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
               </Link>
             </div>
           </div>
-        </div>
       </div>
     </div>
   );
