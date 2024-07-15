@@ -188,3 +188,64 @@ export const getWordSetsByFolder = unstable_cache(async (folderId: string) => {
     console.error("Error fetching word sets by folder:", error);
   }
 });
+
+export interface Word {
+  id: string;
+  originalWord: string;
+  translatedWord: string;
+  wordSetId: string;
+  ProgressWord: ProgressWord | null;
+}
+
+export interface ProgressWord {
+  id: string;
+  isCorrectAnswer: boolean;
+  answerDate: Date;
+  wordId: string;
+  progressSetId: string;
+}
+
+export async function getInitialWords(wordSetId: string) {
+  const words = await db.word.findMany({
+    where: { wordSetId },
+    include: {
+      progressWords: true,
+    }
+  });
+  
+  return words;
+}
+
+export async function saveProgress(wordId: string, isCorrectAnswer: boolean): Promise<void> {
+  const progressWord = await db.progressWord.findUnique({
+    where: { wordId },
+  });
+
+  if (progressWord) {
+    // Update existing ProgressWord
+    await db.progressWord.update({
+      where: { wordId },
+      data: {
+        isCorrectAnswer,
+        answerDate: new Date(),
+      },
+    });
+  } else {
+    // Create new ProgressWord
+    await db.progressWord.create({
+      data: {
+        wordId,
+        isCorrectAnswer,
+        answerDate: new Date(),
+      },
+    });
+  }
+
+  // Update ProgressWordHistory
+  await db.progressWordHistory.create({
+    data: {
+      progressWordId: wordId,
+      date: new Date(),
+    },
+  });
+}
