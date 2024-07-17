@@ -1,6 +1,5 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
 import {
   Label,
   PolarGrid,
@@ -11,9 +10,10 @@ import {
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 
-const chartData = [
-  { browser: "safari", visitors: 35, fill: "var(--color-safari)" },
-];
+type WordProgressProps = {
+  progress: number;
+};
+
 const chartConfig = {
   visitors: {
     label: "Visitors",
@@ -23,25 +23,32 @@ const chartConfig = {
     color: "hsl(var(--chart-2))",
   },
 } satisfies ChartConfig;
-export function WordProgress() {
+
+export function WordProgress({ progress }: WordProgressProps) {
+  const chartData = [
+    { browser: "safari", visitors: progress, fill: "var(--color-safari)" },
+  ];
+
+  const endAngle = (progress / 100) * 360;
+
   return (
     <ChartContainer
       config={chartConfig}
-      className="aspect-square h-[75px] w-[75px]"
+      className="aspect-square h-[60px] w-[60px]"
     >
       <RadialBarChart
         data={chartData}
         startAngle={0}
-        endAngle={250}
-        innerRadius={35}
-        outerRadius={50}
+        endAngle={endAngle}
+        innerRadius={27}
+        outerRadius={44}
       >
         <PolarGrid
           gridType="circle"
           radialLines={false}
           stroke="none"
           className="first:fill-muted last:fill-background"
-          polarRadius={[40, 32]}
+          polarRadius={[30, 23]}
         />
         <RadialBar dataKey="visitors" background cornerRadius={10} />
         <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
@@ -60,7 +67,7 @@ export function WordProgress() {
                       y={viewBox.cy}
                       className="fill-foreground text-lg font-bold"
                     >
-                      {chartData[0].visitors.toLocaleString()}%
+                      {progress.toLocaleString()}%
                     </tspan>
                   </text>
                 );

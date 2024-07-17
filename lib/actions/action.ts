@@ -1,14 +1,14 @@
 "use server";
 
+import { cache } from "react";
 import { revalidatePath, unstable_cache } from "next/cache";
+import { redirect } from "next/navigation";
 import { AddFolderSchema, AddWordSetSchema } from "@/schemas";
 import { Prisma } from "@prisma/client";
 import * as z from "zod";
 
 import db from "../db";
 import { currentUser } from "../sessionData";
-import { redirect } from "next/navigation";
-import { cache } from "react";
 
 export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
   const validatedFields = AddWordSetSchema.safeParse(values);
@@ -100,7 +100,10 @@ export const addFolder = async (values: z.infer<typeof AddFolderSchema>) => {
   }
 };
 
-export const updateWordSet = async (id: string, values: z.infer<typeof AddWordSetSchema>) => {
+export const updateWordSet = async (
+  id: string,
+  values: z.infer<typeof AddWordSetSchema>
+) => {
   const validatedFields = AddWordSetSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -210,42 +213,66 @@ export async function getInitialWords(wordSetId: string) {
     where: { wordSetId },
     include: {
       progressWords: true,
-    }
+    },
   });
-  
+
   return words;
 }
 
-export async function saveProgress(wordId: string, isCorrectAnswer: boolean): Promise<void> {
-  const progressWord = await db.progressWord.findUnique({
-    where: { wordId },
-  });
 
-  if (progressWord) {
-    // Update existing ProgressWord
-    await db.progressWord.update({
-      where: { wordId },
-      data: {
-        isCorrectAnswer,
-        answerDate: new Date(),
-      },
-    });
-  } else {
-    // Create new ProgressWord
-    await db.progressWord.create({
-      data: {
-        wordId,
-        isCorrectAnswer,
-        answerDate: new Date(),
-      },
-    });
+export const getWordSetWithProgress = async (wordSetId: string) => {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("You must be logged in to fetch progress");
   }
 
-  // Update ProgressWordHistory
-  await db.progressWordHistory.create({
-    data: {
-      progressWordId: wordId,
-      date: new Date(),
+  const wordSet = await db.wordSet.findUnique({
+    where: { id: wordSetId },
+    include: {
+      words: {
+        include: {
+          progressWords: true,
+        },
+      },
     },
   });
-}
+
+  if (!wordSet) {
+    throw new Error("Word set not found");
+  }
+
+  return wordSet;
+};
+
+export const updateProgress = async (wordId: string, progressValue: number) => {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("You must be logged in to update progress");
+  }
+
+  return await db.$transaction(async (prisma) => {
+    const progressWord = await prisma.progressWord.upsert({
+      where: {
+        wordId,
+      },
+      update: {
+        progressValue,
+        updatedAt: new Date(),
+      },
+      create: {
+        wordId,
+        progressValue,
+      },
+    });
+
+    await prisma.progressWordHistory.create({
+      data: {
+        progressWordId: progressWord.id,
+        progressValue,
+        answerDate: new Date(),
+      },
+    });
+
+    return progressWord;
+  });
+};

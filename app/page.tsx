@@ -33,7 +33,7 @@ export default function Home() {
                       <div className="w-full max-w-[700px] h-2 bg-black rounded-full translate-y-3 translate-x-2 rotate-[-2deg]" />
                     </div>
 
-                    <p className="max-w-[600px] text-primary-foreground/80 md:text-xl text-gray-500">
+                    <p className="max-w-[600px] md:text-xl text-gray-500 dark:text-gray-800">
                       Unlock your language learning potential with our
                       interactive games and tools. Create custom word sets,
                       practice with flashcards, and challenge yourself with

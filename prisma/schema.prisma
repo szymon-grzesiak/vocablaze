@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -51,7 +48,6 @@ model User {
   wordSets              WordSet[]
   twoFactorConfirmation TwoFactorConfirmation?
   accounts              Account[]
-  progressSets          ProgressSet[]
 }
 
 model Folder {
@@ -70,53 +66,26 @@ model Language {
   wordSetsSecond WordSet[] @relation("secondLanguage")
 }
 
-model ProgressSet {
-  id            String         @id @default(cuid())
-  progressValue Int
-  wordSetId     String
-  createdAt     DateTime       @default(now())
-  wordSet       WordSet        @relation(fields: [wordSetId], references: [id], onDelete: Cascade)
-  progressWords ProgressWord[]
-  User          User?          @relation(fields: [userId], references: [id])
-  userId        String?
-}
-
 model ProgressWord {
-  id                    String                @id @default(cuid())
-  isCorrectAnswer       Boolean
-  answerDate            DateTime?
-  progressSetId         String
-  wordId                String
-  progressSet           ProgressSet           @relation(fields: [progressSetId], references: [id], onDelete: Cascade)
-  word                  Word                  @relation(fields: [wordId], references: [id], onDelete: Cascade)
-  progressWordHistories ProgressWordHistory[]
+  id                  String                @id @default(cuid())
+  progressValue       Float
+  updatedAt           DateTime              @updatedAt
+  createdAt           DateTime              @default(now())
+  wordId              String
+  word                Word                  @relation(fields: [wordId], references: [id], onDelete: Cascade)
+  progressWordHistory ProgressWordHistory[]
+
+  @@unique([wordId])
+  @@index([wordId, updatedAt])
 }
 
 model ProgressWordHistory {
-  id             String       @id @default(cuid())
+  id             String   @id @default(cuid())
   progressWordId String
-  date           DateTime
-  progressWord   ProgressWord @relation(fields: [progressWordId], references: [id], onDelete: Cascade)
-}
+  progressValue  Float
+  answerDate     DateTime @default(now())
 
-model QuizType {
-  id               String            @id @default(cuid())
-  name             String
-  description      String?
-  numRows          Int
-  numColumns       Int
-  createdAt        DateTime          @default(now())
-  quizTypeWordSets QuizTypeWordSet[]
-}
-
-model QuizTypeWordSet {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  quizTypeId String
-  wordSetId  String
-  quizType   QuizType @relation(fields: [quizTypeId], references: [id], onDelete: Cascade)
-  wordSet    WordSet  @relation(fields: [wordSetId], references: [id], onDelete: Cascade)
+  progressWord ProgressWord @relation(fields: [progressWordId], references: [id], onDelete: Cascade)
 }
 
 model Word {
@@ -144,8 +113,27 @@ model WordSet {
   firstLanguage    Language          @relation("firstLanguage", fields: [firstLanguageId], references: [id], onDelete: Cascade)
   secondLanguage   Language          @relation("secondLanguage", fields: [secondLanguageId], references: [id], onDelete: Cascade)
   words            Word[]
-  progressSets     ProgressSet[]
   quizTypeWordSets QuizTypeWordSet[]
+}
+
+model QuizType {
+  id               String            @id @default(cuid())
+  name             String
+  description      String?
+  numRows          Int
+  numColumns       Int
+  createdAt        DateTime          @default(now())
+  quizTypeWordSets QuizTypeWordSet[]
+}
+
+model QuizTypeWordSet {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  quizTypeId String
+  wordSetId  String
+  quizType   QuizType @relation(fields: [quizTypeId], references: [id], onDelete: Cascade)
+  wordSet    WordSet  @relation(fields: [wordSetId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {

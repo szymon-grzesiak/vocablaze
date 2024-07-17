@@ -1,23 +1,54 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { saveProgress, Word } from '@/lib/actions/action';
+import { useCallback, useEffect, useState } from "react";
+import { Button, CircularProgress } from "@nextui-org/react";
 
-interface WordFlashcardsProps {
-  initialWords: Word[];
-}
+import { updateProgress } from "@/lib/actions/action";
 
-const WordFlashcards: React.FC<WordFlashcardsProps> = ({ initialWords }) => {
-  const [words, setWords] = useState<Word[]>(initialWords);
-  const [currentWord, setCurrentWord] = useState<Word | null>(null);
+import { WordProgress } from "./word-progress";
 
-  const selectRandomWord = () => {
-    const wordList = words.map(({ id, ProgressWord, originalWord }) => ({
-      id,
-      word: originalWord,
-      progress: ProgressWord ? ProgressWord.isCorrectAnswer : 0,
-      weight: Math.max(1 - (ProgressWord ? ProgressWord.isCorrectAnswer / 100 : 0), 0.1),
-    }));
+type Word = {
+  id: string;
+  originalWord: string;
+  translatedWord: string;
+  progressWords: {
+    progressValue: number;
+  }[];
+};
+
+type WordSet = {
+  id: string;
+  title: string;
+  words: Word[];
+};
+
+const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
+  const initialWords = wordSet.words.reduce(
+    (acc, word) => {
+      acc[word.originalWord] = {
+        progressValue:
+          word.progressWords.length > 0
+            ? word.progressWords[0].progressValue
+            : 0,
+        id: word.id,
+      };
+
+      return acc;
+    },
+    {} as { [key: string]: { progressValue: number; id: string } }
+  );
+
+  const [words, setWords] = useState(initialWords);
+  const [currentWord, setCurrentWord] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const selectRandomWord = useCallback(() => {
+    const wordList = Object.entries(words).map(
+      ([originalWord, { progressValue }]) => ({
+        originalWord,
+        weight: Math.max(1 - progressValue, 0.1),
+      })
+    );
 
     const totalWeight = wordList.reduce((acc, { weight }) => acc + weight, 0);
 
@@ -28,57 +59,100 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ initialWords }) => {
       return randomIndex <= 0;
     });
 
-    return selectedEntry ? selectedEntry : wordList[0];
+    return selectedEntry
+      ? selectedEntry.originalWord
+      : wordList[0].originalWord;
+  }, [words]);
+
+  useEffect(() => {
+    setCurrentWord(selectRandomWord);
+  }, [selectRandomWord]);
+
+  const handleDontKnowWord = async (originalWord: string) => {
+    setLoading(true);
+    const wordId = words[originalWord].id;
+    const decreaseAmount = Math.max(0.1, 1 - words[originalWord].progressValue);
+    const newProgress = Math.max(
+      words[originalWord].progressValue - decreaseAmount,
+      0
+    );
+
+    setWords((prevWords) => ({
+      ...prevWords,
+      [originalWord]: {
+        ...prevWords[originalWord],
+        progressValue: newProgress,
+      },
+    }));
+
+    await updateProgress(wordId, newProgress);
+    handleNextWord();
+    setLoading(false);
+  };
+
+  const handleKnowWord = async (originalWord: string) => {
+    setLoading(true);
+    const wordId = words[originalWord].id;
+    const newProgress = Math.min(words[originalWord].progressValue + 0.1, 1);
+
+    setWords((prevWords) => ({
+      ...prevWords,
+      [originalWord]: {
+        ...prevWords[originalWord],
+        progressValue: newProgress,
+      },
+    }));
+
+    await updateProgress(wordId, newProgress);
+    handleNextWord();
   };
 
   const handleNextWord = () => {
+    setLoading(true);
     setCurrentWord(selectRandomWord());
+    setLoading(false);
   };
 
-  const handleDontKnowWord = async (wordId: string) => {
-    setWords((prevWords) => {
-      return prevWords.map((item) => {
-        if (item.id === wordId) {
-          const newProgress = Math.max((item.ProgressWord?.isCorrectAnswer ?? 0) - 1, 0);
-          saveProgress(wordId, false); // Save progress to the database
-          return { ...item, ProgressWord: { ...item.ProgressWord, isCorrectAnswer: newProgress } };
-        }
-        return item;
-      });
-    });
-    handleNextWord();
-  };
-
-  const handleKnowWord = async (wordId: string) => {
-    setWords((prevWords) => {
-      return prevWords.map((item) => {
-        if (item.id === wordId) {
-          const newProgress = Math.min((item.ProgressWord?.isCorrectAnswer ?? 0) + 1, 100);
-          saveProgress(wordId, true); // Save progress to the database
-          return { ...item, ProgressWord: { ...item.ProgressWord, isCorrectAnswer: newProgress } };
-        }
-        return item;
-      });
-    });
-    handleNextWord();
-  };
-
-  useEffect(() => {
-    handleNextWord(); // Select the first word on component mount
-  }, []);
-
-  console.log(currentWord)
   return (
-    <div>
-      {currentWord && (
-        <div>
-          <p>Current word: {currentWord.word}</p>
-          <p>Progress: {words.find(({ id }) => id === currentWord.id)?.ProgressWord?.isCorrectAnswer ?? 0}</p>
-          <button onClick={() => handleKnowWord(currentWord.id)}>I know</button>
-          <button onClick={() => handleDontKnowWord(currentWord.id)}>I don't know</button>
+    <>
+      {loading ? (
+        <div className="flex justify-center items-center h-full">
+          <CircularProgress size="lg" />
         </div>
+      ) : (
+        currentWord && (
+          <div className="h-full flex flex-col items-center justify-between">
+            <div className="absolute top-0 right-0 p-2">
+              {!loading && (
+                <WordProgress
+                  progress={words[currentWord]?.progressValue * 100}
+                />
+              )}
+            </div>
+            <div/>
+            <div>
+              <div>Current word: </div>
+              <div className="text-3xl font-bold">{currentWord}</div>
+            </div>
+            <div className="flex gap-4 mb-10">
+              <Button
+                className="text-white"
+                color="success"
+                onClick={() => handleKnowWord(currentWord)}
+              >
+                Znam
+              </Button>
+              <Button
+                color="danger"
+                onClick={() => handleDontKnowWord(currentWord)}
+              >
+                Nie znam
+              </Button>
+            </div>
+          </div>
+        )
       )}
-    </div>
+    </>
   );
 };
 

@@ -7,6 +7,11 @@ body,
 :root {
   height: 100%;
 }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 @layer base {
   :root {
@@ -220,13 +225,6 @@ body,
   z-index: -1;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-
 input[type="color"]::-webkit-color-swatch-wrapper {
   padding: 0;
 }
@@ -238,4 +236,8 @@ input[type="color"]::-webkit-color-swatch {
 
 main {
   background-color: transparent;
+}
+
+.full-screen-card {
+  height: calc(100vh - 136px);
 }

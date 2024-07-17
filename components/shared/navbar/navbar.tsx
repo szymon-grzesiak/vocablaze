@@ -15,7 +15,7 @@ import CustomModal from "../folder-modal";
 export const Navbar = async () => {
   const user = await currentUser();
   return (
-    <nav className="fixed top-0 left-0 w-full p-4">
+    <nav className="fixed top-0 left-0 w-full p-4 z-50">
       <div className="flex justify-between gap-6 items-center mx-auto w-full">
         <Link href={"/home"} className="flex justify-center items-center">
           <Image src={logo} alt="logo" width={60} height={60} />
