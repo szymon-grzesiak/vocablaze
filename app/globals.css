@@ -216,12 +216,12 @@ body,
   content: "";
   position: absolute;
   pointer-events: none;
-  bottom: 0; 
+  bottom: 0;
   left: 0;
   display: flex;
   right: 0;
   top: 0;
-  background: radial-gradient(circle 500px at 50% 200px, #C9EBFF, transparent);
+  background: radial-gradient(circle 500px at 50% 200px, #c9ebff, transparent);
   z-index: -1;
 }
 
@@ -240,4 +240,40 @@ main {
 
 .full-screen-card {
   height: calc(100vh - 136px);
+}
+
+.content {
+  perspective: 2000px;
+}
+
+.card {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  transition: transform 1000ms;
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  background-color: rgba(0, 0, 0, 0.05);
+  height: 100%;
+  width: 100%;
+  border-radius: 2rem;
+  position: absolute;
+  backface-visibility: hidden;
+}
+
+.back {
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
 }
