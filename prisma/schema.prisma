@@ -66,54 +66,47 @@ model Language {
   wordSetsSecond WordSet[] @relation("secondLanguage")
 }
 
-model ProgressWord {
-  id                  String                @id @default(cuid())
-  progressValue       Float
-  updatedAt           DateTime              @updatedAt
-  createdAt           DateTime              @default(now())
-  wordId              String
-  word                Word                  @relation(fields: [wordId], references: [id], onDelete: Cascade)
-  progressWordHistory ProgressWordHistory[]
-
-  @@unique([wordId])
-  @@index([wordId, updatedAt])
+model Word {
+  id             String                  @id @default(cuid())
+  originalWord   String
+  translatedWord String
+  wordSetId      String
+  wordSet        WordSet                 @relation(fields: [wordSetId], references: [id], onDelete: Cascade)
+  progress       Float                   @default(0)
+  progressHistory ProgressWordHistory[]
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
 }
 
 model ProgressWordHistory {
   id             String   @id @default(cuid())
-  progressWordId String
+  wordId         String
   progressValue  Float
   answerDate     DateTime @default(now())
+  
+  word           Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
 
-  progressWord ProgressWord @relation(fields: [progressWordId], references: [id], onDelete: Cascade)
-}
-
-model Word {
-  id             String         @id @default(cuid())
-  originalWord   String
-  translatedWord String
-  wordSetId      String
-  wordSet        WordSet        @relation(fields: [wordSetId], references: [id], onDelete: Cascade)
-  progressWords  ProgressWord[]
+  @@index([wordId, answerDate])
 }
 
 model WordSet {
-  id               String            @id @default(cuid())
-  title            String            @unique
-  description      String?
-  firstLanguageId  String
-  secondLanguageId String
-  isShared         Boolean
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime?         @updatedAt
-  userId           String
-  folderId         String?
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  folder           Folder?           @relation(fields: [folderId], references: [id], onDelete: Cascade)
-  firstLanguage    Language          @relation("firstLanguage", fields: [firstLanguageId], references: [id], onDelete: Cascade)
-  secondLanguage   Language          @relation("secondLanguage", fields: [secondLanguageId], references: [id], onDelete: Cascade)
-  words            Word[]
-  quizTypeWordSets QuizTypeWordSet[]
+  id                     String            @id @default(cuid())
+  title                  String            @unique
+  description            String?
+  firstLanguageId        String
+  secondLanguageId       String
+  displayTranslatedFirst Boolean           @default(false)
+  isShared               Boolean
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime?         @updatedAt
+  userId                 String
+  folderId               String?
+  user                   User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder                 Folder?           @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  firstLanguage          Language          @relation("firstLanguage", fields: [firstLanguageId], references: [id], onDelete: Cascade)
+  secondLanguage         Language          @relation("secondLanguage", fields: [secondLanguageId], references: [id], onDelete: Cascade)
+  words                  Word[]
+  quizTypeWordSets       QuizTypeWordSet[]
 }
 
 model QuizType {

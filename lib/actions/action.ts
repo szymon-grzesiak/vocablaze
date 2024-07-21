@@ -212,7 +212,7 @@ export async function getInitialWords(wordSetId: string) {
   const words = await db.word.findMany({
     where: { wordSetId },
     include: {
-      progressWords: true,
+      progressHistory: true,
     },
   });
 
@@ -231,7 +231,7 @@ export const getWordSetWithProgress = async (wordSetId: string) => {
     include: {
       words: {
         include: {
-          progressWords: true,
+          progressHistory: true,
         },
       },
     },
@@ -251,28 +251,36 @@ export const updateProgress = async (wordId: string, progressValue: number) => {
   }
 
   return await db.$transaction(async (prisma) => {
-    const progressWord = await prisma.progressWord.upsert({
-      where: {
-        wordId,
-      },
-      update: {
-        progressValue,
+    const word = await prisma.word.update({
+      where: { id: wordId },
+      data: {
+        progress: progressValue,
         updatedAt: new Date(),
-      },
-      create: {
-        wordId,
-        progressValue,
       },
     });
 
     await prisma.progressWordHistory.create({
       data: {
-        progressWordId: progressWord.id,
+        wordId: word.id,
         progressValue,
         answerDate: new Date(),
       },
     });
 
-    return progressWord;
+    return word;
+  });
+};
+
+export const saveDisplayOrder = async (wordSetId: string, showTranslatedFirst: boolean) => {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("You must be logged in to save display order");
+  }
+
+  await db.wordSet.update({
+    where: { id: wordSetId },
+    data: {
+      displayTranslatedFirst: showTranslatedFirst,
+    },
   });
 };

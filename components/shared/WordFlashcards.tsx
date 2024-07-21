@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Button, CircularProgress } from "@nextui-org/react";
+import { Button, CircularProgress, Switch } from "@nextui-org/react";
 
-import { updateProgress } from "@/lib/actions/action";
+import { saveDisplayOrder, updateProgress } from "@/lib/actions/action";
 
 import { WordProgress } from "./word-progress";
 
@@ -11,7 +11,8 @@ type Word = {
   id: string;
   originalWord: string;
   translatedWord: string;
-  progressWords: {
+  progress: number;
+  progressHistory: {
     progressValue: number;
   }[];
 };
@@ -22,31 +23,44 @@ type WordSet = {
   words: Word[];
 };
 
-const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
+const WordFlashcards = ({
+  wordSet,
+  order,
+}: {
+  wordSet: WordSet;
+  order: boolean;
+}) => {
   const initialWords = wordSet.words.reduce(
     (acc, word) => {
       acc[word.originalWord] = {
-        progressValue:
-          word.progressWords.length > 0
-            ? word.progressWords[0].progressValue
-            : 0,
+        progress: word.progress,
         id: word.id,
+        translatedWord: word.translatedWord,
       };
 
       return acc;
     },
-    {} as { [key: string]: { progressValue: number; id: string } }
+    {} as {
+      [key: string]: {
+        progress: number;
+        id: string;
+        translatedWord: string;
+      };
+    }
   );
 
   const [words, setWords] = useState(initialWords);
   const [currentWord, setCurrentWord] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [flipped, setFlipped] = useState<boolean>(false);
+  const [showTranslatedFirst, setShowTranslatedFirst] =
+    useState<boolean>(order);
 
   const selectRandomWord = useCallback(() => {
     const wordList = Object.entries(words).map(
-      ([originalWord, { progressValue }]) => ({
+      ([originalWord, { progress }]) => ({
         originalWord,
-        weight: Math.max(1 - progressValue, 0.1),
+        weight: Math.max(1 - progress, 0.1),
       })
     );
 
@@ -65,15 +79,15 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
   }, [words]);
 
   useEffect(() => {
-    setCurrentWord(selectRandomWord);
+    setCurrentWord(selectRandomWord());
   }, [selectRandomWord]);
 
   const handleDontKnowWord = async (originalWord: string) => {
     setLoading(true);
     const wordId = words[originalWord].id;
-    const decreaseAmount = Math.max(0.1, 1 - words[originalWord].progressValue);
+    const decreaseAmount = Math.max(0.1, 1 - words[originalWord].progress);
     const newProgress = Math.max(
-      words[originalWord].progressValue - decreaseAmount,
+      words[originalWord].progress - decreaseAmount,
       0
     );
 
@@ -81,7 +95,7 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
       ...prevWords,
       [originalWord]: {
         ...prevWords[originalWord],
-        progressValue: newProgress,
+        progress: newProgress,
       },
     }));
 
@@ -93,13 +107,13 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
   const handleKnowWord = async (originalWord: string) => {
     setLoading(true);
     const wordId = words[originalWord].id;
-    const newProgress = Math.min(words[originalWord].progressValue + 0.1, 1);
+    const newProgress = Math.min(words[originalWord].progress + 0.1, 1);
 
     setWords((prevWords) => ({
       ...prevWords,
       [originalWord]: {
         ...prevWords[originalWord],
-        progressValue: newProgress,
+        progress: newProgress,
       },
     }));
 
@@ -110,7 +124,18 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
   const handleNextWord = () => {
     setLoading(true);
     setCurrentWord(selectRandomWord());
+    setFlipped(false);
     setLoading(false);
+  };
+
+  const handleCardClick = () => {
+    setFlipped(!flipped);
+  };
+
+  const handleToggleOrder = async () => {
+    const newOrder = !showTranslatedFirst;
+    setShowTranslatedFirst(newOrder);
+    await saveDisplayOrder(wordSet.id, newOrder);
   };
 
   return (
@@ -121,20 +146,42 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
         </div>
       ) : (
         currentWord && (
-          <div className="h-full flex flex-col items-center justify-between">
+          <div className="h-full flex flex-col items-center justify-between content">
             <div className="absolute top-0 right-0 p-2">
               {!loading && (
                 <WordProgress
-                  progress={words[currentWord]?.progressValue * 100}
+                  progress={words[currentWord]?.progress * 100}
                 />
               )}
             </div>
-            <div/>
-            <div>
-              <div>Current word: </div>
-              <div className="text-3xl font-bold">{currentWord}</div>
+            <div
+              className={`card ${flipped ? "flipped" : ""}`}
+              onClick={handleCardClick}
+            >
+              <div className="front">
+                <div>
+                  {showTranslatedFirst
+                    ? words[currentWord].translatedWord
+                    : currentWord}
+                </div>
+              </div>
+              <div className="back">
+                <div>
+                  {showTranslatedFirst
+                    ? currentWord
+                    : words[currentWord].translatedWord}
+                </div>
+              </div>
             </div>
-            <div className="flex gap-4 mb-10">
+            <div className="flex gap-4 mt-4">
+              <Switch
+                checked={showTranslatedFirst}
+                onChange={handleToggleOrder}
+                color="success"
+                size="sm"
+              >
+                Reverse order
+              </Switch>
               <Button
                 className="text-white"
                 color="success"

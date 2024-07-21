@@ -1,9 +1,9 @@
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 import db from "@/lib/db";
 
 import { currentUser } from "../sessionData";
-import { unstable_cache } from "next/cache";
 
 export const getLanguages = cache(async () => {
   const user = await currentUser();
@@ -56,31 +56,54 @@ export const getAllWordSets = cache(async () => {
   }
 });
 
+export const getWordSetById = unstable_cache(
+  async (id: string, userId: string) => {
+    const user = await currentUser();
 
-export const getWordSetById = unstable_cache(async (id: string, userId: string) => {
-  const user = await currentUser();
+    if (!user) {
+      return { error: "You must be logged in to view this word set" };
+    }
+    if (user.id !== userId) {
+      return { error: "You do not have permission to view this word set" };
+    }
 
-  if (!user) {
-    return { error: "You must be logged in to view this word set" };
+    try {
+      const wordSet = await db.wordSet.findUnique({
+        where: { id: id, userId: userId },
+        include: {
+          words: {
+            include: {
+              progressHistory: true,
+            },
+          },
+        },
+      });
+      if (!wordSet) {
+        return { error: "Word set not found" };
+      }
+      console.log("WORDSET", wordSet);
+      return { wordSet };
+    } catch (error) {
+      console.error("Error fetching word set:", error);
+      return { error: "An error occurred while fetching the word set" };
+    }
   }
-  if(user.id !== userId) {
-    return { error: "You do not have permission to view this word set" };
-  }
+);
 
+export const getDisplayOrder = cache(async (wordSetId: string) => {
   try {
     const wordSet = await db.wordSet.findUnique({
-      where: { id: id, userId: userId},
-      include: {
-        words: true,
-      },
+      where: { id: wordSetId },
+      select: { displayTranslatedFirst: true },
     });
+
     if (!wordSet) {
-      return { error: "Word set not found" };
+      throw new Error("WordSet not found");
     }
-    return { wordSet };
+
+    return wordSet.displayTranslatedFirst;
   } catch (error) {
-    console.error("Error fetching word set:", error);
-    return { error: "An error occurred while fetching the word set" };
+    console.error("Error fetching display order:", error);
+    throw new Error("An error occurred while fetching the display order");
   }
 });
-

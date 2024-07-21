@@ -269,6 +269,14 @@ main {
   backface-visibility: hidden;
 }
 
+.front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
+
 .back {
   transform: rotateY(180deg);
   display: flex;
