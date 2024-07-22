@@ -250,13 +250,16 @@ main {
   height: 100%;
   width: 100%;
   position: relative;
-  transition: transform 1000ms;
   transform-style: preserve-3d;
   cursor: pointer;
 }
 
-.card.flipped {
-  transform: rotateY(180deg);
+.card-content {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .front,

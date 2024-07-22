@@ -2,10 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Button, CircularProgress, Switch } from "@nextui-org/react";
-
+import { motion, useMotionValue, useTransform, useAnimation } from "framer-motion";
 import { saveDisplayOrder, updateProgress } from "@/lib/actions/action";
-
 import { WordProgress } from "./word-progress";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { XIcon } from "lucide-react";
 
 type Word = {
   id: string;
@@ -20,16 +21,11 @@ type Word = {
 type WordSet = {
   id: string;
   title: string;
+  displayTranslatedFirst: boolean;
   words: Word[];
 };
 
-const WordFlashcards = ({
-  wordSet,
-  order,
-}: {
-  wordSet: WordSet;
-  order: boolean;
-}) => {
+const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
   const initialWords = wordSet.words.reduce(
     (acc, word) => {
       acc[word.originalWord] = {
@@ -53,8 +49,31 @@ const WordFlashcards = ({
   const [currentWord, setCurrentWord] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [flipped, setFlipped] = useState<boolean>(false);
-  const [showTranslatedFirst, setShowTranslatedFirst] =
-    useState<boolean>(order);
+  const [showTranslatedFirst, setShowTranslatedFirst] = useState<boolean>(
+    wordSet.displayTranslatedFirst
+  );
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+
+  const x = useMotionValue(0);
+  const controls = useAnimation();
+  const rotateY = useMotionValue(0);
+
+  const xInput = [-100, 0, 100];
+
+  const background = useTransform(x, xInput, [
+    "linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
+    "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
+    "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"
+  ]);
+
+  const color = useTransform(x, xInput, [
+    "rgb(211, 9, 225)",
+    "rgb(68, 0, 255)",
+    "rgb(3, 209, 0)",
+  ]);
+  const tickPath = useTransform(x, [10, 100], [0, 1]);
+  const crossPathA = useTransform(x, [-10, -55], [0, 1]);
+  const crossPathB = useTransform(x, [-50, -100], [0, 1]);
 
   const selectRandomWord = useCallback(() => {
     const wordList = Object.entries(words).map(
@@ -123,13 +142,20 @@ const WordFlashcards = ({
 
   const handleNextWord = () => {
     setLoading(true);
+    controls.start({ x: 0, transition: { duration: 0.5 } });
     setCurrentWord(selectRandomWord());
     setFlipped(false);
     setLoading(false);
   };
 
   const handleCardClick = () => {
-    setFlipped(!flipped);
+    if (!isDragging) {
+      setFlipped(!flipped);
+      controls.start({
+        rotateY: flipped ? 0 : 180,
+        transition: { duration: 0.5 },
+      });
+    }
   };
 
   const handleToggleOrder = async () => {
@@ -149,51 +175,101 @@ const WordFlashcards = ({
           <div className="h-full flex flex-col items-center justify-between content">
             <div className="absolute top-0 right-0 p-2">
               {!loading && (
-                <WordProgress
-                  progress={words[currentWord]?.progress * 100}
-                />
+                <WordProgress progress={words[currentWord]?.progress * 100} />
               )}
             </div>
-            <div
-              className={`card ${flipped ? "flipped" : ""}`}
-              onClick={handleCardClick}
+            <motion.div
+              className="card"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragStart={() => {
+                controls.stop();
+                setIsDragging(true);
+              }}
+              onDragEnd={(event, info) => {
+                setIsDragging(false);
+                if (info.offset.x > 200) {
+                  handleKnowWord(currentWord);
+                } else if (info.offset.x < -200) {
+                  handleDontKnowWord(currentWord);
+                } 
+              }}
+              animate={controls}
+              style={{ x, background }}
             >
-              <div className="front">
-                <div>
-                  {showTranslatedFirst
-                    ? words[currentWord].translatedWord
-                    : currentWord}
+              <svg className="progress-icon absolute" viewBox="0 0 50 50">
+                <motion.path />
+                <motion.path
+                  fill="none"
+                  strokeWidth="2"
+                  stroke={color}
+                  d="M14,26 L 22,33 L 35,16"
+                  strokeDasharray="0 1"
+                  style={{ pathLength: tickPath }}
+                />
+                <motion.path
+                  fill="none"
+                  strokeWidth="2"
+                  stroke={color}
+                  d="M17,17 L33,33"
+                  strokeDasharray="0 1"
+                  style={{ pathLength: crossPathA }}
+                />
+                <motion.path
+                  fill="none"
+                  strokeWidth="2"
+                  stroke={color}
+                  d="M33,17 L17,33"
+                  strokeDasharray="0 1"
+                  style={{ pathLength: crossPathB }}
+                />
+              </svg>
+              <motion.div
+                className="card-content"
+                onClick={handleCardClick}
+                animate={{ rotateY: rotateY.get() }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="front z-20">
+                  <div>
+                    {showTranslatedFirst
+                      ? words[currentWord].translatedWord
+                      : currentWord}
+                  </div>
                 </div>
-              </div>
-              <div className="back">
-                <div>
-                  {showTranslatedFirst
-                    ? currentWord
-                    : words[currentWord].translatedWord}
+                <div className="back z-20">
+                  <div>
+                    {showTranslatedFirst
+                      ? currentWord
+                      : words[currentWord].translatedWord}
+                  </div>
                 </div>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
             <div className="flex gap-4 mt-4">
               <Switch
-                checked={showTranslatedFirst}
-                onChange={handleToggleOrder}
+                isSelected={showTranslatedFirst}
+                onValueChange={handleToggleOrder}
                 color="success"
                 size="sm"
               >
                 Reverse order
               </Switch>
               <Button
-                className="text-white"
+                className="text-white rounded-lg"
                 color="success"
                 onClick={() => handleKnowWord(currentWord)}
+                isIconOnly
               >
-                Znam
+                <CheckIcon className="w-8 h-8" />
               </Button>
               <Button
                 color="danger"
                 onClick={() => handleDontKnowWord(currentWord)}
+                isIconOnly
+                className="text-white rounded-lg"
               >
-                Nie znam
+                <XIcon className="w-8 h-8" />
               </Button>
             </div>
           </div>
