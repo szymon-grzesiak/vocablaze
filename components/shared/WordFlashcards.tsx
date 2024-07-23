@@ -8,7 +8,7 @@ import { WordProgress } from "./word-progress";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { XIcon } from "lucide-react";
 
-type Word = {
+export type Word = {
   id: string;
   originalWord: string;
   translatedWord: string;

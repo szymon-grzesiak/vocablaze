@@ -1,7 +1,6 @@
 
 import { getWordSetWithProgress } from "@/lib/actions/action";
 import WordFlashcards from "@/components/shared/WordFlashcards";
-import { getDisplayOrder } from "@/lib/data/rest";
 
 const Flashcards = async ({ params }: { params: { id: string } }) => {
   const wordSet = await getWordSetWithProgress(params.id);

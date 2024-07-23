@@ -1,9 +1,14 @@
-import React from 'react'
+import { getWordSetWithProgress } from "@/lib/actions/action";
+import Matching from "@/components/shared/matching";
 
-const Matching = () => {
+const MatchingPage = async ({ params }: { params: { id: string } }) => {
+  const wordSet = await getWordSetWithProgress(params.id);
+
   return (
-    <div>Matching</div>
-  )
-}
+    <div>
+      <Matching words={wordSet.words} />
+    </div>
+  );
+};
 
-export default Matching
+export default MatchingPage;

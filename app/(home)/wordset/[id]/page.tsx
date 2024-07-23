@@ -27,7 +27,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     0
   );
 
-  const wordSetProgressValue = wordSetProgressSum / wordSet.words.length;
+  const wordSetProgressValue = Math.floor((wordSetProgressSum / wordSet.words.length) * 100);
 
   console.log(wordSetProgressSum);
   return (
@@ -68,10 +68,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
             </div>
             <Progress
               classNames={{ track: "bg-gray-400" }}
-              label={`${wordSetProgressValue * 100} %`}
+              label={`${wordSetProgressValue} %`}
               color="success"
               className="w-32"
-              value={wordSetProgressValue * 100}
+              value={wordSetProgressValue}
             />
           </div>
           <div>
