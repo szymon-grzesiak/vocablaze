@@ -2,9 +2,8 @@
 
 import React, { useState } from "react";
 import { Button } from "@nextui-org/react";
-import { Import, Paperclip, Trash2, X } from "lucide-react";
+import { Import, Paperclip, Trash2 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import {
   Dialog,

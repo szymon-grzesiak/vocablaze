@@ -251,6 +251,7 @@ main {
   width: 100%;
   position: relative;
   transform-style: preserve-3d;
+  border-radius: 2rem;
   cursor: pointer;
 }
 

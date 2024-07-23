@@ -18,7 +18,7 @@ type Word = {
   }[];
 };
 
-type WordSet = {
+export type WordSet = {
   id: string;
   title: string;
   displayTranslatedFirst: boolean;
@@ -61,9 +61,9 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
   const xInput = [-100, 0, 100];
 
   const background = useTransform(x, xInput, [
-    "linear-gradient(180deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
-    "linear-gradient(180deg, #7700ff 0%, rgb(68, 0, 255) 100%)",
-    "linear-gradient(180deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"
+    "linear-gradient(90deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
+    "linear-gradient(90deg, #ffff 0%, #fff 100%)",
+    "linear-gradient(90deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"
   ]);
 
   const color = useTransform(x, xInput, [
@@ -173,7 +173,7 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
       ) : (
         currentWord && (
           <div className="h-full flex flex-col items-center justify-between content">
-            <div className="absolute top-0 right-0 p-2">
+            <div className="absolute top-0 right-0 p-2 z-20">
               {!loading && (
                 <WordProgress progress={words[currentWord]?.progress * 100} />
               )}
@@ -230,14 +230,14 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
                 animate={{ rotateY: rotateY.get() }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="front z-20">
+                <div className="front z-10">
                   <div>
                     {showTranslatedFirst
                       ? words[currentWord].translatedWord
                       : currentWord}
                   </div>
                 </div>
-                <div className="back z-20">
+                <div className="back z-10">
                   <div>
                     {showTranslatedFirst
                       ? currentWord
@@ -246,7 +246,7 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
                 </div>
               </motion.div>
             </motion.div>
-            <div className="flex gap-4 mt-4">
+            <div className="flex justify-between gap-4 mt-4 w-full">
               <Switch
                 isSelected={showTranslatedFirst}
                 onValueChange={handleToggleOrder}
@@ -255,14 +255,7 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
               >
                 Reverse order
               </Switch>
-              <Button
-                className="text-white rounded-lg"
-                color="success"
-                onClick={() => handleKnowWord(currentWord)}
-                isIconOnly
-              >
-                <CheckIcon className="w-8 h-8" />
-              </Button>
+              <div className="flex gap-6">
               <Button
                 color="danger"
                 onClick={() => handleDontKnowWord(currentWord)}
@@ -271,6 +264,16 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
               >
                 <XIcon className="w-8 h-8" />
               </Button>
+              <Button
+                className="text-white rounded-lg"
+                color="success"
+                onClick={() => handleKnowWord(currentWord)}
+                isIconOnly
+              >
+                <CheckIcon className="w-8 h-8" />
+              </Button>
+              </div>
+             
             </div>
           </div>
         )

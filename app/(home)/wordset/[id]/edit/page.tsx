@@ -23,7 +23,7 @@ const Edit = async ({ params }: { params: { id: string } }) => {
 
   if (!wordSet) return <NotFound />;
   return (
-    <div className="border-none flex justify-center">
+    <div className="border-none flex justify-center w-full">
       <CardComponent
         mode="edit"
         text="Edit word set"

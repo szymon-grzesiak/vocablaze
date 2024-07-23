@@ -8,6 +8,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
 import { FileWarning } from "lucide-react";
@@ -38,11 +39,13 @@ export default function DeleteModal({
   };
 
   return (
-    <>           
+    <>
+      <Tooltip content="Delete words set">
+        <Button isIconOnly onPress={onOpen}>
+          <Delete02Icon />
+        </Button>
+      </Tooltip>
 
-      <Button isIconOnly onPress={onOpen}>
-        <Delete02Icon />
-      </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
         <ModalContent className="p-3 pl-5 m-0 box-border">
           {(onClose) => (
@@ -65,11 +68,7 @@ export default function DeleteModal({
                 <Button variant="flat" onPress={onClose}>
                   Close
                 </Button>
-                <Button
-                  color="danger"
-                  onClick={handleClick}
-                  onPress={onClose}
-                >
+                <Button color="danger" onClick={handleClick} onPress={onClose}>
                   Delete
                 </Button>
               </ModalFooter>
