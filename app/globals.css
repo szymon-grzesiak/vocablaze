@@ -306,6 +306,6 @@ button.selected {
   background-color: #d0e0f0;
 }
 button:disabled {
-  background-color: #a0c0a0;
+  background-color: #afffdc;
   cursor: default;
 }
