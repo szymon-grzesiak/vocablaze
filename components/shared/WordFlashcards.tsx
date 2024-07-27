@@ -225,19 +225,19 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
                 />
               </svg>
               <motion.div
-                className="card-content"
+                className="card-content text-2xl font-bold dark:text-black"
                 onClick={handleCardClick}
                 animate={{ rotateY: rotateY.get() }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="front z-10">
+                <div className="front z-10 bg-black/5 dark:bg-slate-700/50">
                   <div>
                     {showTranslatedFirst
                       ? words[currentWord].translatedWord
                       : currentWord}
                   </div>
                 </div>
-                <div className="back z-10">
+                <div className="back z-10 bg-black/5 dark:bg-slate-700/50">
                   <div>
                     {showTranslatedFirst
                       ? currentWord
