@@ -1,16 +1,23 @@
 "use client";
 
-// Indicates that the component is client-side
 import { useEffect, useState } from "react";
-import { Input, Select, SelectItem } from "@nextui-org/react";
+import { Button } from "@nextui-org/button";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import { Word } from "./WordFlashcards";
 
 const Matching = ({ words }: { words: Word[] }) => {
-  const [selectedSize, setSelectedSize] = useState(5);
+  const [selectedSize, setSelectedSize] = useState(0);
   const [selectedDifficulty, setSelectedDifficulty] = useState<
-    [number, number]
-  >([0, 10]);
+    [number | null, number | null]
+  >([null, null]);
   const [shuffledWords, setShuffledWords] = useState<
     { id: string; originalWord: string; translatedWord: string }[]
   >([]);
@@ -19,50 +26,49 @@ const Matching = ({ words }: { words: Word[] }) => {
   const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
+    const updateShuffledWords = () => {
+      const filteredWords = words.filter((word) => {
+        const progress = word.progress * 100;
+        return (
+          progress >= selectedDifficulty[0] && progress <= selectedDifficulty[1]
+        );
+      });
+
+      const availableWords =
+        filteredWords.length >= selectedSize
+          ? selectedSize
+          : filteredWords.length;
+      const shuffled = filteredWords
+        .sort(() => 0.5 - Math.random())
+        .slice(0, availableWords);
+      const flattened = shuffled.flatMap((word) => [
+        {
+          id: word.id + "_original",
+          originalWord: word.originalWord,
+          translatedWord: word.translatedWord,
+        },
+        {
+          id: word.id + "_translated",
+          originalWord: word.originalWord,
+          translatedWord: word.translatedWord,
+        },
+      ]);
+      setShuffledWords(flattened.sort(() => 0.5 - Math.random()));
+      setSelectedWords([]);
+      setMatches([]);
+    };
     if (gameStarted) {
       updateShuffledWords();
     }
-  }, [selectedSize, selectedDifficulty, gameStarted]);
+  }, [gameStarted, selectedDifficulty, selectedSize, words]);
 
-  const updateShuffledWords = () => {
-    const filteredWords = words.filter((word) => {
-      const progress = word.progress * 100;
-      return (
-        progress >= selectedDifficulty[0] && progress <= selectedDifficulty[1]
-      );
-    });
-
-    const availableWords =
-      filteredWords.length >= selectedSize
-        ? selectedSize
-        : filteredWords.length;
-    const shuffled = filteredWords
-      .sort(() => 0.5 - Math.random())
-      .slice(0, availableWords);
-    const flattened = shuffled.flatMap((word) => [
-      {
-        id: word.id + "_original",
-        originalWord: word.originalWord,
-        translatedWord: word.translatedWord,
-      },
-      {
-        id: word.id + "_translated",
-        originalWord: word.originalWord,
-        translatedWord: word.translatedWord,
-      },
-    ]);
-    setShuffledWords(flattened.sort(() => 0.5 - Math.random()));
-    setSelectedWords([]);
-    setMatches([]);
+  const handleSizeChange = (value: string) => {
+    setSelectedSize(Number(value));
   };
 
-  const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSize(parseInt(e.target.value));
-  };
-
-  const handleDifficultyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value.split("-").map(Number) as [number, number];
-    setSelectedDifficulty(value);
+  const handleDifficultyChange = (value: string) => {
+    const range = value.split("-").map(Number) as [number, number];
+    setSelectedDifficulty(range);
   };
 
   const startGame = () => {
@@ -74,14 +80,9 @@ const Matching = ({ words }: { words: Word[] }) => {
     setShuffledWords([]);
     setSelectedWords([]);
     setMatches([]);
+    setSelectedSize(0);
+    setSelectedDifficulty([0, 10]);
   };
-
-  const difficultyRanges = [
-    [0, 25],
-    [26, 50],
-    [51, 75],
-    [76, 100],
-  ];
 
   const handleWordClick = (wordId: string) => {
     if (selectedWords.includes(wordId) || matches.includes(wordId)) return;
@@ -106,6 +107,13 @@ const Matching = ({ words }: { words: Word[] }) => {
     }
   };
 
+  const difficultyRanges = [
+    [0, 25],
+    [26, 50],
+    [51, 75],
+    [76, 100],
+  ];
+
   const availableWordsInRange = words.filter((word) => {
     const progress = word.progress * 100;
     return (
@@ -114,64 +122,85 @@ const Matching = ({ words }: { words: Word[] }) => {
   }).length;
 
   const sizeRange = [3, 4, 5, 6, 7, 8, 9, 10];
+  const stringifiedSizeRange = sizeRange.map(String);
 
   const disabledSizes = sizeRange.filter(
     (size) => size > availableWordsInRange
   );
 
   return (
-    <div>
+    <div className="mx-auto flex justify-center items-center flex-col w-full h-full">
       {!gameStarted ? (
-        <div>
-          <div>
-            <span>Select number of words: </span>
-            <Select
-              selectedKeys={[selectedSize]}
-              disabledKeys={disabledSizes}
-              onChange={handleSizeChange}
-            >
-              {sizeRange.map((size) => (
-                <SelectItem key={size}>
-                  {size} {size > availableWordsInRange && "(Not enough words)"}
-                </SelectItem>
-              ))}
+        <>
+          <h1>Settings</h1>
+
+          <div className="w-full flex items-center justify-center flex-col">
+            <Select onValueChange={handleSizeChange}>
+              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl">
+                <SelectValue placeholder="Select size" />
+              </SelectTrigger>
+              <SelectContent className="rounded-3xl">
+                {stringifiedSizeRange.map((size) => (
+                  <SelectItem
+                    className="p-6 rounded-full flex justify-center"
+                    key={size}
+                    value={size}
+                    disabled={disabledSizes.includes(Number(size))}
+                  >
+                    {size}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
           </div>
-          <div>
-            <span>Select difficulty range: </span>
-            <select
-              onChange={handleDifficultyChange}
-              value={selectedDifficulty.join("-")}
+
+          <div className="w-full flex items-center justify-center flex-col gap-6">
+            <Select
+              onValueChange={handleDifficultyChange}
             >
-              {difficultyRanges.map((range) => {
-                const rangeLabel = `${range[0]}% - ${range[1]}%`;
-                const wordsInRange = words.filter((word) => {
-                  const progress = word.progress * 100;
-                  return progress >= range[0] && progress <= range[1];
-                }).length;
-                return (
-                  <option
-                    key={rangeLabel}
-                    value={range.join("-")}
-                    disabled={wordsInRange < selectedSize}
-                  >
-                    {rangeLabel} (
-                    {wordsInRange >= selectedSize
-                      ? "Available"
-                      : "Not enough words"}
-                    )
-                  </option>
-                );
-              })}
-            </select>
+              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl">
+                <SelectValue placeholder="Select difficulty" />
+              </SelectTrigger>
+              <SelectContent>
+                {difficultyRanges.map((range) => {
+                  const rangeLabel = `${range[0]}% - ${range[1]}%`;
+                  const wordsInRange = words.filter((word) => {
+                    const progress = word.progress * 100;
+                    return progress >= range[0] && progress <= range[1];
+                  }).length;
+                  return (
+                    <SelectItem
+                      className="p-6 rounded-full flex justify-center"
+                      key={rangeLabel}
+                      value={range.join("-")}
+                      disabled={wordsInRange < selectedSize}
+                    >
+                      {rangeLabel} (
+                      {wordsInRange >= selectedSize
+                        ? "Available"
+                        : "Not enough words"}
+                      )
+                    </SelectItem>
+                  );
+                })}
+              </SelectContent>
+            </Select>
+            <div className="flex gap-6">
+              <Button
+                color="primary"
+                variant="shadow"
+                onClick={startGame}
+                disabled={
+                  availableWordsInRange < selectedSize ||
+                  !selectedSize || !selectedDifficulty
+                }
+                className="px-12 py-6 text-xl rounded-full"
+              >
+                Start the game
+              </Button>
+            </div>
           </div>
-          <button
-            onClick={startGame}
-            disabled={availableWordsInRange < selectedSize}
-          >
-            Start the game
-          </button>
-        </div>
+        </>
       ) : (
         <div>
           <button onClick={resetGame}>Back to settings</button>
@@ -181,7 +210,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                 key={word.id}
                 onClick={() => handleWordClick(word.id)}
                 disabled={matches.includes(word.id)}
-                className={selectedWords.includes(word.id) ? "selected" : ""}
+                className={`matchButton ${selectedWords.includes(word.id) ? "selected" : ""}`}
               >
                 {word.id.endsWith("_original")
                   ? word.originalWord

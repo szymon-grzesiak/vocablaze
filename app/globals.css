@@ -296,10 +296,10 @@ main {
   margin-top: 20px;
 }
 
-button.selected {
+.matchButton.selected {
   background-color: #d0e0f0;
 }
-button:disabled {
+.matchButton:disabled {
   background-color: #afffdc;
   cursor: default;
 }

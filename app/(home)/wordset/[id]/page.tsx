@@ -1,5 +1,6 @@
+import { Fragment } from "react";
 import Link from "next/link";
-import { Button, Progress, Tooltip } from "@nextui-org/react";
+import { Button, Divider, Progress, Tooltip } from "@nextui-org/react";
 import {
   ArrowDown,
   BookIcon,
@@ -16,6 +17,7 @@ import { PencilEdit02Icon } from "@/components/icons";
 import DeleteWordSet from "@/components/shared/delete-wordset";
 import ExportWords from "@/components/shared/export-words";
 import NotFound from "@/components/shared/NotFound";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const currUser = await currentUser();
@@ -27,11 +29,13 @@ const Page = async ({ params }: { params: { id: string } }) => {
     0
   );
 
-  const wordSetProgressValue = Math.floor((wordSetProgressSum / wordSet.words.length) * 100);
+  const wordSetProgressValue = Math.floor(
+    (wordSetProgressSum / wordSet.words.length) * 100
+  );
 
   console.log(wordSetProgressSum);
   return (
-    <div className="bg-black/5 px-6 py-7 backdrop-blur-2xl dark:bg-slate-900/90 rounded-lg flex flex-col w-3/4 justify-center">
+    <div className="bg-black/5 px-6 py-7 mb-4 backdrop-blur-2xl dark:bg-slate-900/90 w-full rounded-lg flex flex-col lg:w-3/4 justify-center">
       <div className="flex flex-col md:flex-row items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
@@ -58,8 +62,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-6">
-        <div className="bg-black/5 backdrop-blur-xl dark:bg-gray-800 rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-black/5 backdrop-blur-xl dark:bg-gray-800 rounded-lg pl-2 py-4">
+          <div className="flex items-center justify-between p-4">
             <div className="flex items-center space-x-2">
               <BookIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
               <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -74,31 +78,38 @@ const Page = async ({ params }: { params: { id: string } }) => {
               value={wordSetProgressValue}
             />
           </div>
-          <div>
-            {wordSet?.words.slice(0, 4).map((word, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between  rounded-lg p-4"
-              >
-                <div>
-                  <p className="text-gray-900 dark:text-gray-100 font-semibold">
-                    {word.originalWord}
-                  </p>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    {word.translatedWord}
-                  </p>
+          <Divider className="h-[2px]" />
+          <ScrollArea className="h-[400px]">
+            {wordSet?.words.map((word, index) => (
+              <Fragment key={index}>
+                <div
+                  className="flex items-center justify-between max-sm:flex-col max-sm:justify-start max-sm:items-start rounded-lg p-4"
+                >
+                  <div>
+                    <p className="text-gray-900 font-bold dark:text-gray-100">
+                      {word.originalWord}
+                    </p>
+                    <p className="text-gray-800 dark:text-gray-400">
+                      {word.translatedWord}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 max-sm:flex-col">
+                    <Progress
+                      label={`${Math.floor(word.progress * 100)} %`}
+                      className="w-32"
+                      value={word.progress * 100}
+                      classNames={{ track: "bg-gray-400" }}
+                    />
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <Progress
-                    label={`${Math.floor(word.progress * 100)} %`}
-                    className="w-32"
-                    value={word.progress * 100}
-                    classNames={{ track: "bg-gray-400" }}
-                  />
-                </div>
-              </div>
+                {index !== wordSet.words.length - 1 &&
+                  wordSet.words.length > 1 && (
+                    <Divider className="h-[1px]" />
+                  )
+                }
+              </Fragment>
             ))}
-          </div>
+          </ScrollArea>
         </div>
         <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6">
           <div className="flex items-center justify-between mb-4">

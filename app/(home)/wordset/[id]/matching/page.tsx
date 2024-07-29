@@ -4,11 +4,9 @@ import Matching from "@/components/shared/matching";
 const MatchingPage = async ({ params }: { params: { id: string } }) => {
   const wordSet = await getWordSetWithProgress(params.id);
 
-  return (
-    <div>
-      <Matching words={wordSet.words} />
-    </div>
-  );
+  return <Matching words={wordSet.words} />
+   
+
 };
 
 export default MatchingPage;
