@@ -1,58 +1,40 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Button, CircularProgress, Switch } from "@nextui-org/react";
-import { motion, useMotionValue, useTransform, useAnimation } from "framer-motion";
-import { saveDisplayOrder, updateProgress } from "@/lib/actions/action";
-import { WordProgress } from "./word-progress";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { XIcon } from "lucide-react";
+import {
+  motion,
+  useAnimation,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
+import { ArrowLeft, XIcon } from "lucide-react";
 
-export type Word = {
-  id: string;
-  originalWord: string;
-  translatedWord: string;
-  progress: number;
-  progressHistory: {
-    progressValue: number;
-  }[];
-};
+import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
 
-export type WordSet = {
-  id: string;
-  title: string;
-  displayTranslatedFirst: boolean;
-  words: Word[];
-};
+import WordProgressDisplay from "./WordProgressDisplay";
+import Link from "next/link";
 
-const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
-  const initialWords = wordSet.words.reduce(
-    (acc, word) => {
-      acc[word.originalWord] = {
-        progress: word.progress,
-        id: word.id,
-        translatedWord: word.translatedWord,
-      };
+interface WordFlashcardsProps {
+  wordSet: WordSet;
+}
 
-      return acc;
-    },
-    {} as {
-      [key: string]: {
-        progress: number;
-        id: string;
-        translatedWord: string;
-      };
-    }
-  );
+const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
+  const {
+    words,
+    currentWord,
+    loading,
+    showTranslatedFirst,
+    handleDontKnowWord,
+    handleKnowWord,
+    handleToggleOrder,
+  } = useWordProgress(wordSet);
 
-  const [words, setWords] = useState(initialWords);
-  const [currentWord, setCurrentWord] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
   const [flipped, setFlipped] = useState<boolean>(false);
-  const [showTranslatedFirst, setShowTranslatedFirst] = useState<boolean>(
-    wordSet.displayTranslatedFirst
-  );
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const pathname = usePathname().split("/")[2];
 
   const x = useMotionValue(0);
   const controls = useAnimation();
@@ -63,7 +45,7 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
   const background = useTransform(x, xInput, [
     "linear-gradient(90deg, #ff008c 0%, rgb(211, 9, 225) 100%)",
     "linear-gradient(90deg, #ffff 0%, #fff 100%)",
-    "linear-gradient(90deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)"
+    "linear-gradient(90deg, rgb(230, 255, 0) 0%, rgb(3, 209, 0) 100%)",
   ]);
 
   const color = useTransform(x, xInput, [
@@ -75,79 +57,6 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
   const crossPathA = useTransform(x, [-10, -55], [0, 1]);
   const crossPathB = useTransform(x, [-50, -100], [0, 1]);
 
-  const selectRandomWord = useCallback(() => {
-    const wordList = Object.entries(words).map(
-      ([originalWord, { progress }]) => ({
-        originalWord,
-        weight: Math.max(1 - progress, 0.1),
-      })
-    );
-
-    const totalWeight = wordList.reduce((acc, { weight }) => acc + weight, 0);
-
-    let randomIndex = Math.random() * totalWeight;
-
-    const selectedEntry = wordList.find(({ weight }) => {
-      randomIndex -= weight;
-      return randomIndex <= 0;
-    });
-
-    return selectedEntry
-      ? selectedEntry.originalWord
-      : wordList[0].originalWord;
-  }, [words]);
-
-  useEffect(() => {
-    setCurrentWord(selectRandomWord());
-  }, [selectRandomWord]);
-
-  const handleDontKnowWord = async (originalWord: string) => {
-    setLoading(true);
-    const wordId = words[originalWord].id;
-    const decreaseAmount = Math.max(0.1, 1 - words[originalWord].progress);
-    const newProgress = Math.max(
-      words[originalWord].progress - decreaseAmount,
-      0
-    );
-
-    setWords((prevWords) => ({
-      ...prevWords,
-      [originalWord]: {
-        ...prevWords[originalWord],
-        progress: newProgress,
-      },
-    }));
-
-    await updateProgress(wordId, newProgress);
-    handleNextWord();
-    setLoading(false);
-  };
-
-  const handleKnowWord = async (originalWord: string) => {
-    setLoading(true);
-    const wordId = words[originalWord].id;
-    const newProgress = Math.min(words[originalWord].progress + 0.1, 1);
-
-    setWords((prevWords) => ({
-      ...prevWords,
-      [originalWord]: {
-        ...prevWords[originalWord],
-        progress: newProgress,
-      },
-    }));
-
-    await updateProgress(wordId, newProgress);
-    handleNextWord();
-  };
-
-  const handleNextWord = () => {
-    setLoading(true);
-    controls.start({ x: 0, transition: { duration: 0.5 } });
-    setCurrentWord(selectRandomWord());
-    setFlipped(false);
-    setLoading(false);
-  };
-
   const handleCardClick = () => {
     if (!isDragging) {
       setFlipped(!flipped);
@@ -158,14 +67,8 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
     }
   };
 
-  const handleToggleOrder = async () => {
-    const newOrder = !showTranslatedFirst;
-    setShowTranslatedFirst(newOrder);
-    await saveDisplayOrder(wordSet.id, newOrder);
-  };
-
   return (
-    <>
+    <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto p-8 w-full max-w-[650px] dark:bg-slate-900/90 rounded-[2rem] full-screen-card overflow-hidden">
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <CircularProgress size="lg" />
@@ -173,11 +76,10 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
       ) : (
         currentWord && (
           <div className="h-full flex flex-col items-center justify-between content">
-            <div className="absolute top-0 right-0 p-2 z-20">
-              {!loading && (
-                <WordProgress progress={words[currentWord]?.progress * 100} />
-              )}
-            </div>
+            <WordProgressDisplay
+              loading={loading}
+              progress={words[currentWord]?.progress}
+            />
             <motion.div
               className="card"
               drag="x"
@@ -192,7 +94,7 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
                   handleKnowWord(currentWord);
                 } else if (info.offset.x < -200) {
                   handleDontKnowWord(currentWord);
-                } 
+                }
               }}
               animate={controls}
               style={{ x, background }}
@@ -246,39 +148,44 @@ const WordFlashcards = ({ wordSet }: { wordSet: WordSet }) => {
                 </div>
               </motion.div>
             </motion.div>
-            <div className="flex justify-between gap-4 mt-4 w-full">
+            <div className="flex justify-between items-center gap-4 w-full">
+              <Button className="text-xl rounded-full cursor-pointer">
+                <ArrowLeft/>
+                <Link href={`/wordset/${pathname}`}>Back</Link>
+              </Button>
               <Switch
                 isSelected={showTranslatedFirst}
                 onValueChange={handleToggleOrder}
                 color="success"
-                size="sm"
+                size="lg"
               >
                 Reverse order
               </Switch>
-              <div className="flex gap-6">
-              <Button
-                color="danger"
-                onClick={() => handleDontKnowWord(currentWord)}
-                isIconOnly
-                className="text-white rounded-lg"
-              >
-                <XIcon className="w-8 h-8" />
-              </Button>
-              <Button
-                className="text-white rounded-lg"
-                color="success"
-                onClick={() => handleKnowWord(currentWord)}
-                isIconOnly
-              >
-                <CheckIcon className="w-8 h-8" />
-              </Button>
+              <div className="flex gap-4">
+                <Button
+                  color="danger"
+                  onClick={() => handleDontKnowWord(currentWord)}
+                  isIconOnly
+                  size="lg"
+                  className="text-white rounded-lg"
+                >
+                  <XIcon className="w-10 h-10" />
+                </Button>
+                <Button
+                  className="text-white rounded-lg "
+                  color="success"
+                  onClick={() => handleKnowWord(currentWord)}
+                  size="lg"
+                  isIconOnly
+                >
+                  <CheckIcon className="w-10 h-10" />
+                </Button>
               </div>
-             
             </div>
           </div>
         )
       )}
-    </>
+    </div>
   );
 };
 

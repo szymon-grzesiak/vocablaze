@@ -1,5 +1,5 @@
 {
-  "name": "allnextauth",
+  "name": "blackfyre",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -28,6 +28,7 @@
     "@nextui-org/react": "^2.4.1",
     "@nextui-org/system": "^2.2.1",
     "@nextui-org/theme": "^2.2.5",
+    "@nivo/calendar": "^0.87.0",
     "@nivo/line": "^0.87.0",
     "@prisma/client": "^5.15.1",
     "@radix-ui/react-accordion": "^1.2.0",

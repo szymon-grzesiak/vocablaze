@@ -261,6 +261,7 @@ export const updateProgress = async (wordId: string, progressValue: number) => {
 
     await prisma.progressWordHistory.create({
       data: {
+        userId: user.id as string,
         wordId: word.id,
         progressValue,
         answerDate: new Date(),

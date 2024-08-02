@@ -47,7 +47,7 @@ export function WordProgress({ progress }: WordProgressProps) {
           gridType="circle"
           radialLines={false}
           stroke="none"
-          className="first:fill-muted last:fill-background"
+          className="first:fill-slate-300 dark:first:fill-slate-700 last:fill-background"
           polarRadius={[30, 23]}
         />
         <RadialBar dataKey="visitors" background cornerRadius={10} />

@@ -239,7 +239,7 @@ main {
 }
 
 .full-screen-card {
-  height: calc(100vh - 136px);
+  height: calc(100vh - 200px);
 }
 
 .content {
@@ -247,7 +247,7 @@ main {
 }
 
 .card {
-  height: 100%;
+  height: 85%;
   width: 100%;
   position: relative;
   transform-style: preserve-3d;

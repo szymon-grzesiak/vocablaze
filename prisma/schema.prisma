@@ -48,6 +48,8 @@ model User {
   wordSets              WordSet[]
   twoFactorConfirmation TwoFactorConfirmation?
   accounts              Account[]
+
+  ProgressWordHistory ProgressWordHistory[]
 }
 
 model Folder {
@@ -83,7 +85,9 @@ model ProgressWordHistory {
   wordId         String
   progressValue  Float
   answerDate     DateTime @default(now())
-  
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   word           Word     @relation(fields: [wordId], references: [id], onDelete: Cascade)
 
   @@index([wordId, answerDate])

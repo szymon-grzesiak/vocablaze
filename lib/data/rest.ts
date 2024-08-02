@@ -4,6 +4,7 @@ import { unstable_cache } from "next/cache";
 import db from "@/lib/db";
 
 import { currentUser } from "../sessionData";
+import { CalendarDatum } from "@nivo/calendar";
 
 export const getLanguages = cache(async () => {
   const user = await currentUser();
@@ -56,6 +57,47 @@ export const getAllWordSets = cache(async () => {
   }
 });
 
+export const getDataToCalendar = cache(
+  async (): Promise<CalendarDatum[]> => {
+    const user = await currentUser();
+
+    if (!user) {
+      throw new Error("You must be logged in to view this data");
+    }
+
+    interface ResultFormat {
+      date: Date;
+      wordCount: number;
+    }
+    try {
+      const userId = user.id;
+      // tu jest czysty SQL ze względu na to, że prisma ma nielogiczne i długie zapytanie
+      const result: ResultFormat[] = await db.$queryRaw`
+        SELECT 
+          DATE("answerDate") AS "date",
+          COUNT(*) AS "wordCount"
+        FROM 
+          "ProgressWordHistory"
+        WHERE 
+          "userId" = ${userId}
+        GROUP BY 
+          DATE("answerDate")
+        ORDER BY 
+          DATE("answerDate");
+      `;
+      
+      const formattedResult: CalendarDatum[] = result.map((entry: { date: Date, wordCount: number }) => ({
+        day: entry.date.toISOString().split('T')[0], 
+        value: Number(entry.wordCount)
+      }));
+
+      return formattedResult;
+    } catch (error) {
+      console.error("Error fetching words:", error);
+      throw new Error("An error occurred while fetching the words");
+    }
+  }
+);
 export const getWordSetById = unstable_cache(
   async (id: string, userId: string) => {
     const user = await currentUser();

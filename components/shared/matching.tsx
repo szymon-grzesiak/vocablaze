@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { ConfettiStars } from "@/components/shared/confetti-stars";
 
-import { Word } from "./WordFlashcards";
+import { Word } from "@prisma/client";
 
 const Matching = ({ words }: { words: Word[] }) => {
   const [selectedSize, setSelectedSize] = useState(0);

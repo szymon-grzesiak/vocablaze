@@ -1,9 +1,11 @@
 import React from "react";
 import { Button } from "@nextui-org/button";
 
-import { getAllWordSets, getFolders } from "@/lib/data/rest";
+import { getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
+import { MyResponsiveCalendar } from "@/components/shared/calendar";
 import MobileNavbar from "@/components/shared/navbar/mobile-navbar";
 import Search from "@/components/shared/search";
+import { RadialChart } from "@/components/shared/stats";
 
 import FoldersList from "../../../components/shared/folder-list";
 import { LineChart } from "../../../components/shared/line-chart-icon";
@@ -14,11 +16,15 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  const [wordSetsResponse, folders] = await Promise.all([
+  const [wordSetsResponse, folders, calendarData] = await Promise.all([
     getAllWordSets(),
     getFolders(),
+    getDataToCalendar(),
   ]);
   const { wordSets, error } = wordSetsResponse;
+
+  console.log("calendarData", calendarData);
+
   return (
     <div className="relative flex flex-col w-full justify-center xl:px-0">
       <div className="flex flex-col lg:flex-row w-full gap-4">
@@ -49,26 +55,19 @@ export default async function Page({
         <div className="flex flex-col lg:w-2/3 gap-4">
           <section className="hidden lg:block relative h-full max-h-[350px] w-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md p-5 rounded-lg">
             <span className="text-2xl font-bold">📚Your learning history</span>
+            <MyResponsiveCalendar data={calendarData} />
           </section>
           <section className="flex flex-col lg:flex-row gap-4 h-full ">
-            <div className="relative h-full w-full lg:w-1/2 gap-4 ">
+            <div className="relative h-full w-full lg:w-1/3 gap-4 ">
               <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
                 <span className="text-2xl font-bold">📈 Monthly trends</span>
-                <div className="dark:bg-gray-800 rounded-lg p-6">
-                  {/* <LineChart className="h-[130px]" /> */}
-                  Chart
+                <div className="dark:bg-gray-800 rounded-lg w-full">
+                  <RadialChart />
                 </div>
-                <div className="w-full flex justify-center">
-                  <Button
-                    className="border-black hover:bg-black hover:text-white font-bold px-4 rounded-lg transition-colors duration-300 mt-3"
-                    variant="flat"
-                  >
-                    Check out more ➡️
-                  </Button>
-                </div>
+               
               </div>
             </div>
-            <div className="relative w-full lg:w-1/2">
+            <div className="relative w-full lg:w-2/3">
               <div className="relative h-full p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
                 <span className="flex justify-between">
                   <span className="text-2xl font-bold">📁Folders</span>
