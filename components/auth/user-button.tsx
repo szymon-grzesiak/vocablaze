@@ -18,9 +18,12 @@ import {
 import { Button } from "../ui/button";
 import { LoginButton } from "./login-button";
 import { LogoutButton } from "./logout-button";
+import Link from "next/link";
+import { useState } from "react";
 
 export const UserButton = () => {
   const user = useCurrentUser();
+  const [closeDropdown, setCloseDropdown] = useState(false);
 
   if (!user) {
     return (
@@ -33,7 +36,7 @@ export const UserButton = () => {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={closeDropdown} onOpenChange={() => setCloseDropdown(!closeDropdown)}>
       <DropdownMenuTrigger className="focus-visible:outline-none">
         <Avatar>
           <AvatarImage src={user.image ?? ""} />
@@ -54,9 +57,11 @@ export const UserButton = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">
+        <DropdownMenuItem onClick={() => setCloseDropdown(!close)} className="cursor-pointer">
           <FaUserFriends className="h-4 w-4" />
-          <Button className="ml-2 w-full">Profile</Button>
+          <Button className="ml-2 w-full">
+            <Link className="ml-2 w-full" href={'/profile'}>Profile</Link>
+          </Button>
         </DropdownMenuItem>
         <LogoutButton>
           <DropdownMenuItem className="cursor-pointer">
