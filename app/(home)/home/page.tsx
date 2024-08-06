@@ -3,12 +3,10 @@ import { Button } from "@nextui-org/button";
 
 import { getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
 import { MyResponsiveCalendar } from "@/components/shared/calendar";
-import MobileNavbar from "@/components/shared/navbar/mobile-navbar";
 import Search from "@/components/shared/search";
 import { RadialChart } from "@/components/shared/stats";
 
 import FoldersList from "../../../components/shared/folder-list";
-import { LineChart } from "../../../components/shared/line-chart-icon";
 import WordSetsList from "../../../components/shared/wordset-list";
 
 export default async function Page({

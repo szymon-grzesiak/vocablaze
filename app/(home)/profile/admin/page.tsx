@@ -37,7 +37,7 @@ const AdminPage = () => {
       </CardHeader>
       <Separator />
       <CardContent className="space-y-4 mt-4">
-        <RoleGate allowedRole="ADMIN">
+        <RoleGate allowedRole="PRO">
           <FormSuccess message="You are allowed to see this content!" />
         </RoleGate>
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">

@@ -23,3 +23,14 @@ export interface FolderType {
   color: string | null;
   userId: string;
 }
+
+export interface User {
+  id: string;
+  email: string;
+  role: string;
+  isOAuth: boolean;
+  wordSets: IWordSetType[];
+  folders: FolderType[];
+  name: string;
+  isTwoFactorEnabled: boolean;
+}

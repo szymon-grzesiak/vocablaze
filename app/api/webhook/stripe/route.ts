@@ -25,7 +25,7 @@ const fulfillOrder = async (customerEmail: string) => {
         id: user.id,
       },
       data: {
-        isPremium: true,
+        role: "PRO",
       },
     });
   } catch (error) {

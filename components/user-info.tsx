@@ -38,7 +38,7 @@ export const UserInfo = ({ user, label }: UserInfoProps) => {
         <div className="flex flex-row items-center justify-between rounded-lg">
           <p className="text-sm font-medium">Role</p>
           {user?.role === "USER" && <Badge>User</Badge>}
-          {user?.role === "ADMIN" && <Badge variant={"special"}>Admin</Badge>}
+          {user?.role === "PRO" && <Badge variant={"special"}>PRO</Badge>}
         </div>
         <div className="flex flex-row items-center justify-between rounded-lg">
           <p className="text-sm font-medium">Two Factor Authentication</p>
