@@ -45,6 +45,18 @@ const Page = async ({ params }: { params: { id: string } }) => {
             {wordSet?.description}
           </p>
         </div>
+        <div>
+          Sort
+          <div>
+            Sort by progress
+          </div>
+          <div>
+          Sort by date
+          </div>
+          <div>
+            Sort by your own order
+          </div>
+        </div>
         <div className="mt-4 md:mt-0 flex gap-3">
           <ExportWords wordSet={wordSet} />
           <Tooltip content="Edit words set">

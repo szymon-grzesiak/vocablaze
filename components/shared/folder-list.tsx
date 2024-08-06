@@ -24,15 +24,13 @@ const FoldersList = async ({
     folder.name.toLowerCase().includes(query.toLowerCase())
   );
   return (
-    <div className="relative h-full w-full overflow-auto">
-      <ul className="flex flex-wrap justify-start items-center gap-3 max-h-80 overflow-y-auto p-3 mt-5">
+      <ul className="flex flex-wrap justify-start items-center gap-3">
         {filteredFolders?.map((folder) => {
           return (
             <SheetOpen folder={folder} key={folder.id} wordSets={wordSetResponse as IWordSetType[]} />
           );
         })}
       </ul>
-    </div>
   );
 };
 

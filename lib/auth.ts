@@ -86,7 +86,6 @@ export const {
       }
 
       const existingAccount = await getAccountByUserId(existingUser.id);
-      console.log("ExistingUser", existingUser);
 
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;

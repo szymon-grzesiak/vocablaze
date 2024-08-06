@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { CheckIcon, CrownIcon } from "lucide-react";
 
-import Settings from "@/components/shared/settings";
-import { currentUser } from "@/lib/sessionData";
 import { ExtendedUser } from "@/types/next-auth";
+import { currentUser } from "@/lib/sessionData";
+import Settings from "@/components/shared/settings";
 
 const SettingsPage = async () => {
   const user = await currentUser();
@@ -36,17 +36,28 @@ const SettingsPage = async () => {
             </span>
           </div>
         </div>
-        <Button
-          className="w-full mt-4 text-white border-white hover:bg-white hover:text-gray-900 dark:hover:text-gray-50"
-          variant="bordered"
-        >
-          <Link target="_blank" href={`https://buy.stripe.com/test_14kaIg9tI5PxayYbII` + '?prefilled_email=' + user?.email}>
-          Upgrade Now
-          {user?.role}
-          </Link>
-        </Button>
+        {user?.role === "USER" ? (
+          <Button
+            className="w-full mt-4 text-white border-white hover:bg-white hover:text-gray-900 dark:hover:text-gray-50"
+            variant="bordered"
+          >
+            <Link
+              target="_blank"
+              href={
+                `https://buy.stripe.com/test_14kaIg9tI5PxayYbII` +
+                "?prefilled_email=" +
+                user?.email
+              }
+            >
+              Upgrade Now
+              {user?.role}
+            </Link>
+          </Button>
+        ): <div className="p-2 border-b flex items-center justify-center mt-4 gap-2">
+          You are <span className="font-bold uppercase text-blue-300 text-lg">premium</span> user
+          </div>}
       </div>
-      <Settings user={user as ExtendedUser}/>
+      <Settings user={user as ExtendedUser} />
     </div>
   );
 };
