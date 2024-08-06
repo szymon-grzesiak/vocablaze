@@ -8,7 +8,6 @@ import { ExtendedUser } from "@/types/next-auth";
 
 const SettingsPage = async () => {
   const user = await currentUser();
-  console.log("use")
 
   return (
     <div className="flex">

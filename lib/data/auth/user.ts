@@ -1,7 +1,7 @@
 import db from "@/lib/db";
 import { unstable_cache } from "next/cache";
 
-export const getUserByEmail = unstable_cache(async (email: string) => {
+export const getUserByEmail = async (email: string) => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -13,9 +13,9 @@ export const getUserByEmail = unstable_cache(async (email: string) => {
     console.log(error);
     return null;
   }
-});
+};
 
-export const getUserById = unstable_cache(async (id: string) => {
+export const getUserById = async (id: string) => {
   try {
     const user = await db.user.findUnique({
       where: {
@@ -27,4 +27,4 @@ export const getUserById = unstable_cache(async (id: string) => {
     console.log(error);
     return null;
   }
-});
+};

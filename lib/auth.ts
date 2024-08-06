@@ -2,10 +2,9 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { UserRole } from "@prisma/client";
 import NextAuth, { type DefaultSession } from "next-auth";
 
-import { getTwoFactorConfirmationByUserId } from "./data/auth/two-factor-confirmation";
-
 import authConfig from "./auth.config";
 import { getAccountByUserId } from "./data/auth/account";
+import { getTwoFactorConfirmationByUserId } from "./data/auth/two-factor-confirmation";
 import { getUserById } from "./data/auth/user";
 import db from "./db";
 
@@ -66,15 +65,13 @@ export const {
       if (token.role && session.user) {
         session.user.role = token.role as UserRole;
       }
-      if (session.user) {
-        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
-      }
 
       if (session.user) {
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.image = token.image as string;
         session.user.isOAuth = token.isOAuth as boolean;
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
       }
 
       return session;
@@ -89,12 +86,13 @@ export const {
       }
 
       const existingAccount = await getAccountByUserId(existingUser.id);
+      console.log("ExistingUser", existingUser);
 
       token.isOAuth = !!existingAccount;
-      (token.name = existingUser.name),
-        (token.email = existingUser.email),
-        (token.image = existingUser.image),
-        (token.role = existingUser.role);
+      token.name = existingUser.name;
+      token.email = existingUser.email;
+      token.image = existingUser.image;
+      token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;
