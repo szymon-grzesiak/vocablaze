@@ -130,7 +130,7 @@ const Matching = ({ words }: { words: Word[] }) => {
         <>
           <div className="w-full flex items-center justify-center flex-col">
             <Select onValueChange={(value) => setSelectedSize(Number(value))}>
-              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300">
+              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
                 <SelectValue placeholder="Select size" />
               </SelectTrigger>
               <SelectContent className="rounded-3xl">
@@ -155,7 +155,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                 )
               }
             >
-              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300">
+              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
               <SelectContent>
@@ -217,7 +217,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                 key={word.id}
                 onClick={() => handleWordClick(word.id)}
                 disabled={matches.includes(word.id)}
-                className={`matchButton bg-[#e9f1f7] text-lg font-bold text-indigo-900 border-4 border-gray-300 rounded-2xl shadow-xl p-10 ${selectedWords.includes(word.id) ? "selected" : ""}`}
+                className={`matchButton bg-[#e9f1f7] dark:bg-slate-700 dark:border-slate-500 dark:text-white text-lg font-bold text-indigo-900 border-4 border-gray-300 rounded-2xl shadow-xl p-10 ${selectedWords.includes(word.id) ? "selected" : ""}`}
               >
                 {word.id.endsWith("_original")
                   ? word.originalWord

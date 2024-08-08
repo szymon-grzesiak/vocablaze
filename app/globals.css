@@ -303,3 +303,12 @@ main {
   background-color: #afffdc;
   cursor: default;
 }
+
+.dark .matchButton.selected {
+  background-color: #a5b3fb;
+}
+.dark .matchButton:disabled {
+  background-color: #afffdc;
+  color: black;
+  cursor: default;
+}

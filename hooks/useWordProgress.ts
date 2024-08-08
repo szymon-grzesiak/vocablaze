@@ -6,6 +6,7 @@ export type Word = {
   originalWord: string;
   translatedWord: string;
   progress: number;
+  updatedAt?: Date;
   progressHistory: {
     progressValue: number;
   }[];
@@ -15,6 +16,12 @@ export type WordSet = {
   id: string;
   title: string;
   displayTranslatedFirst: boolean;
+  firstLanguage?: {
+    name: string;
+  };
+  secondLanguage?: {
+    name: string;
+  };
   words: Word[];
 };
 

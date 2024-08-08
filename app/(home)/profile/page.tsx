@@ -11,7 +11,7 @@ const SettingsPage = async () => {
 
   return (
     <div className="flex">
-      <div className="bg-gray-900 rounded-l-lg p-6 shadow-lg text-white dark:bg-gray-50">
+      <div className="bg-gray-900 rounded-l-lg p-6 shadow-lg  dark:bg-gray-50 text-white dark:text-black">
         <div className="flex flex-col items-center justify-center mb-4">
           <CrownIcon className="h-8 w-8 mb-2" />
           <h3 className="text-xl font-bold">Premium Plan</h3>

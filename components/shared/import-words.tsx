@@ -125,7 +125,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
               />
               <Textarea
                 placeholder="Paste words here, format: original,translated"
-                className="bg-white/60 rounded-md h-[150px] mt-2"
+                className="rounded-md h-[150px] mt-2"
                 value={fileContent}
                 onChange={(e) => setFileContent(e.target.value)}
               />
@@ -135,7 +135,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
                   variant="flat"
                   startContent={<Import className="size-5"/>}
                   onClick={handleTextImport}
-                  className="text-black bg-transparent/10"
+                  className="text-black bg-transparent/10 dark:text-gray-200"
                 >
                   Import
                 </Button>

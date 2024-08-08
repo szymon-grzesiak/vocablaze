@@ -234,6 +234,8 @@ export const getWordSetWithProgress = async (wordSetId: string) => {
           progressHistory: true,
         },
       },
+      firstLanguage: true,
+      secondLanguage: true,
     },
   });
 

@@ -21,6 +21,7 @@ export default async function Page({
     getFolders(),
     getDataToCalendar(),
   ]);
+
   const { wordSets, error } = wordSetsResponse;
   const user = await currentUser();
 
@@ -65,7 +66,7 @@ export default async function Page({
                 <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
                   <span className="text-2xl font-bold">📈 Monthly trends</span>
                   <div className="dark:bg-gray-800 rounded-lg w-full">
-                    <RadialChart />
+                    <RadialChart wordSets={wordSets} />
                   </div>
                 </div>
               </div>

@@ -29,7 +29,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
           y1="350"
           x2="150"
           y2="350"
-          stroke="#000"
+          className={`stroke-black dark:stroke-white`}
           strokeWidth="4"
           variants={draw}
         />
@@ -40,7 +40,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
           y1="350"
           x2="100"
           y2="50"
-          stroke="#000"
+          className={`stroke-black dark:stroke-white`}
           strokeWidth="4"
           variants={draw}
         />
@@ -51,7 +51,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
           y1="50"
           x2="200"
           y2="50"
-          stroke="#000"
+          className={`stroke-black dark:stroke-white`}
           strokeWidth="4"
           variants={draw}
         />
@@ -62,7 +62,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
           y1="50"
           x2="200"
           y2="100"
-          stroke="#000"
+          className={`stroke-black dark:stroke-white`}
           strokeWidth="4"
           variants={draw}
         />
@@ -73,7 +73,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
           cy="120"
           r="20"
           fill="none"
-          stroke="#000"
+          className={`stroke-black dark:stroke-white`}
           strokeWidth="4"
           variants={draw}
         />
@@ -84,7 +84,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
           y1="140"
           x2="200"
           y2="200"
-          stroke="#000"
+          className={`stroke-black dark:stroke-white`}
           strokeWidth="4"
           variants={draw}
         />
@@ -96,7 +96,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
             y1="160"
             x2="180"
             y2="180"
-            stroke="#000"
+            className={`stroke-black dark:stroke-white`}
             strokeWidth="4"
             variants={draw}
           />
@@ -105,7 +105,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
             y1="160"
             x2="220"
             y2="180"
-            stroke="#000"
+            className={`stroke-black dark:stroke-white`}
             strokeWidth="4"
             variants={draw}
           />
@@ -114,7 +114,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
             y1="200"
             x2="180"
             y2="240"
-            stroke="#000"
+            className={`stroke-black dark:stroke-white`}
             strokeWidth="4"
             variants={draw}
             custom={2}
@@ -124,7 +124,7 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
             y1="200"
             x2="220"
             y2="240"
-            stroke="#000"
+            className={`stroke-black dark:stroke-white`}
             strokeWidth="4"
             variants={draw}
           />

@@ -39,7 +39,8 @@ export default function Search({
           <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
         }
         placeholder={placeholder}
-        className="max-w-40 w-full [&>div>div]:bg-white"
+        className="max-w-40 w-full"
+        variant="faded"
         onChange={(e) => {
           handleSearch(e.target.value);
         }}

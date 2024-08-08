@@ -3,13 +3,15 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button, CircularProgress } from "@nextui-org/react";
+import { Button, CircularProgress, Input } from "@nextui-org/react";
 import { ArrowLeft } from "lucide-react";
 
 import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
 import HangmanDrawing from "@/components/shared/hangman-drawing";
 
 import { WordProgress } from "./word-progress";
+import { getCharacterSet } from "@/helpers/file";
+
 
 const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
   const pathname = usePathname().split("/")[2];
@@ -21,6 +23,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
   const [gameState, setGameState] = useState<"playing" | "won" | "lost">(
     "playing"
   );
+  const [manualGuess, setManualGuess] = useState<string>("");
 
   const guessedWord = useCallback(() => {
     return currentWord
@@ -30,9 +33,14 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
   }, [currentWord, guessedLetters]);
 
   useEffect(() => {
+    console.log("Game state updated");
+    console.log("nWrong:", nWrong);
+    console.log("guessedWord:", guessedWord());
+    console.log("currentWord:", currentWord);
+
     if (nWrong >= 6) {
       setGameState("lost");
-    } else if (currentWord && guessedWord() === currentWord) {
+    } else if (currentWord && guessedWord().replace(/ /g, "") === currentWord) {
       setGameState("won");
     }
   }, [nWrong, guessedLetters, currentWord, guessedWord]);
@@ -51,8 +59,16 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
     }
   };
 
+  const handleManualGuess = () => {
+    if (manualGuess) {
+      handleGuess(manualGuess);
+      setManualGuess("");
+    }
+  };
+
   const Buttons = () => {
-    return "abcdefghijklmnopqrstuvwxyz".split("").map((letter) => (
+    const characterSet = getCharacterSet(wordSet?.secondLanguage?.name || "English");
+    return characterSet.map((letter) => (
       <Button
         key={letter}
         onClick={() => handleGuess(letter)}
@@ -64,6 +80,8 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
       </Button>
     ));
   };
+
+  const isLatin = getCharacterSet(wordSet?.secondLanguage?.name as string).length > 0;
 
   return (
     <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto w-full max-w-[550px] dark:bg-slate-900/90 rounded-[2rem] full-screen-card overflow-hidden p-4">
@@ -86,7 +104,16 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
               <p>Guessed wrong: {nWrong}</p>
               <HangmanDrawing nWrong={nWrong} />
               <div className="flex flex-wrap gap-2 justify-center items-center">
-                <Buttons />
+                {isLatin ? <Buttons /> : (
+                  <div className="flex gap-4 items-center">
+                    <Input
+                      value={manualGuess}
+                      onChange={(e) => setManualGuess(e.target.value)}
+                      placeholder="Enter a letter"
+                    />
+                    <Button onClick={handleManualGuess}>Check</Button>
+                  </div>
+                )}
               </div>
             </>
           )}
