@@ -13,7 +13,7 @@ export const MyResponsiveCalendar = ({ data }: { data: CalendarDatum[] }) => {
     emptyColor="transparent"
     colors={["#61cdbb", "#97e3d5", "#e8c1a0", "#f47560"]}
     yearSpacing={40}
-    monthBorderColor="#ffffff"
+    monthBorderColor="#94a3b8"
     dayBorderWidth={1}
     theme={{
       text: {
@@ -31,7 +31,7 @@ export const MyResponsiveCalendar = ({ data }: { data: CalendarDatum[] }) => {
         },
       }
     }}
-    dayBorderColor="#ffffff"
+    dayBorderColor="#94a3b8"
     legends={[
       {
         anchor: "top-right",
