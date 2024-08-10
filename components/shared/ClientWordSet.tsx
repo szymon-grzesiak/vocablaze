@@ -49,7 +49,6 @@ const ClientWordSet = ({ wordSet }: { wordSet: WordSet }) => {
       <div className="flex items-center justify-between mb-8">
         <Select 
           label="Sort by" 
-          placeholder="Select a criterion"
           onChange={(e) => handleSortChange(e.target.value)}
           value={sortCriterion}
           className="max-w-xs"

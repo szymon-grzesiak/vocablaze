@@ -8,7 +8,10 @@ import {
   FlashlightIcon,
   GamepadIcon,
   HammerIcon,
+  SquareStackIcon,
 } from "lucide-react";
+import { GiSuicide } from "react-icons/gi";
+
 
 import { getWordSetById } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
@@ -74,7 +77,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-4 flex flex-col items-center justify-center space-y-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
               href={`${params.id}/flashcards`}
             >
-              <FlashlightIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+              <SquareStackIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
               <span className="text-gray-900 dark:text-gray-100 font-medium">
                 Flashcards
               </span>
@@ -92,7 +95,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-4 flex flex-col items-center justify-center space-y-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
               href={`${params.id}/hangman`}
             >
-              <HammerIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+              <GiSuicide className="h-8 w-8 text-gray-900 dark:text-gray-50" />
               <span className="text-gray-900 dark:text-gray-100 font-medium">
                 Hangman
               </span>

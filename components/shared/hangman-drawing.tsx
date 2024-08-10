@@ -8,10 +8,10 @@ const draw = {
       opacity: 1,
       transition: {
         pathLength: { type: "spring", duration: 1.5, bounce: 0 },
-        opacity: { duration: 0.01 }
-      }
+        opacity: { duration: 0.01 },
+      },
     };
-  }
+  },
 };
 
 const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
@@ -134,4 +134,25 @@ const HangmanDrawing = ({ nWrong }: { nWrong: number }) => {
   );
 };
 
-export default HangmanDrawing;
+const CheckIcon = () => (
+  <motion.svg
+    width="150"
+    height="150"
+    viewBox="0 0 100 100"
+    initial="hidden"
+    animate="visible"
+  >
+    <motion.path
+      d="M20 50 L40 70 L80 30"
+      fill="transparent"
+      strokeWidth="12"
+      stroke="#00ff1d"
+      strokeLinecap="round"
+      variants={draw}
+    />
+  </motion.svg>
+);
+
+
+
+export { HangmanDrawing, CheckIcon };

@@ -7,7 +7,7 @@ import { Button, CircularProgress, Input } from "@nextui-org/react";
 import { ArrowLeft } from "lucide-react";
 
 import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
-import HangmanDrawing from "@/components/shared/hangman-drawing";
+import {HangmanDrawing, CheckIcon} from "@/components/shared/hangman-drawing";
 
 import { WordProgress } from "./word-progress";
 import { getCharacterSet } from "@/helpers/file";
@@ -121,6 +121,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
             <>
               <h1>You Win!</h1>
               <p>The word was: {currentWord}</p>
+              <CheckIcon/>
               <Button
                 onClick={async () => {
                   await handleKnowWord(currentWord);
