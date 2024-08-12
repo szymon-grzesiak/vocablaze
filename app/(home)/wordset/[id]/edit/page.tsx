@@ -27,7 +27,7 @@ const Edit = async ({ params }: { params: { id: string } }) => {
       <CardComponent
         mode="edit"
         text="Edit word set"
-        wordSets={wordSet}
+        wordSet={wordSet}
         languages={languages}
         folders={folders}
       />

@@ -14,6 +14,7 @@ const ClientWordSet = ({ wordSet }: { wordSet: WordSet }) => {
   const [sortedWords, setSortedWords] = useState(wordSet.words);
 
   const sortCriterion = searchParams.get("sort") || "order";
+  console.log("WOOOOO", wordSet.words);
 
   useEffect(() => {
     let sorted = [...wordSet.words];
@@ -25,6 +26,8 @@ const ClientWordSet = ({ wordSet }: { wordSet: WordSet }) => {
         const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
         return dateA - dateB;
       });
+    } else if(sortCriterion === "order") {
+      sorted.sort((a, b) => b.order - a.order);
     }
     setSortedWords(sorted);
   }, [sortCriterion, wordSet.words]);

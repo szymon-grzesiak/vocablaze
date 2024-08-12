@@ -131,20 +131,31 @@ export const updateWordSet = async (
       },
     });
 
-    await db.word.deleteMany({
-      where: { wordSetId: id },
-    });
-
     await Promise.all(
-      words.map(({ originalWord, translatedWord }) =>
-        db.word.create({
-          data: {
-            originalWord: originalWord,
-            translatedWord: translatedWord,
-            wordSetId: updatedWordSet.id,
-          },
-        })
-      )
+      words.map((word, index) => {
+        if (word.id) {
+          // Aktualizacja istniejącego słowa
+          return db.word.update({
+            where: { id: word.id },
+            data: {
+              originalWord: word.originalWord,
+              translatedWord: word.translatedWord,
+              id: word.id,
+              order: index,  // Ustawienie kolejności
+            },
+          });
+        } else {
+          // Tworzenie nowego słowa
+          return db.word.create({
+            data: {
+              originalWord: word.originalWord,
+              translatedWord: word.translatedWord,
+              wordSetId: updatedWordSet.id,
+              order: index,  
+            },
+          });
+        }
+      })
     );
     revalidatePath("/home");
     return { success: "Word set updated successfully!" };

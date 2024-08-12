@@ -5,7 +5,7 @@ export const SettingsSchema = z
   .object({
     name: z.optional(z.string().min(1)),
     isTwoFactorEnabled: z.optional(z.boolean()),
-    role: z.enum([UserRole.ADMIN, UserRole.USER]),
+    role: z.enum([UserRole.PRO, UserRole.USER]),
     email: z.optional(z.string().email()),
     password: z.optional(
       z.string().min(1, {
@@ -122,6 +122,7 @@ export const AddWordSetSchema = z.object({
       z.object({
         originalWord: z.string().min(1, "Original word is required"),
         translatedWord: z.string().min(1, "Translated word is required"),
+        id: z.string().optional(),
       })
     )
     .min(5, "You must provide at least 5 word."),

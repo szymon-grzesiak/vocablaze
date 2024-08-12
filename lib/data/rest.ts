@@ -98,7 +98,7 @@ export const getDataToCalendar = cache(
     }
   }
 );
-export const getWordSetById = unstable_cache(
+export const getWordSetById = 
   async (id: string, userId: string) => {
     const user = await currentUser();
 
@@ -130,7 +130,6 @@ export const getWordSetById = unstable_cache(
       return { error: "An error occurred while fetching the word set" };
     }
   }
-);
 
 export const getDisplayOrder = cache(async (wordSetId: string) => {
   try {

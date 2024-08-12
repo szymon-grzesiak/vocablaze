@@ -1,4 +1,3 @@
-
 import { getWordSetWithProgress } from "@/lib/actions/action";
 import WordFlashcards from "@/components/shared/WordFlashcards";
 import { Button } from "@nextui-org/button";
@@ -10,7 +9,7 @@ const Flashcards = async ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="relative w-full h-full">
-      <WordFlashcards wordSet={wordSet} />
+      <WordFlashcards wordSet={wordSet}  />
     </div>
   );
 };

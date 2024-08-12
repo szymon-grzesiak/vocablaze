@@ -4,6 +4,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { Button, CircularProgress, Switch } from "@nextui-org/react";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { useRouter } from "next/navigation";
 import {
   motion,
   useAnimation,
@@ -32,6 +33,7 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
     handleToggleOrder,
   } = useWordProgress(wordSet);
 
+  const router = useRouter();
   const [flipped, setFlipped] = useState<boolean>(false);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const pathname = usePathname().split("/")[2];
@@ -149,7 +151,12 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
               </motion.div>
             </motion.div>
             <div className="flex justify-between items-center gap-4 w-full">
-              <Button className="text-xl rounded-full cursor-pointer">
+              <Button className="text-xl rounded-full cursor-pointer" onClick={
+                () => {
+                  router.push(`/wordset/${pathname}`);
+                  router.refresh();
+                }
+              }>
                 <ArrowLeft/>
                 <Link href={`/wordset/${pathname}`}>Back</Link>
               </Button>

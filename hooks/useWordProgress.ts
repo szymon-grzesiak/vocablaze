@@ -10,6 +10,7 @@ export type Word = {
   progressHistory: {
     progressValue: number;
   }[];
+  order?: number;
 };
 
 export type WordSet = {

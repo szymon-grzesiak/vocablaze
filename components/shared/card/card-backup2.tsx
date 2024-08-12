@@ -9,20 +9,19 @@ import { useFieldArray, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { addWordSet, updateWordSet } from "@/lib/actions/action";
-import {
-  Sortable,
-  SortableDragHandle,
-  SortableItem,
-} from "@/components/ui/sortable";
+import { Sortable, SortableDragHandle } from "@/components/ui/sortable";
+import { Textarea } from "@/components/ui/textarea";
 import { Bookmark, Delete02Icon } from "@/components/icons";
 import { ImportWords } from "@/components/shared/import-words";
-
-import { Textarea } from "@/components/ui/textarea";
 
 import "./background.css";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DndContext } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { toast } from "sonner";
 
@@ -55,7 +54,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   buttonText?: string;
   languages: { id: string; name: string }[];
   folders: { id: string; name: string; color: string | null; userId: string }[];
-  wordSet?: any;
+  wordSets?: any;
   mode: "add" | "edit";
 }
 
@@ -65,7 +64,7 @@ export const CardComponent = ({
   text,
   languages,
   mode,
-  wordSet,
+  wordSets,
   folders,
 }: CardProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -76,14 +75,12 @@ export const CardComponent = ({
   const form = useForm<z.infer<typeof AddWordSetSchema>>({
     resolver: zodResolver(AddWordSetSchema),
     defaultValues: {
-      title: wordSet?.title ?? "",
-      description: wordSet?.description ?? "",
-      firstLanguageId: wordSet?.firstLanguageId ?? "",
-      secondLanguageId: wordSet?.secondLanguageId ?? "",
-      folderId: wordSet?.folderId ?? "",
-      words: wordSet?.words
-      ?.map((word: any) => ({ ...word }))
-      .sort((a: any, b: any) => b.order - a.order) ?? [],
+      title: wordSets?.title ?? "",
+      description: wordSets?.description ?? "",
+      firstLanguageId: wordSets?.firstLanguageId ?? "",
+      secondLanguageId: wordSets?.secondLanguageId ?? "",
+      folderId: wordSets?.folderId ?? "",
+      words: wordSets?.words?.map((word: any) => ({ ...word })) ?? [],
     } as {
       title: string;
       description: string;
@@ -93,6 +90,7 @@ export const CardComponent = ({
       words: { originalWord: string; translatedWord: string }[];
     } & {},
   });
+  console.log("wordSets", wordSets);
   const {
     control,
     handleSubmit,
@@ -117,7 +115,7 @@ export const CardComponent = ({
     setIsLoading(true);
     try {
       if (mode === "edit") {
-        await updateWordSet(wordSet?.id as string, { ...input, words });
+        await updateWordSet(wordSets?.id as string, { ...input, words });
         toast.success("Word set updated successfully");
         router.push("/home");
       } else {
@@ -198,7 +196,8 @@ export const CardComponent = ({
                           startContent={<Flag />}
                           className={cn(
                             "w-[250px] justify-between bg-white/50 dark:bg-slate-800",
-                            !field.value && "text-muted-foreground dark:text-white"
+                            !field.value &&
+                              "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -259,7 +258,8 @@ export const CardComponent = ({
                           startContent={<Flag className="shrink-0" />}
                           className={cn(
                             "w-[270px] justify-between bg-white/50 dark:bg-slate-800",
-                            !field.value && "text-muted-foreground dark:text-white"
+                            !field.value &&
+                              "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -320,7 +320,8 @@ export const CardComponent = ({
                           startContent={<Folder />}
                           className={cn(
                             "w-[200px] justify-between bg-white/50 dark:bg-slate-800",
-                            !field.value && "text-muted-foreground dark:text-white"
+                            !field.value &&
+                              "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -380,76 +381,34 @@ export const CardComponent = ({
             <ImportWords append={append} existingWords={fields} />
           </div>
           <div className="flex justify-between space-y-2 mt-4">
-            <Sortable
-              value={fields}
-              onMove={({ activeIndex, overIndex }) =>
-                move(activeIndex, overIndex)
-              }
+            <DndContext
+              modifiers={[restrictToVerticalAxis]}
+              onDragEnd={(event) => {
+                const { active, over } = event;
+                if (over && active.id !== over.id) {
+                  const oldIndex = fields.findIndex(
+                    (field) => field.id === active.id
+                  );
+                  const newIndex = fields.findIndex(
+                    (field) => field.id === over.id
+                  );
+                  move(oldIndex, newIndex);
+                }
+              }}
             >
-              <div className="w-full space-y-2">
-                {fields.map((field, index) => (
-                  <SortableItem key={field.id} value={field.id} asChild>
-                    <div className="w-full flex gap-4 items-center">
-                      <div className="w-full flex gap-20 divItem">
-                        <FormField
-                          control={control}
-                          name={`words.${index}.originalWord`}
-                          render={({ field }) => (
-                            <FormItem className="w-full">
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  type="text"
-                                  variant="underlined"
-                                  placeholder="First Language"
-                                  className="h-8 text-blue-500"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={control}
-                          name={`words.${index}.translatedWord`}
-                          render={({ field }) => (
-                            <FormItem className="w-full">
-                              <FormControl>
-                                <Input
-                                  {...field}
-                                  type="text"
-                                  variant="underlined"
-                                  placeholder="Second Language"
-                                  className="h-8 text-blue-500"
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <SortableDragHandle
-                        type="button"
-                        className="cursor-move bg-white/20 hover:bg-black/10"
-                      >
-                        <DragHandleDots2Icon className="text-black dark:text-white" />
-                      </SortableDragHandle>
-                      <Button
-                        type="button"
-                        isIconOnly
-                        className="size-2 shrink-0 text-black  hover:text-white hover:bg-white/20"
-                        onClick={() => remove(index)}
-                        color="secondary"
-                        variant="flat"
-                      >
-                        <Delete02Icon aria-hidden="true" />
-                        <span className="sr-only">Remove</span>
-                      </Button>
-                    </div>
-                  </SortableItem>
-                ))}
-              </div>
-            </Sortable>
+              <SortableContext items={fields}>
+                <div className="w-full space-y-2">
+                  {fields.map((field, index) => (
+                    <SortableItem
+                      key={field.id}
+                      value={field.id}
+                      methods={{ remove, control }}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
           </div>
           {errors.words && (
             <div className="text-red-500 text-sm">{errors.words.message}</div>
@@ -473,5 +432,78 @@ export const CardComponent = ({
         </form>
       </Form>
     </Card>
+  );
+};
+
+const SortableItem = ({ value, methods, index }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: value });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+  const { remove, control } = methods;
+  return (
+    <div ref={setNodeRef} style={style}>
+      <div className="w-full flex gap-4 items-center">
+        <div className="w-full flex gap-20 divItem">
+          <FormField
+            control={control}
+            name={`words.${index}.originalWord`}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    variant="underlined"
+                    placeholder="First Language"
+                    className="h-8 text-blue-500"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name={`words.${index}.translatedWord`}
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="text"
+                    variant="underlined"
+                    placeholder="Second Language"
+                    className="h-8 text-blue-500"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <SortableDragHandle
+          type="button"
+          className="cursor-move bg-white/20 hover:bg-black/10"
+          {...attributes}
+          {...listeners}
+        >
+          <DragHandleDots2Icon className="text-black dark:text-white" />
+        </SortableDragHandle>
+        <Button
+          type="button"
+          isIconOnly
+          className="size-2 shrink-0 text-black  hover:text-white hover:bg-white/20"
+          onClick={() => remove(index)}
+          color="secondary"
+          variant="flat"
+        >
+          <Delete02Icon aria-hidden="true" />
+          <span className="sr-only">Remove</span>
+        </Button>
+      </div>
+    </div>
   );
 };
