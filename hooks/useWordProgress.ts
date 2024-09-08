@@ -10,7 +10,7 @@ export type Word = {
   progressHistory: {
     progressValue: number;
   }[];
-  order?: number;
+  order?: number | null | undefined;
 };
 
 export type WordSet = {
@@ -34,7 +34,7 @@ type WordsState = {
   };
 };
 
-export const useWordProgress = (wordSet: WordSet) => {
+export const useWordProgress = (wordSet: (WordSet )) => {
   const initialWords = wordSet.words.reduce((acc, word) => {
     acc[word.originalWord] = {
       progress: word.progress,

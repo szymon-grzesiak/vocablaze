@@ -1,7 +1,5 @@
 import { getWordSetWithProgress } from "@/lib/actions/action";
 import WordFlashcards from "@/components/shared/WordFlashcards";
-import { Button } from "@nextui-org/button";
-import Link from "next/link";
 
 const Flashcards = async ({ params }: { params: { id: string } }) => {
   const wordSet = await getWordSetWithProgress(params.id);

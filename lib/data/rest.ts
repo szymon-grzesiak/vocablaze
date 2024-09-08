@@ -123,7 +123,6 @@ export const getWordSetById =
       if (!wordSet) {
         return { error: "Word set not found" };
       }
-      console.log("WORDSET", wordSet);
       return { wordSet };
     } catch (error) {
       console.error("Error fetching word set:", error);

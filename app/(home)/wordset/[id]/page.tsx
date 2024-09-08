@@ -25,6 +25,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const currUser = await currentUser();
   const { wordSet } = await getWordSetById(params.id, currUser?.id as string);
   if (!wordSet) return <NotFound />;
+  console.log(wordSet);
+
 
   return (
     <div className="bg-black/5 px-6 py-7 mb-4 backdrop-blur-2xl dark:bg-slate-900/90 w-full rounded-lg flex flex-col lg:w-3/4 justify-center">

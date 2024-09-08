@@ -5,7 +5,7 @@ import { Tooltip } from "@nextui-org/react";
 import saveAs from "file-saver";
 
 import { Share01Icon } from "../icons";
-import { WordSet } from "./WordFlashcards";
+import { WordSet } from "@/hooks/useWordProgress";
 
 const exportToCSV = (wordSet: WordSet) => {
   const csvData = [

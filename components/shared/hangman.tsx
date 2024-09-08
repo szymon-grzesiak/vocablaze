@@ -11,12 +11,14 @@ import {HangmanDrawing, CheckIcon} from "@/components/shared/hangman-drawing";
 
 import { WordProgress } from "./word-progress";
 import { getCharacterSet } from "@/helpers/file";
+import { WordSet as PrismaWordSetType } from "@prisma/client";
 
 
-const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
+
+const HangmanGame = ({ wordSet }: { wordSet: (WordSet | PrismaWordSetType) }) => {
   const pathname = usePathname().split("/")[2];
   const { words, currentWord, loading, handleDontKnowWord, handleKnowWord } =
-    useWordProgress(wordSet);
+    useWordProgress(wordSet as WordSet);
 
   const [nWrong, setNWrong] = useState<number>(0);
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
@@ -67,7 +69,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
   };
 
   const Buttons = () => {
-    const characterSet = getCharacterSet(wordSet?.secondLanguage?.name || "English");
+    const characterSet = getCharacterSet((wordSet as WordSet)?.secondLanguage?.name || "English");
     return characterSet.map((letter) => (
       <Button
         key={letter}
@@ -81,7 +83,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet }) => {
     ));
   };
 
-  const isLatin = getCharacterSet(wordSet?.secondLanguage?.name as string).length > 0;
+  const isLatin = getCharacterSet((wordSet as WordSet)?.secondLanguage?.name as string).length > 0;
 
   return (
     <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto w-full max-w-[550px] dark:bg-slate-900/90 rounded-[2rem] full-screen-card overflow-hidden p-4">

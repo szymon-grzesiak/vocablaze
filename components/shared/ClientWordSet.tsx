@@ -7,14 +7,18 @@ import { BookIcon } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Select, SelectItem } from "@nextui-org/react";
 import { WordSet } from "@/hooks/useWordProgress";
+import { Word } from "@prisma/client";
 
-const ClientWordSet = ({ wordSet }: { wordSet: WordSet }) => {
+type Props = WordSet & {
+  words: Word[];
+}
+
+const ClientWordSet = ({ wordSet }: { wordSet: Props }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [sortedWords, setSortedWords] = useState(wordSet.words);
 
   const sortCriterion = searchParams.get("sort") || "order";
-  console.log("WOOOOO", wordSet.words);
 
   useEffect(() => {
     let sorted = [...wordSet.words];
@@ -27,7 +31,7 @@ const ClientWordSet = ({ wordSet }: { wordSet: WordSet }) => {
         return dateA - dateB;
       });
     } else if(sortCriterion === "order") {
-      sorted.sort((a, b) => b.order - a.order);
+      sorted.sort((a, b) => (b.order as number) - (a.order as number));
     }
     setSortedWords(sorted);
   }, [sortCriterion, wordSet.words]);

@@ -17,9 +17,10 @@ import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
 
 import WordProgressDisplay from "./WordProgressDisplay";
 import Link from "next/link";
+import { WordSet as PrismaWordSetType } from "@prisma/client";
 
 interface WordFlashcardsProps {
-  wordSet: WordSet;
+  wordSet: WordSet | PrismaWordSetType;
 }
 
 const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
@@ -31,7 +32,7 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
     handleDontKnowWord,
     handleKnowWord,
     handleToggleOrder,
-  } = useWordProgress(wordSet);
+  } = useWordProgress(wordSet as WordSet);
 
   const router = useRouter();
   const [flipped, setFlipped] = useState<boolean>(false);
