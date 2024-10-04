@@ -6,7 +6,6 @@ import saveAs from "file-saver";
 
 import { Share01Icon } from "../icons";
 import { WordSet } from "@/hooks/useWordProgress";
-
 const exportToCSV = (wordSet: WordSet) => {
   const csvData = [
     ...wordSet.words.map((word) => [
