@@ -1,14 +1,13 @@
 "use server";
 
-import { cache } from "react";
 import { revalidatePath, unstable_cache } from "next/cache";
 import { redirect } from "next/navigation";
 import { AddFolderSchema, AddWordSetSchema } from "@/schemas";
 import { Prisma } from "@prisma/client";
 import * as z from "zod";
-
 import db from "../db";
 import { currentUser } from "../sessionData";
+import stripe from "../stripe";
 
 export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
   const validatedFields = AddWordSetSchema.safeParse(values);
@@ -298,3 +297,42 @@ export const saveDisplayOrder = async (wordSetId: string, showTranslatedFirst: b
     },
   });
 };
+
+
+export async function createCheckoutSession({
+  userEmail,
+}: {
+  userEmail: string;
+}) {
+    const user = await currentUser();
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    const stripeSession = await stripe.checkout.sessions.create({
+      success_url: `http://localhost:3000/profile`,
+      cancel_url: `http://localhost:3000/profile?canceled=true`,
+      payment_method_types: ['card', 'paypal', 'blik'],
+      mode: 'payment',
+      customer_email: userEmail,
+      metadata: {
+        userEmail,
+      },
+      line_items: [
+        {
+          price_data: {
+            currency: 'pln',
+            product_data: {
+              name: 'Premium Plan',
+              description: 'Access to the premium features',
+            },
+            unit_amount: 9999,
+          },
+          quantity: 1,
+        }
+      ],
+    });
+
+    redirect(stripeSession?.url as string);
+}

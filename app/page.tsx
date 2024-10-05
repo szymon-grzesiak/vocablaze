@@ -23,7 +23,7 @@ export default function Home() {
                 <div className="flex flex-col justify-center space-y-4 items-center">
                   <div className="flex flex-col gap-20 w-4/5">
                     <div>
-                      <h1 className="text-3xl font-bold text-balance tracking-tighter sm:text-5xl xl:text-7xl/none [text-shadow:_3px_3px_3px_rgb(0_0_0_/_30%)]">
+                      <h1 className="text-3xl text-slate-600 font-bold text-balance tracking-tighter sm:text-5xl xl:text-7xl/none [text-shadow:_3px_3px_3px_rgb(0_0_0_/_30%)]">
                         Learn Languages{" "}
                         <span className="[text-shadow:_3px_3px_3px_rgb(0_0_255_/_30%)] xl:text-9xl">
                           Interactively
@@ -192,8 +192,8 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t bg-background">
-        <p className="text-xs text-muted-foreground">
+      <footer className="flex bg-slate-800 text-white flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs">
           &copy; 2024 Language Learning. All rights reserved.
         </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
