@@ -20,7 +20,7 @@ export const Navbar = async () => {
         <Link href={"/home"} className="flex justify-center items-center">
           <Image src={logo} alt="logo" width={60} height={60} />
           <h1 className="text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
-            Blackfyre
+          Vocablaze
           </h1>
         </Link>
 

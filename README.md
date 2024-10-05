@@ -1,9 +1,9 @@
 
-# Blackfyre - Language Learning Made Fun
+# Vocablaze - Language Learning Made Fun
 
-![Blackfyre Logo](/public/assets/images/logo.png)
+![Vocablaze Logo](/public/assets/images/logo.png)
 
-Blackfyre is an innovative language learning app designed to make learning new languages engaging and enjoyable. Using a combination of flashcards and interactive games such as hangman and word matching, Blackfyre helps users build vocabulary and improve their language skills in a fun and effective way.
+Vocablaze is an innovative language learning app designed to make learning new languages engaging and enjoyable. Using a combination of flashcards and interactive games such as hangman and word matching, Vocablaze helps users build vocabulary and improve their language skills in a fun and effective way.
 
 ## TODO List
 
@@ -42,7 +42,7 @@ Blackfyre is an innovative language learning app designed to make learning new l
 
 ## Installation
 
-To get started with Blackfyre, follow these steps:
+To get started with Vocablaze, follow these steps:
 
 1. **Clone the repository:**
     ```bash
@@ -50,7 +50,7 @@ To get started with Blackfyre, follow these steps:
     ```
 2. **Navigate to the project directory:**
     ```bash
-    cd blackfyre
+    cd vocablaze
     ```
 3. **Install dependencies:**
     ```bash
@@ -63,4 +63,4 @@ To get started with Blackfyre, follow these steps:
 
 ## License
 
-Blackfyre is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+Vocablaze is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

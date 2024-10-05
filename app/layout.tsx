@@ -21,9 +21,9 @@ const robotoSlab = Roboto_Slab({
 });
 
 export const metadata: Metadata = {
-  title: "Blackfyre - Language Learning Made Fun",
+  title: "Vocablaze - Language Learning Made Fun",
   description:
-    "Blackfyre is an innovative language learning app that uses flashcards and interactive games like hangman and word matching to make learning new languages engaging and enjoyable.",
+    "Vocablaze is an innovative language learning app that uses flashcards and interactive games like hangman and word matching to make learning new languages engaging and enjoyable.",
   icons: {
     icon: "/assets/images/logo.png",
   },
