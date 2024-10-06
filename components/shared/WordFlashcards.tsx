@@ -1,23 +1,27 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { Button, CircularProgress, Switch } from "@nextui-org/react";
+import { WordSet as PrismaWordSetType } from "@prisma/client";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/navigation";
 import {
   motion,
   useAnimation,
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import { ArrowLeft, XIcon } from "lucide-react";
+import { ArrowLeft, EllipsisVertical, XIcon } from "lucide-react";
 
 import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 import WordProgressDisplay from "./WordProgressDisplay";
-import Link from "next/link";
-import { WordSet as PrismaWordSetType } from "@prisma/client";
 
 interface WordFlashcardsProps {
   wordSet: WordSet | PrismaWordSetType;
@@ -72,6 +76,22 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
 
   return (
     <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto p-8 w-full max-w-[650px] dark:bg-slate-900/90 rounded-[2rem] full-screen-card overflow-hidden">
+      <Popover>
+        <PopoverTrigger className={`absolute top-0 left-0 mt-5 ml-2`}>
+          <EllipsisVertical />
+        </PopoverTrigger>
+        <PopoverContent className="w-fit">
+          <Switch
+            isSelected={showTranslatedFirst}
+            onValueChange={handleToggleOrder}
+            color="success"
+            size="lg"
+            className="flex flex-col-reverse items-center font-semibold gap-3"
+          >
+            Reverse order
+          </Switch>
+        </PopoverContent>
+      </Popover>
       {loading ? (
         <div className="flex justify-center items-center h-full">
           <CircularProgress size="lg" />
@@ -125,50 +145,46 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
               </motion.div>
             </motion.div>
             <svg className="progress-icon" viewBox="0 0 50 50">
-                <motion.path />
-                <motion.path
-                  fill="none"
-                  strokeWidth="2"
-                  stroke={color}
-                  d="M14,26 L 22,33 L 35,16"
-                  strokeDasharray="0 1"
-                  style={{ pathLength: tickPath }}
-                />
-                <motion.path
-                  fill="none"
-                  strokeWidth="2"
-                  stroke={color}
-                  d="M17,17 L33,33"
-                  strokeDasharray="0 1"
-                  style={{ pathLength: crossPathA }}
-                />
-                <motion.path
-                  fill="none"
-                  strokeWidth="2"
-                  stroke={color}
-                  d="M33,17 L17,33"
-                  strokeDasharray="0 1"
-                  style={{ pathLength: crossPathB }}
-                />
-              </svg>
+              <motion.path />
+              <motion.path
+                fill="none"
+                strokeWidth="2"
+                stroke={color}
+                d="M14,26 L 22,33 L 35,16"
+                strokeDasharray="0 1"
+                style={{ pathLength: tickPath }}
+              />
+              <motion.path
+                fill="none"
+                strokeWidth="2"
+                stroke={color}
+                d="M17,17 L33,33"
+                strokeDasharray="0 1"
+                style={{ pathLength: crossPathA }}
+              />
+              <motion.path
+                fill="none"
+                strokeWidth="2"
+                stroke={color}
+                d="M33,17 L17,33"
+                strokeDasharray="0 1"
+                style={{ pathLength: crossPathB }}
+              />
+            </svg>
             <div className="flex justify-between items-center gap-4 w-full">
-              <Button className="text-xl rounded-full cursor-pointer" onClick={
-                () => {
-                  router.push(`/wordset/${pathname}`);
-                  router.refresh();
-                }
-              }>
-                <ArrowLeft/>
-                <Link href={`/wordset/${pathname}`}>Back</Link>
-              </Button>
-              <Switch
-                isSelected={showTranslatedFirst}
-                onValueChange={handleToggleOrder}
-                color="success"
-                size="lg"
-              >
-                Reverse order
-              </Switch>
+              <div className="flex gap-3 flex-col-reverse sm:flex-row">
+                <Button
+                  className="text-xl rounded-full cursor-pointer"
+                  onClick={() => {
+                    router.push(`/wordset/${pathname}`);
+                    router.refresh();
+                  }}
+                >
+                  <ArrowLeft />
+                  <Link href={`/wordset/${pathname}`}>Back</Link>
+                </Button>
+              </div>
+
               <div className="flex gap-4">
                 <Button
                   color="danger"

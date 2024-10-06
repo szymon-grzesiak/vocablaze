@@ -62,8 +62,8 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
   };
 
   return (
-    <div className="flex">
-      <Card className="rounded-r-lg rounded-l-none shadow-lg border-none flex flex-col justify-between ">
+    <div className="flex w-full">
+      <Card className="shadow-lg border-none flex flex-col justify-between w-full">
         <CardHeader>
           <p className="text-2xl font-semibold text-center">⚙️ Settings</p>
         </CardHeader>

@@ -1,9 +1,15 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
+import { Button } from "@nextui-org/button";
 import { user } from "@nextui-org/theme";
 import { ExitIcon } from "@radix-ui/react-icons";
+import { Folder, Plus } from "lucide-react";
 import { FaUser, FaUserAlt, FaUserFriends } from "react-icons/fa";
 
+import { addFolder } from "@/lib/actions/action";
+import { logout } from "@/lib/actions/auth/logout";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -15,11 +21,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Button } from "../ui/button";
+import CustomModal from "../shared/folder-modal";
+import { Button as ShadcnButton } from "../ui/button";
 import { LoginButton } from "./login-button";
-import { LogoutButton } from "./logout-button";
-import Link from "next/link";
-import { useState } from "react";
 
 export const UserButton = () => {
   const user = useCurrentUser();
@@ -28,15 +32,22 @@ export const UserButton = () => {
   if (!user) {
     return (
       <LoginButton className="w-1/2">
-        <Button variant="secondary" className="w-full">
+        <ShadcnButton variant="secondary" className="w-full">
           Sign in
-        </Button>
+        </ShadcnButton>
       </LoginButton>
     );
   }
 
+  const onClick = () => {
+    logout();
+  };
+
   return (
-    <DropdownMenu open={closeDropdown} onOpenChange={() => setCloseDropdown(!closeDropdown)}>
+    <DropdownMenu
+      open={closeDropdown}
+      onOpenChange={() => setCloseDropdown(!closeDropdown)}
+    >
       <DropdownMenuTrigger className="focus-visible:outline-none">
         <Avatar>
           <AvatarImage src={user.image ?? ""} />
@@ -57,18 +68,67 @@ export const UserButton = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => setCloseDropdown(!close)} className="cursor-pointer">
-          <FaUserFriends className="h-4 w-4" />
-          <Button className="ml-2 w-full">
-            <Link className="ml-2 w-full" href={'/profile'}>Profile</Link>
+        <div className="block sm:hidden">
+          <div className="px-2 py-1.5 mr-2">
+            <DropdownMenuItem
+              onClick={() => setCloseDropdown(!closeDropdown)}
+              className="cursor-pointer"
+              asChild
+            >
+              <CustomModal
+                responsive
+                title="Create New Folder"
+                description="Please enter the folder name and choose a color for it."
+                handleClick={addFolder}
+                onCloseDropdown={() => setCloseDropdown(false)} // przekazanie funkcji zamknięcia
+              />
+            </DropdownMenuItem>
+          </div>
+
+          <DropdownMenuItem
+            onClick={() => setCloseDropdown(!close)}
+            className="cursor-pointer"
+          >
+            <ShadcnButton
+              className="ml-2 w-full flex gap-3"
+              variant={"secondary"}
+            >
+              <Plus className="dark:text-gray-400 w-4 h-4" />
+              <Link
+                className="w-full font-semibold text-left"
+                href={"/profile"}
+              >
+                Add a words set
+              </Link>
+            </ShadcnButton>
+          </DropdownMenuItem>
+        </div>
+
+        <DropdownMenuItem
+          onClick={() => setCloseDropdown(!close)}
+          className="cursor-pointer"
+        >
+          <ShadcnButton
+            className="ml-2 w-full flex gap-3"
+            variant={"secondary"}
+          >
+            <FaUserFriends className="h-4 w-4" />
+            <Link className="w-full font-semibold text-left" href={"/profile"}>
+              Profile
+            </Link>
+          </ShadcnButton>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="cursor-pointer my-3">
+          <Button
+            onClick={onClick}
+            variant="shadow"
+            color="danger"
+            className="ml-2 w-full"
+          >
+            <ExitIcon className="h-4 w-4" />
+            <span className="w-full font-semibold text-left">Sign Out</span>
           </Button>
         </DropdownMenuItem>
-        <LogoutButton>
-          <DropdownMenuItem className="cursor-pointer">
-            <ExitIcon className="h-4 w-4" />
-            <Button className="ml-2 w-full">Sign Out</Button>
-          </DropdownMenuItem>
-        </LogoutButton>
       </DropdownMenuContent>
     </DropdownMenu>
   );

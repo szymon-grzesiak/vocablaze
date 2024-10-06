@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
+import { LoaderCircle } from "lucide-react";
 
 import { getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
@@ -26,62 +27,69 @@ export default async function Page({
   const user = await currentUser();
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-        <div className="h-[calc(100vh-120px)] flex flex-col lg:flex-row w-full gap-4">
-          <div className="flex flex-col lg:w-1/3 gap-4">
-            <section className="h-full rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md">
-              <span className="flex justify-between p-5">
-                <span className="text-2xl font-bold">🌍Latest learning</span>
-                <Search queryKey="sets" />
+    <div className="h-[calc(100vh-120px)] flex flex-col lg:flex-row w-full gap-4">
+      <div className="flex flex-col lg:w-1/3 gap-4">
+        <section className="h-full rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md">
+          <span className="flex justify-between p-5">
+            <span className="flex gap-2 text-2xl font-bold">
+              <p>🌍</p>
+              <p>Latest learning</p>
+            </span>
+            <Search queryKey="sets" />
+          </span>
+          <WordSetsList wordSets={wordSets} error={error as string} />
+        </section>
+        {user?.role === "USER" && (
+          <section className="hidden lg:block relative p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
+            <span className="flex gap-2 text-2xl font-bold">
+              <p>💲</p> <p>Premium Access</p>
+            </span>
+            <p className="text-gray-600 dark:text-gray-400">
+              Unlock all language games and features with a Premium
+              subscription.
+            </p>
+            <div className="w-full flex justify-end">
+              <Button
+                className="border-black hover:bg-black hover:text-white font-bold px-4 rounded-lg transition-colors duration-300 mt-3"
+                variant="flat"
+              >
+                <Link href={"/profile"}> Upgrade to Premium</Link>
+              </Button>
+            </div>
+          </section>
+        )}
+      </div>
+      <div className="flex flex-col lg:w-2/3 gap-4">
+        <section className="hidden lg:block relative h-full max-h-[350px] w-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md p-5 rounded-lg">
+          <span className="flex gap-2 text-2xl font-bold">
+            <p>📚</p> <p>Your learning history</p>
+          </span>
+          <MyResponsiveCalendar data={calendarData} />
+        </section>
+        <section className="flex flex-col lg:flex-row gap-4 h-full ">
+          <div className="relative h-full w-full lg:w-1/3 gap-4 ">
+            <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
+              <span className="flex gap-2 text-2xl font-bold">
+                <p>📈</p> <p>Monthly trends</p>
               </span>
-              <WordSetsList wordSets={wordSets} error={error as string} />
-            </section>
-            {user?.role === "USER" && (
-              <section className="hidden lg:block relative p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
-                <span className="text-2xl font-bold"> 💲Premium Access</span>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Unlock all language games and features with a Premium
-                  subscription.
-                </p>
-                <div className="w-full flex justify-end">
-                  <Button
-                    className="border-black hover:bg-black hover:text-white font-bold px-4 rounded-lg transition-colors duration-300 mt-3"
-                    variant="flat"
-                  >
-                    <Link href={"/profile"}> Upgrade to Premium</Link>
-                  </Button>
-                </div>
-              </section>
-            )}
+              <div className="dark:bg-gray-800 rounded-lg w-full">
+                <RadialChart wordSets={wordSets} />
+              </div>
+            </div>
           </div>
-          <div className="flex flex-col lg:w-2/3 gap-4">
-            <section className="hidden lg:block relative h-full max-h-[350px] w-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md p-5 rounded-lg">
-              <span className="text-2xl font-bold">
-                📚Your learning history
+          <div className="relative w-full lg:w-2/3">
+            <div className="flex flex-col gap-4 h-full p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
+              <span className="flex justify-between">
+                <span className="flex gap-2 text-2xl font-bold">
+                  <p>📁</p> <p>Folders</p>
+                </span>
+                <Search queryKey="folders" />
               </span>
-              <MyResponsiveCalendar data={calendarData} />
-            </section>
-            <section className="flex flex-col lg:flex-row gap-4 h-full ">
-              <div className="relative h-full w-full lg:w-1/3 gap-4 ">
-                <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
-                  <span className="text-2xl font-bold">📈 Monthly trends</span>
-                  <div className="dark:bg-gray-800 rounded-lg w-full">
-                    <RadialChart wordSets={wordSets} />
-                  </div>
-                </div>
-              </div>
-              <div className="relative w-full lg:w-2/3">
-                <div className="h-full p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
-                  <span className="flex justify-between">
-                    <span className="text-2xl font-bold">📁Folders</span>
-                    <Search queryKey="folders" />
-                  </span>
-                  <FoldersList folders={folders} searchParams={searchParams} />
-                </div>
-              </div>
-            </section>
+              <FoldersList folders={folders} searchParams={searchParams} />
+            </div>
           </div>
-        </div>
-    </Suspense>
+        </section>
+      </div>
+    </div>
   );
 }

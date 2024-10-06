@@ -42,21 +42,21 @@ const SheetOpen = ({
 
   const handleFolderClick = (folder: FolderType) => {
     setOpen(true);
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams as any);
     params.set("folder", folder.id);
     router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleCloseSheet = () => {
     setOpen(false);
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams as any);
     params.delete("folder");
     router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleOpenDrawer = (isOpen: boolean) => {
     if (isOpen) {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams(searchParams as any);
       params.set("folder", folder.id);
       router.replace(`${pathname}?${params.toString()}`);
     } else {

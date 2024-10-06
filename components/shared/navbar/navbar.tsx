@@ -18,33 +18,34 @@ export const Navbar = async () => {
     <nav className="fixed top-0 left-0 w-full p-4 z-50 backdrop-blur-lg">
       <div className="flex justify-between gap-6 items-center mx-auto w-full">
         <Link href={"/home"} className="flex justify-center items-center">
-          <Image src={logo} alt="logo" width={60} height={60} />
-          <h1 className="text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
-          Vocablaze
+          <Image src={logo} alt="logo" className="w-14 h-14 md:w-16 md:h-16" />
+          <h1 className="text-2xl md:text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
+            Vocablaze
           </h1>
         </Link>
 
         <div className="flex justify-end gap-6 items-center">
-          {user && (
-            <CustomModal
-              triggerIcon={<Folder className="dark:text-gray-400" />}
-              title="Create New Folder"
-              description="Please enter the folder name and choose a color for it."
-              handleClick={addFolder}
-            />
-          )}
+          <div className="hidden sm:flex gap-6">
+            {user && (
+              <CustomModal
+                triggerIcon={<Folder className="dark:text-gray-400" />}
+                title="Create New Folder"
+                description="Please enter the folder name and choose a color for it."
+                handleClick={addFolder}
+              />
+            )}
 
-          <Tooltip content="Add a words set">
-            <Button isIconOnly color="secondary" aria-label="word-set">
-              <Link
-                href="/add"
-                className="w-full h-full flex justify-center items-center"
-              >
-                <Plus className="dark:text-gray-400" />
-              </Link>
-            </Button>
-          </Tooltip>
-
+            <Tooltip content="Add a words set">
+              <Button isIconOnly color="secondary" aria-label="word-set">
+                <Link
+                  href="/add"
+                  className="w-full h-full flex justify-center items-center"
+                >
+                  <Plus className="dark:text-gray-400" />
+                </Link>
+              </Button>
+            </Tooltip>
+          </div>
           <Theme />
           <UserButton />
         </div>

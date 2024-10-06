@@ -11,8 +11,9 @@ const SettingsPage = async () => {
   const updateUserWithId = createCheckoutSession.bind(null, { userEmail: user?.email as string });
 
   return (
-    <div className="flex">
-      <div className="bg-gray-900 rounded-l-lg p-6 shadow-lg  dark:bg-gray-50 text-white dark:text-black">
+    <div className="flex flex-wrap gap-6">
+     <Settings user={user as ExtendedUser} />
+      <div className="bg-gray-900 w-full rounded-md p-6 shadow-lg  dark:bg-gray-50 text-white dark:text-black">
         <div className="flex flex-col items-center justify-center mb-4">
           <CrownIcon className="h-8 w-8 mb-2" />
           <h3 className="text-xl font-bold">Premium Plan</h3>
@@ -60,7 +61,6 @@ const SettingsPage = async () => {
           </div>
         )}
       </div>
-      <Settings user={user as ExtendedUser} />
     </div>
   );
 };
