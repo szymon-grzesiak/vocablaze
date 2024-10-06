@@ -238,6 +238,15 @@ main {
   background-color: transparent;
 }
 
+.progress-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none; /* Ensure the icon is not interactive */
+  backface-visibility: hidden; /* Prevent it from flipping with the card */
+}
+
 .full-screen-card {
   height: calc(100vh - 200px);
 }

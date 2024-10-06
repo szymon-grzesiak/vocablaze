@@ -102,7 +102,29 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
               animate={controls}
               style={{ x, background }}
             >
-              <svg className="progress-icon absolute" viewBox="0 0 50 50">
+              <motion.div
+                className="card-content text-2xl font-bold dark:text-black"
+                onClick={handleCardClick}
+                animate={{ rotateY: rotateY.get() }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="front z-10 bg-black/5 dark:bg-slate-700/50">
+                  <div>
+                    {showTranslatedFirst
+                      ? words[currentWord].translatedWord
+                      : currentWord}
+                  </div>
+                </div>
+                <div className="back z-10 bg-black/5 dark:bg-slate-700/50">
+                  <div>
+                    {showTranslatedFirst
+                      ? currentWord
+                      : words[currentWord].translatedWord}
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+            <svg className="progress-icon" viewBox="0 0 50 50">
                 <motion.path />
                 <motion.path
                   fill="none"
@@ -129,28 +151,6 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
                   style={{ pathLength: crossPathB }}
                 />
               </svg>
-              <motion.div
-                className="card-content text-2xl font-bold dark:text-black"
-                onClick={handleCardClick}
-                animate={{ rotateY: rotateY.get() }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="front z-10 bg-black/5 dark:bg-slate-700/50">
-                  <div>
-                    {showTranslatedFirst
-                      ? words[currentWord].translatedWord
-                      : currentWord}
-                  </div>
-                </div>
-                <div className="back z-10 bg-black/5 dark:bg-slate-700/50">
-                  <div>
-                    {showTranslatedFirst
-                      ? currentWord
-                      : words[currentWord].translatedWord}
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
             <div className="flex justify-between items-center gap-4 w-full">
               <Button className="text-xl rounded-full cursor-pointer" onClick={
                 () => {
