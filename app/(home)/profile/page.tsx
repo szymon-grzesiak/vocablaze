@@ -8,7 +8,7 @@ import Settings from "@/components/shared/settings";
 
 const SettingsPage = async () => {
   const user = await currentUser();
-  const updateUserWithId = createCheckoutSession.bind(null, {userEmail: user?.email as string});
+  const updateUserWithId = createCheckoutSession.bind(null, { userEmail: user?.email as string });
 
   return (
     <div className="flex">

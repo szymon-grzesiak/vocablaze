@@ -1,3 +1,3 @@
-import { Delete02Icon, PencilEdit02Icon, Share01Icon, Bookmark } from "./Icon";
+import { Delete02Icon, PencilEdit02Icon, Share01Icon, Bookmark, CheckIcon, XIcon } from "./Icon";
 
-export { Delete02Icon, PencilEdit02Icon, Share01Icon, Bookmark };
+export { Delete02Icon, PencilEdit02Icon, Share01Icon, Bookmark, CheckIcon, XIcon };
