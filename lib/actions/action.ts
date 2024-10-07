@@ -85,17 +85,18 @@ export const addFolder = async (values: z.infer<typeof AddFolderSchema>) => {
 
     const userId = user.id as string;
 
-    const folder = await db.folder.create({
+   await db.folder.create({
       data: {
         name: validatedFields.data.name,
         color: validatedFields.data.color,
         userId: userId,
       },
     });
-    return folder;
   } catch (error) {
     console.log(error);
     return null;
+  } finally {
+    revalidatePath("/home");
   }
 };
 

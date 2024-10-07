@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getTextColor, hexToRgb } from "@/helpers/file";
 import { FolderType, IWordSetType } from "@/types";
 
@@ -25,6 +24,7 @@ import {
 } from "@/components/ui/sheet";
 
 import WordSetsList from "./wordset-list";
+import { FcFolder, FcOpenedFolder } from "react-icons/fc";
 
 const SheetOpen = ({
   folder,
@@ -34,54 +34,46 @@ const SheetOpen = ({
   wordSets: IWordSetType[];
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const pathname = usePathname();
-  const router = useRouter();
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  const searchParams = useSearchParams();
+  const wordSetsFilter = wordSets.filter(
+    (wordSet) => wordSet.folderId === folder.id
+  );
 
-  const handleFolderClick = (folder: FolderType) => {
+
+  const handleFolderClick = () => {
     setOpen(true);
-    const params = new URLSearchParams(searchParams as any);
-    params.set("folder", folder.id);
-    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleCloseSheet = () => {
     setOpen(false);
-    const params = new URLSearchParams(searchParams as any);
-    params.delete("folder");
-    router.replace(`${pathname}?${params.toString()}`);
   };
 
   const handleOpenDrawer = (isOpen: boolean) => {
-    if (isOpen) {
-      const params = new URLSearchParams(searchParams as any);
-      params.set("folder", folder.id);
-      router.replace(`${pathname}?${params.toString()}`);
-    } else {
+    if (!isOpen) {
       handleCloseSheet();
     }
   };
-
-  const textColor = getTextColor(folder?.color as string);
 
   return (
     <>
       <li
         key={folder.id}
         className={cn(
-          "p-3 h-24 w-28 flex justify-start flex-col hover:opacity-80 rounded-md cursor-pointer shadow-xl"
+          "h-28 w-32 flex justify-end items-center flex-col hover:opacity-80 rounded-md cursor-pointer shadow-xl"
         )}
         style={{
-          color: textColor,
-          backgroundColor: `${hexToRgb(folder?.color as string, 0.5)}`,
+          backgroundColor: `${hexToRgb(folder?.color as string)}`,
         }}
-        onClick={() => handleFolderClick(folder)}
+        onClick={() => handleFolderClick()}
       >
+        {wordSetsFilter.length > 0 ? (
+          <FcOpenedFolder className="w-10 h-10 mb-3"/>
+        ) : (
+          <FcFolder className="w-10 h-10 mb-3"/>
+        )}
         <div
-          className="text-xl font-bold truncate"
-          style={{ color: textColor }}
+          className="px-2 text-xl font-bold truncate text-center text-white bg-black/60 rounded-b-md w-full"
         >
           {folder.name}
         </div>
@@ -92,8 +84,8 @@ const SheetOpen = ({
             <SheetHeader>
               <SheetTitle>{folder?.name}</SheetTitle>
               
-                {wordSets.length > 0 ? (
-                  <WordSetsList wordSets={wordSets} />
+                {wordSetsFilter.length > 0 ? (
+                  <WordSetsList wordSets={wordSetsFilter} />
                 ) : (
                   <span>No word sets found in this folder</span>
                 )}
@@ -109,8 +101,8 @@ const SheetOpen = ({
               <DrawerDescription>
                 <>
                   <span>Folder ID: {folder?.id}</span>
-                  {wordSets.length > 0 ? (
-                    <WordSetsList wordSets={wordSets} />
+                  {wordSetsFilter.length > 0 ? (
+                    <WordSetsList wordSets={wordSetsFilter} />
                   ) : (
                     <span>No word sets found in this folder</span>
                   )}

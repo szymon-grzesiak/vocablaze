@@ -85,7 +85,7 @@ export default async function Page({
                 </span>
                 <Search queryKey="folders" />
               </span>
-              <FoldersList folders={folders} searchParams={searchParams} />
+              <FoldersList folders={folders} searchParams={searchParams} wordSets={wordSets as any}/>
             </div>
           </div>
         </section>

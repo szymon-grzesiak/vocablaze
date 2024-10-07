@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 import { GiSuicide } from "react-icons/gi";
 
-
 import { getWordSetById } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
+import { Button as ShadcnButton } from "@/components/ui/button";
 import { PencilEdit02Icon } from "@/components/icons";
 import ClientWordSet from "@/components/shared/ClientWordSet";
 import DeleteWordSet from "@/components/shared/delete-wordset";
@@ -27,7 +27,6 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!wordSet) return <NotFound />;
   console.log(wordSet);
 
-
   return (
     <div className="bg-black/5 px-6 py-7 mb-4 backdrop-blur-2xl dark:bg-slate-900/90 w-full rounded-lg flex flex-col lg:w-3/4 justify-center">
       <div className="flex flex-col md:flex-row items-center justify-between mb-8">
@@ -39,7 +38,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             {wordSet?.description}
           </p>
         </div>
-        <div className="mt-4 md:mt-0 flex gap-3">
+        <div className="mt-4 md:mt-0 flex gap-3 w-full justify-start md:w-auto ">
           <ExportWords wordSet={wordSet} />
           <Tooltip content="Edit words set">
             <Button isIconOnly>
@@ -57,24 +56,24 @@ const Page = async ({ params }: { params: { id: string } }) => {
       </div>
       <ClientWordSet wordSet={wordSet} />
       <div className="grid grid-cols-1 gap-6">
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg py-6">
+          <div className="flex items-start gap-y-4 justify-between mb-4 flex-col md:flex-row md:items-center">
             <div className="flex items-center justify-between space-x-2">
-              <GamepadIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+              <GamepadIcon className="h-8 w-8 shrink-0 text-gray-900 dark:text-gray-50" />
               <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 Practice Games
               </h3>
             </div>
             <div className="flex items-center gap-2">
-              <CircleCheck className="h-6 w-6 text-green-500" />
+              <CircleCheck className="h-6 w-6 shrink-0 text-green-500" />
               <p className="font-semibold text-gray-500">
                 Start session by choosing one of the available games :{" "}
               </p>
-              <ArrowDown className="h-6 w-6 text-gray-900 dark:text-gray-50 animate-bounce" />
+              <ArrowDown className="h-6 w-6 text-gray-900 shrink-0 dark:text-gray-50 animate-bounce" />
             </div>
             <div className="w-1/6" />
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <Link
               className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-4 flex flex-col items-center justify-center space-y-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
               href={`${params.id}/flashcards`}
@@ -93,15 +92,40 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 Matching
               </span>
             </Link>
-            <Link
-              className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-4 flex flex-col items-center justify-center space-y-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-              href={`${params.id}/hangman`}
-            >
-              <GiSuicide className="h-8 w-8 text-gray-900 dark:text-gray-50" />
-              <span className="text-gray-900 dark:text-gray-100 font-medium">
-                Hangman
-              </span>
-            </Link>
+
+            {currUser?.role === "PRO" ? (
+              <Button
+                className="bg-white h-full dark:bg-gray-700 rounded-lg shadow-sm p-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                disabled={true}
+              >
+                <Link
+                  href={`${params.id}/hangman`}
+                  className="flex flex-col items-center justify-center space-y-2"
+                >
+                  <GiSuicide className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+                  <span className="text-gray-900 dark:text-gray-100 font-medium">
+                    Hangman
+                  </span>
+                </Link>
+              </Button>
+            ) : (
+              <div className="relative w-full rounded-lg">
+                  <div className="absolute rounded-full border-5 p-2 z-50 top-[-20%] left-[-3%] text-gray-100 bg-red-400 font-bold shadow-xl">
+                    PRO
+                  </div>
+                <Button
+                  className="h-full flex flex-col items-center justify-center w-full"
+                  variant={"flat"}
+                  disabled
+                >
+                
+                  <GiSuicide className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+                  <span className="text-gray-900 dark:text-gray-100 font-medium">
+                    Hangman
+                  </span>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

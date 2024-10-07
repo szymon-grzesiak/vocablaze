@@ -2,7 +2,7 @@ import { CircularProgress } from "@nextui-org/react";
 import { WordProgress } from "./word-progress";
 
 interface WordProgressDisplayProps {
-  loading: boolean;
+  loading?: boolean;
   progress: number;
 }
 

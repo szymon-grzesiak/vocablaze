@@ -24,10 +24,10 @@ export function getTextColor(hexColor: string) {
  * @param {string} hex - The hex color code.
  * @returns {string} The RGB representation of the color.
  */
-export function hexToRgb(hex: string, opacity: number): string {
+export function hexToRgb(hex: string): string {
   let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   if (result !== null) {
-    return `rgba(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}, ${opacity})`;
+    return `rgba(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)})`;
   } else {
     // handle the case when the result is null
     return "";
