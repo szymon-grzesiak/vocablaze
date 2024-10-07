@@ -1,4 +1,3 @@
-import { getWordSetsByFolder } from "@/lib/actions/action";
 import SheetOpen from "./sheet-open";
 import { IWordSetType } from "@/types";
 

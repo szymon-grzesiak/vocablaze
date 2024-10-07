@@ -1,7 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
-import { LoaderCircle } from "lucide-react";
 
 import { getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
