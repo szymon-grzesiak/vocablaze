@@ -116,7 +116,7 @@ export const AddWordSetSchema = z.object({
   description: z.string().optional(),
   firstLanguageId: z.string().min(1, "First language is required"),
   secondLanguageId: z.string().min(1, "Second language is required"),
-  folderId: z.string().min(1, "Folder is required"),
+  folders: z.array(z.string()).optional(), 
   words: z
     .array(
       z.object({

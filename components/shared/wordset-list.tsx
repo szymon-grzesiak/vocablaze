@@ -4,10 +4,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
+import { TiArrowRightThick } from "react-icons/ti";
 
 const WordSetsList = ({
   wordSets,
   error,
+  className,
+  liStyle,
 }: {
   wordSets:
     | {
@@ -24,6 +28,8 @@ const WordSetsList = ({
       }[]
     | undefined;
   error?: string;
+  className?: string;
+  liStyle?: string;
 }) => {
   const sets = useSearchParams();
   const query = sets.get("sets") || "";
@@ -37,13 +43,15 @@ const WordSetsList = ({
   );
 
   return (
-    <ScrollArea className="h-[500px]">
+    <ScrollArea className={cn("h-[75dvh] overflow-auto", className)}>
       <ul className="flex flex-col gap-4 mb-5">
         {filteredWordSets?.map((wordSet) => (
           <li
             key={wordSet.id}
-            className="p-3 flex justify-start flex-col hover:opacity-80 mx-6 rounded-md cursor-pointer backdrop-blur-xl bg-transparent dark:hover:bg-white/10"
+            className={cn("p-3 flex justify-start items-center gap-4 hover:opacity-80 mx-6 rounded-md cursor-pointer backdrop-blur-xl bg-transparent dark:hover:bg-white/10", liStyle)}
           >
+            <TiArrowRightThick className="shrink-0 text-blue-400 w-6 h-6" />
+
             <Link href={`/wordset/${wordSet.id}`} key={wordSet.id}>
               <p className="text-xl font-bold [text-shadow:_1px_1px_1px_rgb(0_0_255_/_20%)]">
                 {wordSet.title}

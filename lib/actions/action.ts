@@ -21,7 +21,7 @@ export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
     description,
     firstLanguageId,
     secondLanguageId,
-    folderId,
+    folders,
     words,
   } = validatedFields.data;
 
@@ -42,7 +42,14 @@ export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
         secondLanguageId,
         userId: userId,
         isShared: false,
-        folderId,
+        folders: folders
+          ? {
+              connect: folders.map((folderId: string) => ({ id: folderId })),
+            }
+          : undefined, 
+      },
+      include: {
+        folders: true,
       },
     });
 
@@ -115,7 +122,7 @@ export const updateWordSet = async (
     description,
     firstLanguageId,
     secondLanguageId,
-    folderId,
+    folders,
     words,
   } = validatedFields.data;
 
@@ -127,7 +134,14 @@ export const updateWordSet = async (
         description: description ?? "",
         firstLanguageId,
         secondLanguageId,
-        folderId,
+        folders: folders
+          ? {
+              connect: folders.map((folderId: string) => ({ id: folderId })),
+            }
+          : undefined,
+      },
+      include: {
+        folders: true, 
       },
     });
 
@@ -192,12 +206,16 @@ export const getWordSetsByFolder = unstable_cache(async (folderId: string) => {
     console.log("User not logged in");
   }
   try {
-    const wordSet = await db.wordSet.findMany({
+    const wordSets = await db.wordSet.findMany({
       where: {
-        folderId: folderId,
+        folders: {
+          some: {
+            id: folderId,
+          },
+        },
       },
     });
-    return wordSet;
+    return wordSets;
   } catch (error) {
     console.error("Error fetching word sets by folder:", error);
   }

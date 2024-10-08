@@ -57,7 +57,7 @@ model Folder {
   color    String?
   userId   String
   user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  wordSets WordSet[]
+  wordSets WordSet[] @relation("WordSetFolders")
 }
 
 model Language {
@@ -104,13 +104,12 @@ model WordSet {
   createdAt              DateTime          @default(now())
   updatedAt              DateTime?         @updatedAt
   userId                 String
-  folderId               String?
   user                   User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  folder                 Folder?           @relation(fields: [folderId], references: [id], onDelete: Cascade)
   firstLanguage          Language          @relation("firstLanguage", fields: [firstLanguageId], references: [id], onDelete: Cascade)
   secondLanguage         Language          @relation("secondLanguage", fields: [secondLanguageId], references: [id], onDelete: Cascade)
   words                  Word[]
   quizTypeWordSets       QuizTypeWordSet[]
+  folders                Folder[]          @relation("WordSetFolders")
 }
 
 model QuizType {

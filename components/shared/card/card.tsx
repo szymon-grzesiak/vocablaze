@@ -2,7 +2,14 @@
 
 import { AddWordSetSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, Input, Spinner } from "@nextui-org/react";
+import {
+  Button,
+  Card,
+  Input,
+  Select,
+  SelectItem,
+  Spinner,
+} from "@nextui-org/react";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { Flag, Folder, Plus, TrashIcon } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -14,10 +21,9 @@ import {
   SortableDragHandle,
   SortableItem,
 } from "@/components/ui/sortable";
+import { Textarea } from "@/components/ui/textarea";
 import { Bookmark, Delete02Icon } from "@/components/icons";
 import { ImportWords } from "@/components/shared/import-words";
-
-import { Textarea } from "@/components/ui/textarea";
 
 import "./background.css";
 
@@ -71,7 +77,6 @@ export const CardComponent = ({
   const [isLoading, setIsLoading] = useState(false);
   const [openFirstLang, setOpenFirstLang] = useState(false);
   const [openSecLang, setOpenSecLang] = useState(false);
-  const [openFolder, setOpenFolder] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof AddWordSetSchema>>({
     resolver: zodResolver(AddWordSetSchema),
@@ -80,16 +85,17 @@ export const CardComponent = ({
       description: wordSet?.description ?? "",
       firstLanguageId: wordSet?.firstLanguageId ?? "",
       secondLanguageId: wordSet?.secondLanguageId ?? "",
-      folderId: wordSet?.folderId ?? "",
-      words: wordSet?.words
-      ?.map((word: any) => ({ ...word }))
-      .sort((a: any, b: any) => b.order - a.order) ?? [],
+      folders: wordSet?.folders.map((folder: any) => folder.id) ?? [],
+      words:
+        wordSet?.words
+          ?.map((word: any) => ({ ...word }))
+          .sort((a: any, b: any) => b.order - a.order) ?? [],
     } as {
       title: string;
       description: string;
       firstLanguageId: string;
       secondLanguageId: string;
-      folderId: string;
+      folders: string[];
       words: { originalWord: string; translatedWord: string }[];
     } & {},
   });
@@ -99,6 +105,8 @@ export const CardComponent = ({
     formState: { errors },
   } = form;
 
+  console.log("WATCHER", form.watch())
+
   const { fields, append, remove, move } = useFieldArray({
     control,
     name: "words",
@@ -106,6 +114,7 @@ export const CardComponent = ({
   console.log("fields", fields);
 
   const onSubmit = async (input: Schema) => {
+    console.log("input", input);
     const uniqueWords = new Set<string>();
     const words = input.words.filter(({ originalWord, translatedWord }) => {
       const key = `${originalWord}-${translatedWord}`;
@@ -198,7 +207,8 @@ export const CardComponent = ({
                           startContent={<Flag />}
                           className={cn(
                             "w-[250px] justify-between bg-white/50 dark:bg-slate-800",
-                            !field.value && "text-muted-foreground dark:text-white"
+                            !field.value &&
+                              "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -259,7 +269,8 @@ export const CardComponent = ({
                           startContent={<Flag className="shrink-0" />}
                           className={cn(
                             "w-[270px] justify-between bg-white/50 dark:bg-slate-800",
-                            !field.value && "text-muted-foreground dark:text-white"
+                            !field.value &&
+                              "text-muted-foreground dark:text-white"
                           )}
                         >
                           {field.value
@@ -307,61 +318,31 @@ export const CardComponent = ({
               )}
             />
             <FormField
-              name="folderId"
+              name="folders"
               control={control}
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Popover open={openFolder} onOpenChange={setOpenFolder}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="shadow"
-                          role="combobox"
-                          startContent={<Folder />}
-                          className={cn(
-                            "w-[200px] justify-between bg-white/50 dark:bg-slate-800",
-                            !field.value && "text-muted-foreground dark:text-white"
-                          )}
-                        >
-                          {field.value
-                            ? folders.find(
-                                (folder) => folder.id === field.value
-                              )?.name
-                            : "Select folder"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[200px] p-0">
-                        <Command>
-                          <CommandInput placeholder="Search folder..." />
-                          <CommandEmpty>No folder found.</CommandEmpty>
-                          <CommandGroup>
-                            <CommandList>
-                              {folders?.map((folder) => (
-                                <CommandItem
-                                  value={folder.id}
-                                  key={folder.id}
-                                  onSelect={() => {
-                                    field.onChange(folder.id);
-                                    setOpenFolder(false);
-                                  }}
-                                >
-                                  <Check
-                                    className={cn(
-                                      "mr-2 h-4 w-4",
-                                      folder.id === field.value
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    )}
-                                  />
-                                  {folder.name}
-                                </CommandItem>
-                              ))}
-                            </CommandList>
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
+                    <Select
+                      selectionMode="multiple"
+                      placeholder="Select folders"
+                      className="w-[270px]"
+                      startContent={<Folder />}
+                      selectedKeys={
+                        Array.isArray(field.value)
+                          ? field.value
+                          : Array.from(field.value || [])
+                      } // Konwersja Set na tablicę
+                      onSelectionChange={(selected) =>
+                        field.onChange(Array.from(selected))
+                      } // Konwersja Set na tablicę przy zmianie
+                    >
+                      {folders?.map((folder) => (
+                        <SelectItem key={folder.id} value={field.value}>
+                          {folder.name}
+                        </SelectItem>
+                      ))}
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -442,7 +423,7 @@ export const CardComponent = ({
                         color="secondary"
                         variant="flat"
                       >
-                        <Delete02Icon aria-hidden="true" />
+                        <Delete02Icon />
                         <span className="sr-only">Remove</span>
                       </Button>
                     </div>

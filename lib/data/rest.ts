@@ -49,6 +49,9 @@ export const getAllWordSets = cache(async () => {
   try {
     const wordSets = await db.wordSet.findMany({
       where: { userId: user.id as string },
+      include: {
+        folders: true,
+      },
     });
     return { wordSets };
   } catch (error) {
@@ -118,6 +121,7 @@ export const getWordSetById =
               progressHistory: true,
             },
           },
+          folders: true,
         },
       });
       if (!wordSet) {

@@ -36,9 +36,10 @@ const SheetOpen = ({
   const [open, setOpen] = useState<boolean>(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  const wordSetsFilter = wordSets.filter(
-    (wordSet) => wordSet.folderId === folder.id
+  const wordSetsFilter = wordSets.filter((wordSet) =>
+    wordSet?.folders?.some((folderItem) => folderItem.id === folder.id)
   );
+  
 
 
   const handleFolderClick = () => {
@@ -82,10 +83,9 @@ const SheetOpen = ({
         <Sheet open={open} onOpenChange={handleCloseSheet}>
           <SheetContent side="left">
             <SheetHeader>
-              <SheetTitle>{folder?.name}</SheetTitle>
-              
+              <SheetTitle className="text-2xl font-bold">{folder?.name}</SheetTitle>
                 {wordSetsFilter.length > 0 ? (
-                  <WordSetsList wordSets={wordSetsFilter} />
+                  <WordSetsList wordSets={wordSetsFilter} className="h-[90dvh]" liStyle="mx-0 bg-black/10 mr-6" />
                 ) : (
                   <span>No word sets found in this folder</span>
                 )}
@@ -102,7 +102,7 @@ const SheetOpen = ({
                 <>
                   <span>Folder ID: {folder?.id}</span>
                   {wordSetsFilter.length > 0 ? (
-                    <WordSetsList wordSets={wordSetsFilter} />
+                    <WordSetsList wordSets={wordSetsFilter} liStyle="mx-0 bg-black/10 mr-6" />
                   ) : (
                     <span>No word sets found in this folder</span>
                   )}
