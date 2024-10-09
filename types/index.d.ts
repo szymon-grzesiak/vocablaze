@@ -14,7 +14,12 @@ export interface IWordSetType {
   createdAt: Date;
   updatedAt: Date | null;
   userId: string;
-  folderId: string | null;
+  folders: {
+    id: string;
+    color: string | null;
+    name: string;
+    userId: string;
+  }[];
 }
 
 export interface FolderType {

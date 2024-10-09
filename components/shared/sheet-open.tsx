@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { getTextColor, hexToRgb } from "@/helpers/file";
 import { FolderType, IWordSetType } from "@/types";
+import { Trash } from "lucide-react";
+import { FcFolder, FcOpenedFolder } from "react-icons/fc";
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import { Button } from "@/components/ui/button";
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { Button } from "@nextui-org/button";
 import {
   Drawer,
   DrawerClose,
@@ -19,12 +22,12 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
 
 import WordSetsList from "./wordset-list";
-import { FcFolder, FcOpenedFolder } from "react-icons/fc";
 
 const SheetOpen = ({
   folder,
@@ -39,8 +42,6 @@ const SheetOpen = ({
   const wordSetsFilter = wordSets.filter((wordSet) =>
     wordSet?.folders?.some((folderItem) => folderItem.id === folder.id)
   );
-  
-
 
   const handleFolderClick = () => {
     setOpen(true);
@@ -69,13 +70,11 @@ const SheetOpen = ({
         onClick={() => handleFolderClick()}
       >
         {wordSetsFilter.length > 0 ? (
-          <FcOpenedFolder className="w-10 h-10 mb-3"/>
+          <FcOpenedFolder className="w-10 h-10 mb-3" />
         ) : (
-          <FcFolder className="w-10 h-10 mb-3"/>
+          <FcFolder className="w-10 h-10 mb-3" />
         )}
-        <div
-          className="px-2 text-xl font-bold truncate text-center text-white bg-black/60 rounded-b-md w-full"
-        >
+        <div className="px-2 text-xl font-bold truncate text-center text-white bg-black/60 rounded-b-md w-full">
           {folder.name}
         </div>
       </li>
@@ -83,14 +82,27 @@ const SheetOpen = ({
         <Sheet open={open} onOpenChange={handleCloseSheet}>
           <SheetContent side="left">
             <SheetHeader>
-              <SheetTitle className="text-2xl font-bold">{folder?.name}</SheetTitle>
-                {wordSetsFilter.length > 0 ? (
-                  <WordSetsList wordSets={wordSetsFilter} className="h-[90dvh]" liStyle="mx-0 bg-black/10 mr-6" />
-                ) : (
-                  <span>No word sets found in this folder</span>
-                )}
-   
+              <SheetTitle className="text-2xl font-bold">
+                {folder?.name}
+              </SheetTitle>
+              {wordSetsFilter.length > 0 ? (
+                <WordSetsList
+                  wordSets={wordSetsFilter}
+                  className="h-[90dvh]"
+                  liStyle="mx-0 bg-black/10 mr-6"
+                />
+              ) : (
+                <span>No word sets found in this folder</span>
+              )}
             </SheetHeader>
+            <SheetFooter>
+              <div className="flex pb-4 mb-4">
+                <h3>XDdss</h3>
+                <Button variant="flat" color="danger">
+                  <Trash />
+                </Button>
+              </div>
+            </SheetFooter>
           </SheetContent>
         </Sheet>
       ) : (
@@ -102,7 +114,10 @@ const SheetOpen = ({
                 <>
                   <span>Folder ID: {folder?.id}</span>
                   {wordSetsFilter.length > 0 ? (
-                    <WordSetsList wordSets={wordSetsFilter} liStyle="mx-0 bg-black/10 mr-6" />
+                    <WordSetsList
+                      wordSets={wordSetsFilter}
+                      liStyle="mx-0 bg-black/10 mr-6"
+                    />
                   ) : (
                     <span>No word sets found in this folder</span>
                   )}

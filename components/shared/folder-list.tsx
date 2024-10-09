@@ -1,5 +1,6 @@
-import SheetOpen from "./sheet-open";
 import { IWordSetType } from "@/types";
+
+import SheetOpen from "./sheet-open";
 
 interface FolderType {
   id: string;
@@ -17,21 +18,24 @@ const FoldersList = async ({
   searchParams: { [key: string]: string };
   wordSets: IWordSetType[];
 }) => {
-  const query = searchParams.folders || ""; 
+  const query = searchParams.folders || "";
 
   const filteredFolders = folders?.filter((folder) =>
     folder.name.toLowerCase().includes(query.toLowerCase())
   );
 
-  
   return (
-      <ul className="flex flex-wrap justify-start items-center gap-3">
-        {filteredFolders?.map((folder) => {
-          return (
-            <SheetOpen folder={folder} key={folder.id} wordSets={wordSets as IWordSetType[]} />
-          );
-        })}
-      </ul>
+    <ul className="flex flex-wrap justify-start items-center gap-3">
+      {filteredFolders?.map((folder) => {
+        return (
+          <SheetOpen
+            folder={folder}
+            key={folder.id}
+            wordSets={wordSets as IWordSetType[]}
+          />
+        );
+      })}
+    </ul>
   );
 };
 

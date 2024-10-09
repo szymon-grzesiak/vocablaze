@@ -10,6 +10,7 @@ import { RadialChart } from "@/components/shared/stats";
 
 import FoldersList from "../../../components/shared/folder-list";
 import WordSetsList from "../../../components/shared/wordset-list";
+import { cn } from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -28,7 +29,7 @@ export default async function Page({
   return (
     <div className="h-[calc(100vh-120px)] flex flex-col lg:flex-row w-full gap-4">
       <div className="flex flex-col lg:w-1/3 gap-4">
-        <section className="h-full rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md">
+        <section className={cn("rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md", user?.role === "USER" ? 'h-3/4': 'h-full')}>
           <span className="flex justify-between p-5">
             <span className="flex gap-2 text-2xl font-bold">
               <p>🌍</p>
@@ -39,18 +40,20 @@ export default async function Page({
           <WordSetsList wordSets={wordSets} error={error as string} />
         </section>
         {user?.role === "USER" && (
-          <section className="hidden lg:block relative p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
+          <section className="hidden h-1/4 lg:flex lg:gap-3 lg:flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
             <span className="flex gap-2 text-2xl font-bold">
               <p>💲</p> <p>Premium Access</p>
             </span>
             <p className="text-gray-600 dark:text-gray-400">
+              Want to have more unique experience learning languages?
               Unlock all language games and features with a Premium
               subscription.
             </p>
             <div className="w-full flex justify-end">
               <Button
-                className="border-black hover:bg-black hover:text-white font-bold px-4 rounded-lg transition-colors duration-300 mt-3"
+                className="font-bold px-4 rounded-lg"
                 variant="flat"
+                color="success"
               >
                 <Link href={"/profile"}> Upgrade to Premium</Link>
               </Button>

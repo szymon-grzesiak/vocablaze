@@ -65,7 +65,7 @@ export function RadialChart({
         createdAt: Date;
         updatedAt: Date | null;
         userId: string;
-        folderId: string | null;
+        folders: { id: string; color: string | null; name: string; userId: string; }[] | null;
       }[]
     | undefined;
   error?: string;

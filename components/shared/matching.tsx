@@ -4,18 +4,19 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@nextui-org/button";
+import { Word } from "@prisma/client";
 import { ArrowLeft, LucideGamepad2 } from "lucide-react";
 
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
 import { ConfettiStars } from "@/components/shared/confetti-stars";
-
-import { Word } from "@prisma/client";
 
 const Matching = ({ words }: { words: Word[] }) => {
   const [selectedSize, setSelectedSize] = useState(0);
@@ -119,7 +120,7 @@ const Matching = ({ words }: { words: Word[] }) => {
   const maxAvailableWords = words.length;
 
   return (
-    <div className="mx-auto flex justify-center items-center flex-col gap-10 w-full h-full">
+    <div className="mx-auto flex justify-center items-center flex-col gap-6 w-full h-full">
       <div className="flex flex-row justify-center items-center gap-4">
         <LucideGamepad2 className="text-indigo-500 w-16 h-16" />
         <h1 className="font-bold text-4xl [text-shadow:_2px_2px_2px_rgb(0_0_190_/_40%)]">
@@ -130,6 +131,12 @@ const Matching = ({ words }: { words: Word[] }) => {
         <>
           <div className="w-full flex items-center justify-center flex-col">
             <Select onValueChange={(value) => setSelectedSize(Number(value))}>
+              <SelectGroup>
+                <SelectLabel className="text-xl font-bold">
+                  Select the size of the game
+                </SelectLabel>
+              </SelectGroup>
+
               <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
                 <SelectValue placeholder="Select size" />
               </SelectTrigger>
@@ -141,7 +148,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                     value={String(size)}
                     disabled={size > maxAvailableWords + 1}
                   >
-                    {size}
+                    {size} words
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -155,6 +162,11 @@ const Matching = ({ words }: { words: Word[] }) => {
                 )
               }
             >
+              <SelectGroup>
+                <SelectLabel className="text-xl font-bold">
+                  Select the difficulty
+                </SelectLabel>
+              </SelectGroup>
               <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
@@ -202,16 +214,21 @@ const Matching = ({ words }: { words: Word[] }) => {
           </div>
         </>
       ) : (
-        <div className="w-full h-[600px] flex justify-start flex-col items-center gap-10">
-          <Button
-            startContent={<ArrowLeft />}
-            variant="flat"
-            onClick={resetGame}
-            className="px-12 py-6 text-xl rounded-full cursor-pointer bg-indigo-500 text-white"
-          >
-            Reset game
-          </Button>
-          <div className="flex flex-wrap gap-4 w-1/2">
+        <div className="w-full h-[600px] flex justify-start flex-col items-center gap-3">
+            <p className="text-lg pb-5 w-1/2">
+              Match the original word with its translation. Start by clicking on
+              a word. If you find a match, the words will turn green, otherwise
+              they will come back to their original color.
+            </p>
+            <Button
+              startContent={<ArrowLeft />}
+              variant="flat"
+              onClick={resetGame}
+              className="px-12 py-6 text-xl rounded-full cursor-pointer bg-indigo-500 text-white"
+            >
+              Reset game
+            </Button>
+            <div className="flex flex-wrap gap-4 w-1/2 p-6">
             {shuffledWords.map((word) => (
               <button
                 key={word.id}
