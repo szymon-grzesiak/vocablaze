@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { getTextColor, hexToRgb } from "@/helpers/file";
 import { FolderType, IWordSetType } from "@/types";
+import { Button } from "@nextui-org/button";
 import { Trash } from "lucide-react";
 import { FcFolder, FcOpenedFolder } from "react-icons/fc";
 
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button as ShadcnButton } from "@/components/ui/button";
-import { Button } from "@nextui-org/button";
 import {
   Drawer,
   DrawerClose,
@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/sheet";
 
 import WordSetsList from "./wordset-list";
+import DeleteButton from "../ui/delete-button";
 
 const SheetOpen = ({
   folder,
@@ -81,14 +82,14 @@ const SheetOpen = ({
       {isDesktop ? (
         <Sheet open={open} onOpenChange={handleCloseSheet}>
           <SheetContent side="left">
-            <SheetHeader>
+            <SheetHeader className="h-[90%]">
               <SheetTitle className="text-2xl font-bold">
                 {folder?.name}
               </SheetTitle>
               {wordSetsFilter.length > 0 ? (
                 <WordSetsList
                   wordSets={wordSetsFilter}
-                  className="h-[90dvh]"
+                  className="h-full"
                   liStyle="mx-0 bg-black/10 mr-6"
                 />
               ) : (
@@ -96,12 +97,7 @@ const SheetOpen = ({
               )}
             </SheetHeader>
             <SheetFooter>
-              <div className="flex pb-4 mb-4">
-                <h3>XDdss</h3>
-                <Button variant="flat" color="danger">
-                  <Trash />
-                </Button>
-              </div>
+              <DeleteButton folderId={folder.id}/>
             </SheetFooter>
           </SheetContent>
         </Sheet>
@@ -126,7 +122,7 @@ const SheetOpen = ({
             </DrawerHeader>
             <DrawerFooter className="pt-2">
               <DrawerClose asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="solid">Cancel</Button>
               </DrawerClose>
             </DrawerFooter>
           </DrawerContent>

@@ -355,3 +355,18 @@ export async function createCheckoutSession({
 
     redirect(stripeSession?.url as string);
 }
+
+
+export async function deleteFolder(id: string) {
+  try {
+    await db.folder.delete({
+      where: { id },
+    });
+  } catch (error) {
+    console.error("Error deleting folder:", error);
+    return { error: "An error occurred while deleting the folder" };
+  } finally {
+    revalidatePath("/home");
+    redirect("/home");
+  }
+}

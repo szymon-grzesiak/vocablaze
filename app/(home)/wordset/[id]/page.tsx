@@ -23,12 +23,12 @@ import NotFound from "@/components/shared/NotFound";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const currUser = await currentUser();
-  const { wordSet } = await getWordSetById(params.id, currUser?.id as string);
-  if (!wordSet) return <NotFound />;
+  const { wordSet, error } = await getWordSetById(params.id, currUser?.id as string);
+  if (!wordSet) return <NotFound message={error} />;
   console.log(wordSet);
 
   return (
-    <div className="bg-black/5 px-6 py-7 mb-4 backdrop-blur-2xl dark:bg-slate-900/90 w-full rounded-lg flex flex-col lg:w-3/4 justify-center">
+    <div className="mx-auto bg-black/5 px-6 py-7 mb-4 backdrop-blur-2xl dark:bg-slate-900/90 w-full rounded-lg flex flex-col lg:w-3/4 justify-center">
       <div className="flex flex-col md:flex-row items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">

@@ -48,7 +48,7 @@ const WordSetsList = ({
   );
 
   return (
-    <ScrollArea className={cn("h-[75dvh] overflow-auto", className)}>
+    <ScrollArea className={cn("h-3/4 overflow-auto", className)}>
       <ul className="flex flex-col gap-4 mb-5">
         {filteredWordSets?.map((wordSet) => (
           <Link href={`/wordset/${wordSet.id}`} key={wordSet.id}>

@@ -1,16 +1,19 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@nextui-org/button";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
 import { getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
+import { cn } from "@/lib/utils";
+import { WordSet } from "@/hooks/useWordProgress";
+import DeleteButton from "@/components/ui/delete-button";
 import { MyResponsiveCalendar } from "@/components/shared/calendar";
 import Search from "@/components/shared/search";
 import { RadialChart } from "@/components/shared/stats";
 
 import FoldersList from "../../../components/shared/folder-list";
 import WordSetsList from "../../../components/shared/wordset-list";
-import { cn } from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -27,9 +30,9 @@ export default async function Page({
   const user = await currentUser();
 
   return (
-    <div className="h-[calc(100vh-120px)] flex flex-col lg:flex-row w-full gap-4">
-      <div className="flex flex-col lg:w-1/3 gap-4">
-        <section className={cn("rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md", user?.role === "USER" ? 'h-3/4': 'h-full')}>
+    <div className="flex flex-col lg:flex-row w-full gap-4 p-4 h-full">
+      <div className="flex flex-col lg:w-1/3 gap-4 h-full" id="left-panel">
+        <section className="flex flex-col h-3/4 rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md">
           <span className="flex justify-between p-5">
             <span className="flex gap-2 text-2xl font-bold">
               <p>🌍</p>
@@ -37,7 +40,20 @@ export default async function Page({
             </span>
             <Search queryKey="sets" />
           </span>
-          <WordSetsList wordSets={wordSets} error={error as string} />
+          {(wordSets as any)?.length > 0 ? (
+            <WordSetsList wordSets={wordSets} error={error as string} />
+          ) : (
+            <div className="h-full w-1/2 mx-auto flex flex-col gap-6 justify-center items-center">
+              <QuestionMarkCircledIcon className="w-8 h-8 text-indigo-500" />
+              <p>
+                Oh, it looks like you don&apos;t have any word sets yet, go
+                ahead and create one.
+              </p>
+              <Link href={"/add"} className="w-full flex justify-start">
+                <Button className="w-full">Create word set</Button>
+              </Link>
+            </div>
+          )}
         </section>
         {user?.role === "USER" && (
           <section className="hidden h-1/4 lg:flex lg:gap-3 lg:flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
@@ -45,32 +61,32 @@ export default async function Page({
               <p>💲</p> <p>Premium Access</p>
             </span>
             <p className="text-gray-600 dark:text-gray-400">
-              Want to have more unique experience learning languages?
               Unlock all language games and features with a Premium
               subscription.
             </p>
-            <div className="w-full flex justify-end">
               <Button
-                className="font-bold px-4 rounded-lg"
+                className="font-bold p-4 rounded-lg"
                 variant="flat"
                 color="success"
               >
                 <Link href={"/profile"}> Upgrade to Premium</Link>
               </Button>
-            </div>
           </section>
         )}
       </div>
-      <div className="flex flex-col lg:w-2/3 gap-4">
-        <section className="hidden lg:block relative h-full max-h-[350px] w-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md p-5 rounded-lg">
+      <div className="flex flex-col lg:w-2/3 gap-4" id="right-panel">
+        <section className="hidden lg:block relative h-full max-h-[250px] w-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md p-5 rounded-lg">
           <span className="flex gap-2 text-2xl font-bold">
             <p>📚</p> <p>Your learning history</p>
           </span>
           <MyResponsiveCalendar data={calendarData} />
         </section>
-        <section className="flex flex-col lg:flex-row gap-4 h-full ">
-          <div className="relative h-full w-full lg:w-1/3 gap-4 ">
-            <div className="hidden lg:flex justify-around flex-col p-5 h-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
+        <section
+          className="flex flex-col lg:flex-row gap-4 h-full"
+          id="monthlyTrends + folders"
+        >
+          <div className="w-full lg:w-1/3 gap-4 h-full" id="monthlyTrends">
+            <div className="hidden h-full lg:flex justify-around flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
               <span className="flex gap-2 text-2xl font-bold">
                 <p>📈</p> <p>Monthly trends</p>
               </span>
@@ -79,15 +95,29 @@ export default async function Page({
               </div>
             </div>
           </div>
-          <div className="relative w-full lg:w-2/3">
-            <div className="flex flex-col gap-4 h-full p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
+          <div className="w-full lg:w-2/3 h-full" id="folders">
+            <div className="flex flex-col h-full gap-4 p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
               <span className="flex justify-between">
                 <span className="flex gap-2 text-2xl font-bold">
                   <p>📁</p> <p>Folders</p>
                 </span>
                 <Search queryKey="folders" />
               </span>
-              <FoldersList folders={folders} searchParams={searchParams} wordSets={wordSets as any}/>
+              {folders.length > 0 ? (
+                <FoldersList
+                  folders={folders}
+                  searchParams={searchParams}
+                  wordSets={wordSets as any}
+                />
+              ) : (
+                <div className="h-full w-1/2 mx-auto flex flex-col gap-3 justify-center items-center">
+                  <QuestionMarkCircledIcon className="w-8 h-8 text-indigo-500" />
+                  <p>
+                    Oh, it looks like you don&apos;t have any folders yet, go
+                    ahead and create one.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </section>
