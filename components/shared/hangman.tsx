@@ -3,19 +3,17 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getCharacterSet } from "@/helpers/file";
 import { Button, CircularProgress, Input } from "@nextui-org/react";
+import { WordSet as PrismaWordSetType } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
 
 import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
-import {HangmanDrawing, CheckIcon} from "@/components/shared/hangman-drawing";
+import { CheckIcon, HangmanDrawing } from "@/components/shared/hangman-drawing";
 
 import { WordProgress } from "./word-progress";
-import { getCharacterSet } from "@/helpers/file";
-import { WordSet as PrismaWordSetType } from "@prisma/client";
 
-
-
-const HangmanGame = ({ wordSet }: { wordSet: (WordSet | PrismaWordSetType) }) => {
+const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
   const pathname = usePathname().split("/")[2];
   const { words, currentWord, loading, handleDontKnowWord, handleKnowWord } =
     useWordProgress(wordSet as WordSet);
@@ -69,7 +67,9 @@ const HangmanGame = ({ wordSet }: { wordSet: (WordSet | PrismaWordSetType) }) =>
   };
 
   const Buttons = () => {
-    const characterSet = getCharacterSet((wordSet as WordSet)?.secondLanguage?.name || "English");
+    const characterSet = getCharacterSet(
+      (wordSet as WordSet)?.secondLanguage?.name || "English"
+    );
     return characterSet.map((letter) => (
       <Button
         key={letter}
@@ -83,10 +83,12 @@ const HangmanGame = ({ wordSet }: { wordSet: (WordSet | PrismaWordSetType) }) =>
     ));
   };
 
-  const isLatin = getCharacterSet((wordSet as WordSet)?.secondLanguage?.name as string).length > 0;
+  const isLatin =
+    getCharacterSet((wordSet as WordSet)?.secondLanguage?.name as string)
+      .length > 0;
 
   return (
-    <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto w-full max-w-[550px] dark:bg-slate-900/90 rounded-[2rem] full-screen-card overflow-hidden p-4">
+    <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto w-full max-w-[700px] dark:bg-slate-900/90 rounded-[2rem] overflow-hidden p-6">
       <div className="absolute top-0 right-0 p-2 z-20">
         <WordProgress progress={words[currentWord]?.progress * 100} />
       </div>
@@ -96,9 +98,10 @@ const HangmanGame = ({ wordSet }: { wordSet: (WordSet | PrismaWordSetType) }) =>
         </div>
       ) : (
         <div className="h-full flex flex-col items-center justify-between ">
-          <Button className="text-xl rounded-full cursor-pointer absolute top-[10px] left-[10px]">
-            <ArrowLeft />
-            <Link href={`/wordset/${pathname}`}>Back</Link>
+          <Button className="text-xl rounded-full cursor-pointer p-0 absolute top-[10px] left-[10px]">
+            <Link href={`/wordset/${pathname}`}>
+              <ArrowLeft />
+            </Link>
           </Button>
           {gameState === "playing" && (
             <>
@@ -106,7 +109,9 @@ const HangmanGame = ({ wordSet }: { wordSet: (WordSet | PrismaWordSetType) }) =>
               <p>Guessed wrong: {nWrong}</p>
               <HangmanDrawing nWrong={nWrong} />
               <div className="flex flex-wrap gap-2 justify-center items-center">
-                {isLatin ? <Buttons /> : (
+                {isLatin ? (
+                  <Buttons />
+                ) : (
                   <div className="flex gap-4 items-center">
                     <Input
                       value={manualGuess}
@@ -123,7 +128,7 @@ const HangmanGame = ({ wordSet }: { wordSet: (WordSet | PrismaWordSetType) }) =>
             <>
               <h1>You Win!</h1>
               <p>The word was: {currentWord}</p>
-              <CheckIcon/>
+              <CheckIcon />
               <Button
                 onClick={async () => {
                   await handleKnowWord(currentWord);

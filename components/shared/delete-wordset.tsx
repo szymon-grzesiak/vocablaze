@@ -42,7 +42,7 @@ export default function DeleteModal({
     <>
       <Tooltip content="Delete words set">
         <Button isIconOnly onPress={onOpen}>
-          <Delete02Icon />
+          <Delete02Icon className="text-red-500" />
         </Button>
       </Tooltip>
 
@@ -65,10 +65,10 @@ export default function DeleteModal({
                 </div>
               </ModalBody>
               <ModalFooter className="p-0 m-0 box-border">
-                <Button variant="flat" onPress={onClose}>
+                <Button variant="flat" onPress={onClose} className="font-bold text-medium">
                   Close
                 </Button>
-                <Button color="danger" onClick={handleClick} onPress={onClose}>
+                <Button color="danger" onClick={handleClick} onPress={onClose} className="font-bold text-medium">
                   Delete
                 </Button>
               </ModalFooter>

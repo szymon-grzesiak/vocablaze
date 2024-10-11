@@ -12,7 +12,7 @@ const Hangman = async ({ params }: { params: { id: string } }) => {
   const wordSet = await getWordSetWithProgress(params.id);
 
   return (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full p-6">
       <HangmanGame wordSet={wordSet} />
     </div>
   );

@@ -11,7 +11,7 @@ const SettingsPage = async () => {
   const updateUserWithId = createCheckoutSession.bind(null, { userEmail: user?.email as string });
 
   return (
-    <div className="flex flex-wrap gap-6">
+    <div className="flex flex-wrap gap-6 w-1/2 mx-auto">
      <Settings user={user as ExtendedUser} />
       <div className="bg-gray-900 w-full rounded-md p-6 shadow-lg  dark:bg-gray-50 text-white dark:text-black">
         <div className="flex flex-col items-center justify-center mb-4">

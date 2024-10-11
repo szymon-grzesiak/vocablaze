@@ -120,7 +120,7 @@ const Matching = ({ words }: { words: Word[] }) => {
   const maxAvailableWords = words.length;
 
   return (
-    <div className="mx-auto flex justify-center items-center flex-col gap-6 w-full h-full">
+    <div className="mx-auto p-6 flex justify-start items-center flex-col gap-6 w-full h-full">
       <div className="flex flex-row justify-center items-center gap-4">
         <LucideGamepad2 className="text-indigo-500 w-16 h-16" />
         <h1 className="font-bold text-4xl [text-shadow:_2px_2px_2px_rgb(0_0_190_/_40%)]">
@@ -137,7 +137,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                 </SelectLabel>
               </SelectGroup>
 
-              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
+              <SelectTrigger className="w-full md:w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
                 <SelectValue placeholder="Select size" />
               </SelectTrigger>
               <SelectContent className="rounded-3xl">
@@ -167,7 +167,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                   Select the difficulty
                 </SelectLabel>
               </SelectGroup>
-              <SelectTrigger className="w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
+              <SelectTrigger className="w-full md:w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
               <SelectContent>
@@ -194,7 +194,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                 })}
               </SelectContent>
             </Select>
-            <div className="flex gap-6">
+            <div className="flex flex-wrap-reverse gap-6 justify-center pt-6">
               <Button className="px-12 py-6 text-xl rounded-full cursor-pointer">
                 <Link href={`/wordset/${pathname}`}>Back to details</Link>
               </Button>
@@ -228,7 +228,7 @@ const Matching = ({ words }: { words: Word[] }) => {
             >
               Reset game
             </Button>
-            <div className="flex flex-wrap gap-4 w-1/2 p-6">
+            <div className="flex flex-wrap justify-center gap-4 p-6">
             {shuffledWords.map((word) => (
               <button
                 key={word.id}

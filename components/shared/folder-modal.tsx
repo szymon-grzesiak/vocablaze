@@ -92,6 +92,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
             <span className="text-red-500">{errors.name.message}</span>
           )}
         </div>
+        <label htmlFor="color" className="text-sm pl-2">Choose a color:</label>
         <input
           className="w-full rounded-xl cursor-pointer"
           type="color"

@@ -38,7 +38,7 @@ export const MyResponsiveCalendar = ({ data }: { data: CalendarDatum[] }) => {
         direction: "row",
         itemCount: 4,
         itemWidth: 42,
-        itemHeight: 36,
+        itemHeight: 20,
         itemsSpacing: 14,
         itemDirection: "right-to-left",
       },

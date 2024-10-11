@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Button, Popover, PopoverTrigger, Tooltip } from "@nextui-org/react";
 import {
   ArrowDown,
   CircleCheck,
@@ -8,6 +8,7 @@ import {
   FlashlightIcon,
   GamepadIcon,
   HammerIcon,
+  Info,
   SquareStackIcon,
 } from "lucide-react";
 import { GiSuicide } from "react-icons/gi";
@@ -23,7 +24,10 @@ import NotFound from "@/components/shared/NotFound";
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const currUser = await currentUser();
-  const { wordSet, error } = await getWordSetById(params.id, currUser?.id as string);
+  const { wordSet, error } = await getWordSetById(
+    params.id,
+    currUser?.id as string
+  );
   if (!wordSet) return <NotFound message={error} />;
   console.log(wordSet);
 
@@ -63,6 +67,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
               <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 Practice Games
               </h3>
+              <Tooltip color="primary" content="Games when you can gain progress are these with green colored icons">
+                <Info className="text-blue-400 w-5 h-5 shrink-0 cursor-pointer" />
+              </Tooltip>
+              <p></p>
             </div>
             <div className="flex items-center gap-2">
               <CircleCheck className="h-6 w-6 shrink-0 text-green-500" />
@@ -78,7 +86,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-4 flex flex-col items-center justify-center space-y-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
               href={`${params.id}/flashcards`}
             >
-              <SquareStackIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+              <SquareStackIcon className="h-8 w-8 text-green-600" />
               <span className="text-gray-900 dark:text-gray-100 font-medium">
                 Flashcards
               </span>
@@ -102,7 +110,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   href={`${params.id}/hangman`}
                   className="flex flex-col items-center justify-center space-y-2"
                 >
-                  <GiSuicide className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+                  <GiSuicide className="h-8 w-8 text-green-400 stroke-green-400 " />
                   <span className="text-gray-900 dark:text-gray-100 font-medium">
                     Hangman
                   </span>
@@ -110,16 +118,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
               </Button>
             ) : (
               <div className="relative w-full rounded-lg">
-                  <div className="absolute rounded-full border-5 p-2 z-50 top-[-20%] left-[-3%] text-gray-100 bg-red-400 font-bold shadow-xl">
-                    PRO
-                  </div>
+                <div className="absolute rounded-full border-5 p-2 z-50 top-[-20%] left-[-3%] text-gray-100 bg-red-400 font-bold shadow-xl">
+                  PRO
+                </div>
                 <Button
-                  className="h-full flex flex-col items-center justify-center w-full"
+                  className="h-full flex flex-col p-4 shadow-sm items-center justify-center w-full"
                   variant={"flat"}
                   disabled
                 >
-                
-                  <GiSuicide className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+                  <GiSuicide className="h-8 w-8 text-green-600" />
                   <span className="text-gray-900 dark:text-gray-100 font-medium">
                     Hangman
                   </span>

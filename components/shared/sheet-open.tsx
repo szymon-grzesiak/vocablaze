@@ -27,8 +27,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-import WordSetsList from "./wordset-list";
 import DeleteButton from "../ui/delete-button";
+import WordSetsList from "./wordset-list";
 
 const SheetOpen = ({
   folder,
@@ -96,19 +96,18 @@ const SheetOpen = ({
                 <span>No word sets found in this folder</span>
               )}
             </SheetHeader>
-            <SheetFooter>
-              <DeleteButton folderId={folder.id}/>
+            <SheetFooter className="absolute bottom-0 left-[50%] mb-4 pb-4">
+              <DeleteButton folderId={folder.id} />
             </SheetFooter>
           </SheetContent>
         </Sheet>
       ) : (
         <Drawer open={open} onOpenChange={handleOpenDrawer}>
-          <DrawerContent>
+          <DrawerContent className="min-h-[50%]">
             <DrawerHeader>
               <DrawerTitle>{folder?.name}</DrawerTitle>
               <DrawerDescription>
                 <>
-                  <span>Folder ID: {folder?.id}</span>
                   {wordSetsFilter.length > 0 ? (
                     <WordSetsList
                       wordSets={wordSetsFilter}
@@ -120,10 +119,8 @@ const SheetOpen = ({
                 </>
               </DrawerDescription>
             </DrawerHeader>
-            <DrawerFooter className="pt-2">
-              <DrawerClose asChild>
-                <Button variant="solid">Cancel</Button>
-              </DrawerClose>
+            <DrawerFooter className="absolute bottom-0 left-[50%] my-4">
+                <DeleteButton folderId={folder.id} />
             </DrawerFooter>
           </DrawerContent>
         </Drawer>

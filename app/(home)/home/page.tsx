@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
-import { getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
+import { get5lastMonthsWordsLearned, getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
 import { cn } from "@/lib/utils";
 import { WordSet } from "@/hooks/useWordProgress";
@@ -20,19 +20,23 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  const [wordSetsResponse, folders, calendarData] = await Promise.all([
+  const currUser = await currentUser();
+  const [wordSetsResponse, folders, calendarData, radialChartData] = await Promise.all([
     getAllWordSets(),
     getFolders(),
     getDataToCalendar(),
+    get5lastMonthsWordsLearned(currUser?.id as string),
   ]);
 
   const { wordSets, error } = wordSetsResponse;
   const user = await currentUser();
 
+  console.log("radialChartData", radialChartData);
+
   return (
     <div className="flex flex-col lg:flex-row w-full gap-4 p-4 h-full">
       <div className="flex flex-col lg:w-1/3 gap-4 h-full" id="left-panel">
-        <section className="flex flex-col h-3/4 rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md">
+        <section className={cn("flex flex-col h-3/4 rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md", user?.role === 'PRO' && 'h-full')}>
           <span className="flex justify-between p-5">
             <span className="flex gap-2 text-2xl font-bold">
               <p>🌍</p>
@@ -56,7 +60,7 @@ export default async function Page({
           )}
         </section>
         {user?.role === "USER" && (
-          <section className="hidden h-1/4 lg:flex lg:gap-3 lg:flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
+          <section className="hidden h-1/4 lg:flex lg:justify-between lg:gap-3 lg:flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg dark:bg-gray-700">
             <span className="flex gap-2 text-2xl font-bold">
               <p>💲</p> <p>Premium Access</p>
             </span>
@@ -75,7 +79,7 @@ export default async function Page({
         )}
       </div>
       <div className="flex flex-col lg:w-2/3 gap-4" id="right-panel">
-        <section className="hidden lg:block relative h-full max-h-[250px] w-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md p-5 rounded-lg">
+        <section className="hidden lg:block relative h-full max-h-[300px] w-full bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md p-5 rounded-lg">
           <span className="flex gap-2 text-2xl font-bold">
             <p>📚</p> <p>Your learning history</p>
           </span>
@@ -85,13 +89,13 @@ export default async function Page({
           className="flex flex-col lg:flex-row gap-4 h-full"
           id="monthlyTrends + folders"
         >
-          <div className="w-full lg:w-1/3 gap-4 h-full" id="monthlyTrends">
-            <div className="hidden h-full lg:flex justify-around flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
+          <div className="w-full lg:w-1/3 h-full" id="monthlyTrends">
+            <div className="hidden h-full lg:flex flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
               <span className="flex gap-2 text-2xl font-bold">
                 <p>📈</p> <p>Monthly trends</p>
               </span>
-              <div className="dark:bg-gray-800 rounded-lg w-full">
-                <RadialChart wordSets={wordSets} />
+              <div className="dark:bg-gray-800 rounded-lg w-full h-full">
+                <RadialChart wordSets={wordSets} data={radialChartData}/>
               </div>
             </div>
           </div>
