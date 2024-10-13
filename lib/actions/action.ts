@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { AddFolderSchema, AddWordSetSchema } from "@/schemas";
 import { Prisma } from "@prisma/client";
 import * as z from "zod";
+
 import db from "../db";
 import { currentUser } from "../sessionData";
 import stripe from "../stripe";
@@ -13,7 +14,7 @@ export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
   const validatedFields = AddWordSetSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: validatedFields.error };
   }
 
   const {
@@ -46,7 +47,7 @@ export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
           ? {
               connect: folders.map((folderId: string) => ({ id: folderId })),
             }
-          : undefined, 
+          : undefined,
       },
       include: {
         folders: true,
@@ -92,7 +93,7 @@ export const addFolder = async (values: z.infer<typeof AddFolderSchema>) => {
 
     const userId = user.id as string;
 
-   await db.folder.create({
+    await db.folder.create({
       data: {
         name: validatedFields.data.name,
         color: validatedFields.data.color,
@@ -114,7 +115,7 @@ export const updateWordSet = async (
   const validatedFields = AddWordSetSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: "Invalid fields!" };
+    return { error: validatedFields.error };
   }
 
   const {
@@ -141,7 +142,7 @@ export const updateWordSet = async (
           : undefined,
       },
       include: {
-        folders: true, 
+        folders: true,
       },
     });
 
@@ -155,7 +156,7 @@ export const updateWordSet = async (
               originalWord: word.originalWord,
               translatedWord: word.translatedWord,
               id: word.id,
-              order: index,  // Ustawienie kolejności
+              order: index, // Ustawienie kolejności
             },
           });
         } else {
@@ -165,7 +166,7 @@ export const updateWordSet = async (
               originalWord: word.originalWord,
               translatedWord: word.translatedWord,
               wordSetId: updatedWordSet.id,
-              order: index,  
+              order: index,
             },
           });
         }
@@ -248,7 +249,6 @@ export async function getInitialWords(wordSetId: string) {
   return words;
 }
 
-
 export const getWordSetWithProgress = async (wordSetId: string) => {
   const user = await currentUser();
   if (!user) {
@@ -303,7 +303,10 @@ export const updateProgress = async (wordId: string, progressValue: number) => {
   });
 };
 
-export const saveDisplayOrder = async (wordSetId: string, showTranslatedFirst: boolean) => {
+export const saveDisplayOrder = async (
+  wordSetId: string,
+  showTranslatedFirst: boolean
+) => {
   const user = await currentUser();
   if (!user) {
     throw new Error("You must be logged in to save display order");
@@ -317,45 +320,43 @@ export const saveDisplayOrder = async (wordSetId: string, showTranslatedFirst: b
   });
 };
 
-
 export async function createCheckoutSession({
   userEmail,
 }: {
   userEmail: string;
 }) {
-    const user = await currentUser();
+  const user = await currentUser();
 
-    if (!user) {
-      throw new Error('User not found');
-    }
+  if (!user) {
+    throw new Error("User not found");
+  }
 
-    const stripeSession = await stripe.checkout.sessions.create({
-      success_url: `http://localhost:3000/profile`,
-      cancel_url: `http://localhost:3000/profile?canceled=true`,
-      payment_method_types: ['card', 'paypal', 'blik'],
-      mode: 'payment',
-      customer_email: userEmail,
-      metadata: {
-        userEmail,
-      },
-      line_items: [
-        {
-          price_data: {
-            currency: 'pln',
-            product_data: {
-              name: 'Premium Plan',
-              description: 'Access to the premium features',
-            },
-            unit_amount: 9999,
+  const stripeSession = await stripe.checkout.sessions.create({
+    success_url: `http://localhost:3000/profile`,
+    cancel_url: `http://localhost:3000/profile?canceled=true`,
+    payment_method_types: ["card", "paypal", "blik"],
+    mode: "payment",
+    customer_email: userEmail,
+    metadata: {
+      userEmail,
+    },
+    line_items: [
+      {
+        price_data: {
+          currency: "pln",
+          product_data: {
+            name: "Premium Plan",
+            description: "Access to the premium features",
           },
-          quantity: 1,
-        }
-      ],
-    });
+          unit_amount: 9999,
+        },
+        quantity: 1,
+      },
+    ],
+  });
 
-    redirect(stripeSession?.url as string);
+  redirect(stripeSession?.url as string);
 }
-
 
 export async function deleteFolder(id: string) {
   try {

@@ -90,7 +90,7 @@ export default async function Page({
           id="monthlyTrends + folders"
         >
           <div className="w-full lg:w-1/3 h-full" id="monthlyTrends">
-            <div className="hidden h-full lg:flex flex-col p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
+            <div className="hidden h-full lg:flex flex-col gap-4 p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
               <span className="flex gap-2 text-2xl font-bold">
                 <p>📈</p> <p>Monthly trends</p>
               </span>

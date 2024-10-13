@@ -121,6 +121,8 @@ export const getWordSetById = async (id: string, userId: string) => {
           },
         },
         folders: true,
+        firstLanguage: true,
+        secondLanguage: true,
       },
     });
     if (!wordSet) {
@@ -160,7 +162,7 @@ export const get5lastMonthsWordsLearned = async (userId: string) => {
       SELECT DATE_TRUNC('month', CURRENT_DATE) - INTERVAL '1 month' * generate_series(0, 4) AS month
   )
   SELECT
-      TO_CHAR(months.month, 'Mon') AS "nameOfMonth",
+      TO_CHAR(months.month, 'FMMonth') AS "nameOfMonth",
       COALESCE(COUNT("ProgressWordHistory"."id"), 0) AS "wordCount"
   FROM
       months

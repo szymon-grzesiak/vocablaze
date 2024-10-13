@@ -59,8 +59,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </div>
       </div>
       <ClientWordSet wordSet={wordSet} />
-      <div className="grid grid-cols-1 gap-6">
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg py-6">
+      <div className="grid grid-cols-1 gap-6 pt-4">
+        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg py-6 px-6">
           <div className="flex items-start gap-y-4 justify-between mb-4 flex-col md:flex-row md:items-center">
             <div className="flex items-center justify-between space-x-2">
               <GamepadIcon className="h-8 w-8 shrink-0 text-gray-900 dark:text-gray-50" />
@@ -110,7 +110,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
                   href={`${params.id}/hangman`}
                   className="flex flex-col items-center justify-center space-y-2"
                 >
-                  <GiSuicide className="h-8 w-8 text-green-400 stroke-green-400 " />
+                  <GiSuicide className="h-8 w-8 text-green-600" />
                   <span className="text-gray-900 dark:text-gray-100 font-medium">
                     Hangman
                   </span>

@@ -31,6 +31,7 @@ type WordsState = {
     progress: number;
     id: string;
     translatedWord: string;
+    originalWord?: string;
   };
 };
 
@@ -40,6 +41,7 @@ export const useWordProgress = (wordSet: (WordSet )) => {
       progress: word.progress,
       id: word.id,
       translatedWord: word.translatedWord,
+      originalWord: word.originalWord,
     };
     return acc;
   }, {} as WordsState);

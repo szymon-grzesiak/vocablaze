@@ -125,7 +125,7 @@ export const AddWordSetSchema = z.object({
         id: z.string().optional(),
       })
     )
-    .min(5, "You must provide at least 5 word."),
+    .min(5, "You must provide at least 5 word.").max(30, "You can provide at most 30 words"),
 });
 
 export const AddFolderSchema = z.object({
@@ -146,5 +146,5 @@ export const UpdateWordSetSchema = z.object({
         translated_word: z.string().min(1, "Translated word is required"),
       })
     )
-    .min(5, "You must provide at least 5 word."),
+    .min(5, "You must provide at least 5 word.").max(30, "You can provide at most 30 words"),
 });

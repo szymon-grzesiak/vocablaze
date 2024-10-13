@@ -1,23 +1,24 @@
 "use client";
 
-import { Fragment, useMemo, useCallback } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { Divider, Progress } from "@nextui-org/react";
-import { BookIcon } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Select, SelectItem } from "@nextui-org/react";
-import { WordSet } from "@/hooks/useWordProgress";
+import { Fragment, useCallback, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Divider, Progress, Select, SelectItem } from "@nextui-org/react";
 import { Word } from "@prisma/client";
+import { ArrowRight, BookIcon } from "lucide-react";
+
+import { WordSet } from "@/hooks/useWordProgress";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
 import WordProgressDisplay from "./WordProgressDisplay";
 
 type Props = WordSet & {
   words: Word[];
-}
+};
 
 const ClientWordSet = ({ wordSet }: { wordSet: Props }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  
+
   const sortCriterion = searchParams.get("sort") || "order";
 
   const sortedWords = useMemo(() => {
@@ -38,20 +39,24 @@ const ClientWordSet = ({ wordSet }: { wordSet: Props }) => {
     return sorted;
   }, [sortCriterion, wordSet.words]);
 
-  const handleSortChange = useCallback((value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("sort", value);
-    router.push(`?${params.toString()}`);
-  }, [searchParams, router]);
+  const handleSortChange = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("sort", value);
+      router.push(`?${params.toString()}`);
+    },
+    [searchParams, router]
+  );
 
   const wordSetProgressSum = sortedWords.reduce(
     (acc, word) => acc + word.progress,
     0
   );
 
-  const wordSetProgressValue = useMemo(() => Math.floor(
-    (wordSetProgressSum / sortedWords.length) * 100
-  ), [wordSetProgressSum, sortedWords.length]);
+  const wordSetProgressValue = useMemo(
+    () => Math.floor((wordSetProgressSum / sortedWords.length) * 100),
+    [wordSetProgressSum, sortedWords.length]
+  );
 
   return (
     <>
@@ -78,16 +83,25 @@ const ClientWordSet = ({ wordSet }: { wordSet: Props }) => {
       <div className="grid grid-cols-1 gap-6">
         <div className="bg-black/5 backdrop-blur-xl dark:bg-gray-800 rounded-lg pl-2 py-4">
           <div className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-2">
-              <BookIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
-              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                Details
-              </h3>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-3">
+                <BookIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                  Details
+                </h3>
+              </div>
+              <div className="flex gap-3 justify-center items-center">
+                <p className="bg-black/10 py-1 px-2 rounded-xl font-semibold">
+                  {wordSet?.firstLanguage?.name}
+                </p>
+                <ArrowRight className="text-blue-400" />{" "}
+                <p className="bg-black/10 py-1 px-2 rounded-xl font-semibold">
+                  {wordSet?.secondLanguage?.name}
+                </p>
+              </div>
             </div>
 
-             <WordProgressDisplay
-              progress={wordSetProgressValue / 100}
-            />
+            <WordProgressDisplay progress={wordSetProgressValue / 100} />
           </div>
           <Divider className="h-[2px]" />
           <ScrollArea className="h-[400px] px-6">
@@ -111,10 +125,9 @@ const ClientWordSet = ({ wordSet }: { wordSet: Props }) => {
                     />
                   </div>
                 </div>
-                {index !== sortedWords.length - 1 &&
-                  sortedWords.length > 1 && (
-                    <Divider className="h-[1px]" />
-                  )}
+                {index !== sortedWords.length - 1 && sortedWords.length > 1 && (
+                  <Divider className="h-[1px]" />
+                )}
               </Fragment>
             ))}
           </ScrollArea>

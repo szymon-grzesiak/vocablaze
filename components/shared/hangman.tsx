@@ -12,11 +12,13 @@ import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
 import { CheckIcon, HangmanDrawing } from "@/components/shared/hangman-drawing";
 
 import { WordProgress } from "./word-progress";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
   const pathname = usePathname().split("/")[2];
   const { words, currentWord, loading, handleDontKnowWord, handleKnowWord } =
     useWordProgress(wordSet as WordSet);
+  const mediaQuery = useMediaQuery('(min-width: 768px)');
 
   const [nWrong, setNWrong] = useState<number>(0);
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
@@ -76,7 +78,8 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
         onClick={() => handleGuess(letter)}
         isDisabled={guessedLetters.includes(letter)}
         variant="shadow"
-        className="font-bold text-white bg-indigo-400"
+        size={mediaQuery ? "md" : "sm"}
+        className="font-bold text-white bg-indigo-400 p-0"
       >
         {letter}
       </Button>
@@ -88,25 +91,42 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
       .length > 0;
 
   return (
-    <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto w-full max-w-[700px] dark:bg-slate-900/90 rounded-[2rem] overflow-hidden p-6">
+    <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto w-full max-w-[850px] dark:bg-slate-900/90 rounded-[2rem] overflow-hidden py-6 px-2 md:px-6">
       <div className="absolute top-0 right-0 p-2 z-20">
         <WordProgress progress={words[currentWord]?.progress * 100} />
       </div>
       {loading ? (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex justify-center items-center min-h-[656px]">
           <CircularProgress size="lg" />
         </div>
       ) : (
         <div className="h-full flex flex-col items-center justify-between ">
-          <Button className="text-xl rounded-full cursor-pointer p-0 absolute top-[10px] left-[10px]">
+          <Button
+            isIconOnly
+            className="rounded-full max-w-[40px] cursor-pointer p-0 absolute top-[10px] left-[10px]"
+          >
             <Link href={`/wordset/${pathname}`}>
               <ArrowLeft />
             </Link>
           </Button>
           {gameState === "playing" && (
             <>
-              <h1>{guessedWord()}</h1>
-              <p>Guessed wrong: {nWrong}</p>
+              <div>
+                <p className="pr-4">
+                  {(wordSet as WordSet)?.firstLanguage?.name} word:{" "}
+                  <strong>{words[currentWord]?.translatedWord}</strong>
+                </p>
+                <p>
+                  Translate it to{" "}
+                  <strong>{(wordSet as WordSet)?.secondLanguage?.name}</strong>
+                </p>
+                <p className="pr-4">
+                  Guessed wrong: <strong>{nWrong}</strong>
+                </p>
+              </div>
+              <h1 className="flex pt-5 flex-wrap justify-center w-[90%] text-xl">
+                {guessedWord()}
+              </h1>
               <HangmanDrawing nWrong={nWrong} />
               <div className="flex flex-wrap gap-2 justify-center items-center">
                 {isLatin ? (
@@ -127,7 +147,10 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
           {gameState === "won" && (
             <>
               <h1>You Win!</h1>
-              <p>The word was: {currentWord}</p>
+              <div className="w-full mx-auto flex flex-col gap-3 justify-center items-center pt-5 ">
+                <p>The word was:</p>
+                <p>{currentWord}</p>
+              </div>
               <CheckIcon />
               <Button
                 onClick={async () => {
@@ -142,7 +165,10 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
           {gameState === "lost" && (
             <>
               <h1>Game Over</h1>
-              <p>The word was: {currentWord}</p>
+              <div className="w-full mx-auto flex flex-col gap-3 justify-center items-center pt-5 ">
+                <p>The word was:</p>
+                <p>{currentWord}</p>
+              </div>
               <HangmanDrawing nWrong={7} />{" "}
               {/* Show full drawing on game over */}
               <Button

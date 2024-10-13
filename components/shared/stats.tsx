@@ -47,7 +47,7 @@ export function RadialChart({
   };
 
   return (
-    <Card className="flex flex-col bg-transparent border-none shadow-none h-full">
+    <Card className="flex flex-col bg-black/10 dark:bg-slate-950 border-none shadow-none h-full">
       <CardHeader className="items-center pb-0">
         <CardDescription>Data from <span className="font-bold">{chartData[0].nameOfMonth}</span> to <span className="font-bold">{chartData[4].nameOfMonth}</span></CardDescription>
       </CardHeader>
@@ -73,7 +73,7 @@ export function RadialChart({
               <LabelList
                 position="insideStart"
                 dataKey="nameOfMonth"
-                className="fill-white capitalize mix-blend-luminosity"
+                className="fill-black dark:fill-white capitalize mix-blend-luminosity"
                 fontSize={11}
               />
             </RadialBar>

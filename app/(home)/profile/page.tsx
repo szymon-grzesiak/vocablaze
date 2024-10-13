@@ -13,20 +13,12 @@ const SettingsPage = async () => {
   return (
     <div className="flex flex-wrap gap-6 w-1/2 mx-auto">
      <Settings user={user as ExtendedUser} />
-      <div className="bg-gray-900 w-full rounded-md p-6 shadow-lg  dark:bg-gray-50 text-white dark:text-black">
+      <div className="bg-gray-900 w-full rounded-md p-6 shadow-lg  dark:bg-slate-900 text-white">
         <div className="flex flex-col items-center justify-center mb-4">
           <CrownIcon className="h-8 w-8 mb-2" />
           <h3 className="text-xl font-bold">Premium Plan</h3>
         </div>
         <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <CheckIcon className="h-5 w-5 text-green-500" />
-            <span>Access to the insights</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <CheckIcon className="h-5 w-5 text-green-500" />
-            <span>Progress tracking</span>
-          </div>
           <div className="flex items-center space-x-2">
             <CheckIcon className="h-5 w-5 text-green-500" />
             <span>Unlimited amount of words in the word set</span>
@@ -36,6 +28,10 @@ const SettingsPage = async () => {
             <span>
               Access to the premium games: <br />- hangman game
             </span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <CheckIcon className="h-5 w-5 text-green-500" />
+            <span>Lifetime access to the newest features</span>
           </div>
         </div>
         {user?.role === "USER" ? (
