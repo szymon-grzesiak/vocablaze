@@ -67,7 +67,10 @@ const Page = async ({ params }: { params: { id: string } }) => {
               <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
                 Practice Games
               </h3>
-              <Tooltip color="primary" content="Games when you can gain progress are these with green colored icons">
+              <Tooltip
+                color="primary"
+                content="Games when you can gain progress are these with green colored icons"
+              >
                 <Info className="text-blue-400 w-5 h-5 shrink-0 cursor-pointer" />
               </Tooltip>
               <p></p>
@@ -102,20 +105,15 @@ const Page = async ({ params }: { params: { id: string } }) => {
             </Link>
 
             {currUser?.role === "PRO" ? (
-              <Button
-                className="bg-white h-full dark:bg-gray-700 rounded-lg shadow-sm p-4 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
-                disabled={true}
+              <Link
+                className="bg-white dark:bg-gray-700 rounded-lg shadow-sm p-4 flex flex-col items-center justify-center space-y-2 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                href={`${params.id}/hangman`}
               >
-                <Link
-                  href={`${params.id}/hangman`}
-                  className="flex flex-col items-center justify-center space-y-2"
-                >
-                  <GiSuicide className="h-8 w-8 text-green-600" />
-                  <span className="text-gray-900 dark:text-gray-100 font-medium">
-                    Hangman
-                  </span>
-                </Link>
-              </Button>
+                <GiSuicide className="h-8 w-8 text-green-600" />
+                <span className="text-gray-900 dark:text-gray-100 font-medium">
+                  Hangman
+                </span>
+              </Link>
             ) : (
               <div className="relative w-full rounded-lg">
                 <div className="absolute rounded-full border-5 p-2 z-50 top-[-20%] left-[-3%] text-gray-100 bg-red-400 font-bold shadow-xl">

@@ -27,25 +27,23 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
   );
   const [manualGuess, setManualGuess] = useState<string>("");
 
+  // Normalize currentWord to lowercase for comparison
+  const lowerCurrentWord = currentWord.toLowerCase();
+
   const guessedWord = useCallback(() => {
     return currentWord
       .split("")
-      .map((letter) => (guessedLetters.includes(letter) ? letter : "_"))
+      .map((letter) => (guessedLetters.includes(letter.toLowerCase()) ? letter : "_"))
       .join(" ");
   }, [currentWord, guessedLetters]);
 
   useEffect(() => {
-    console.log("Game state updated");
-    console.log("nWrong:", nWrong);
-    console.log("guessedWord:", guessedWord());
-    console.log("currentWord:", currentWord);
-
     if (nWrong >= 6) {
       setGameState("lost");
-    } else if (currentWord && guessedWord().replace(/ /g, "") === currentWord) {
+    } else if (currentWord && guessedWord().replace(/ /g, "").toLowerCase() === lowerCurrentWord) {
       setGameState("won");
     }
-  }, [nWrong, guessedLetters, currentWord, guessedWord]);
+  }, [nWrong, guessedLetters, currentWord, guessedWord, lowerCurrentWord]);
 
   const handleNextWord = () => {
     setGameState("playing");
@@ -54,29 +52,32 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
   };
 
   const handleGuess = (letter: string) => {
-    setGuessedLetters((prev) => [...prev, letter]);
+    const normalizedLetter = letter.toLowerCase();
+    if (guessedLetters.includes(normalizedLetter)) return; // Prevent duplicate guesses
 
-    if (!currentWord.includes(letter)) {
+    setGuessedLetters((prev) => [...prev, normalizedLetter]);
+
+    if (!lowerCurrentWord.includes(normalizedLetter)) {
       setNWrong((prev) => prev + 1);
     }
   };
 
   const handleManualGuess = () => {
     if (manualGuess) {
-      handleGuess(manualGuess);
+      handleGuess(manualGuess[0]); // Take only the first character
       setManualGuess("");
     }
   };
 
   const Buttons = () => {
     const characterSet = getCharacterSet(
-      (wordSet as WordSet)?.secondLanguage?.name || "English"
+      (wordSet as WordSet)?.firstLanguage?.name || "English"
     );
     return characterSet.map((letter) => (
       <Button
         key={letter}
         onClick={() => handleGuess(letter)}
-        isDisabled={guessedLetters.includes(letter)}
+        isDisabled={guessedLetters.includes(letter.toLowerCase())}
         variant="shadow"
         size={mediaQuery ? "md" : "sm"}
         className="font-bold text-white bg-indigo-400 p-0"
@@ -87,7 +88,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
   };
 
   const isLatin =
-    getCharacterSet((wordSet as WordSet)?.secondLanguage?.name as string)
+    getCharacterSet((wordSet as WordSet)?.firstLanguage?.name as string)
       .length > 0;
 
   return (
@@ -113,12 +114,12 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
             <>
               <div>
                 <p className="pr-4">
-                  {(wordSet as WordSet)?.firstLanguage?.name} word:{" "}
+                  {(wordSet as WordSet)?.secondLanguage?.name} word:{" "}
                   <strong>{words[currentWord]?.translatedWord}</strong>
                 </p>
                 <p>
                   Translate it to{" "}
-                  <strong>{(wordSet as WordSet)?.secondLanguage?.name}</strong>
+                  <strong>{(wordSet as WordSet)?.firstLanguage?.name}</strong>
                 </p>
                 <p className="pr-4">
                   Guessed wrong: <strong>{nWrong}</strong>
@@ -137,6 +138,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
                       value={manualGuess}
                       onChange={(e) => setManualGuess(e.target.value)}
                       placeholder="Enter a letter"
+                      maxLength={1} // Ensure only one letter is entered
                     />
                     <Button onClick={handleManualGuess}>Check</Button>
                   </div>
