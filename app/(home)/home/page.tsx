@@ -101,7 +101,7 @@ export default async function Page({
           </div>
           <div className="w-full lg:w-2/3 h-full" id="folders">
             <div className="flex flex-col h-full gap-4 p-5 bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md rounded-lg">
-              <span className="flex justify-between">
+              <span className="flex justify-between gap-4">
                 <span className="flex gap-2 text-2xl font-bold">
                   <p>📁</p> <p>Folders</p>
                 </span>

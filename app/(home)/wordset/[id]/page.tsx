@@ -32,7 +32,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   console.log(wordSet);
 
   return (
-    <div className="mx-auto bg-black/5 px-6 py-7 mb-4 backdrop-blur-2xl dark:bg-slate-900/90 w-full rounded-lg flex flex-col lg:w-3/4 justify-center">
+    <div className="mx-auto bg-black/5 px-6 py-7 mb-4 backdrop-blur-2xl dark:bg-slate-900/90 w-full rounded-none lg:rounded-lg flex flex-col lg:w-3/4 justify-center">
       <div className="flex flex-col md:flex-row items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
@@ -60,7 +60,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       </div>
       <ClientWordSet wordSet={wordSet} />
       <div className="grid grid-cols-1 gap-6 pt-4">
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg py-6 px-6">
+        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg py-6">
           <div className="flex items-start gap-y-4 justify-between mb-4 flex-col md:flex-row md:items-center">
             <div className="flex items-center justify-between space-x-2">
               <GamepadIcon className="h-8 w-8 shrink-0 text-gray-900 dark:text-gray-50" />

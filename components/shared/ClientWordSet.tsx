@@ -83,7 +83,7 @@ const ClientWordSet = ({ wordSet }: { wordSet: Props }) => {
       <div className="grid grid-cols-1 gap-6">
         <div className="bg-black/5 backdrop-blur-xl dark:bg-gray-800 rounded-lg pl-2 py-4">
           <div className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-start gap-4 flex-col sm:items-center sm:flex-row">
               <div className="flex items-center gap-3">
                 <BookIcon className="h-8 w-8 text-gray-900 dark:text-gray-50" />
                 <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
@@ -108,15 +108,15 @@ const ClientWordSet = ({ wordSet }: { wordSet: Props }) => {
             {sortedWords.map((word, index) => (
               <Fragment key={index}>
                 <div className="flex justify-between rounded-lg py-4">
-                  <div className="w-full max-w-lg">
-                    <p className="text-gray-900 font-bold dark:text-gray-100">
+                  <div className="w-1/2 sm:w-full sm:max-w-lg">
+                    <p className="text-gray-900  font-bold dark:text-gray-100">
                       {word.originalWord}
                     </p>
-                    <p className="text-gray-800 dark:text-gray-400">
+                    <p className="text-gray-800 truncate dark:text-gray-400">
                       {word.translatedWord}
                     </p>
                   </div>
-                  <div className="flex gap-2 max-sm:flex-col w-full">
+                  <div className="flex w-1/2 sm:w-full  gap-2 max-sm:flex-col">
                     <Progress
                       label={`${Math.floor(word.progress * 100)} %`}
                       className="w-full"
