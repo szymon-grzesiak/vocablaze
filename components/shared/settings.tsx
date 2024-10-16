@@ -62,7 +62,7 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
   };
 
   return (
-    <div className="flex w-full">
+    <section className="flex w-full">
       <Card className="shadow-lg border-none flex flex-col justify-between w-full">
         <CardHeader>
           <p className="text-2xl font-semibold text-center">⚙️ Settings</p>
@@ -205,7 +205,7 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
           </Form>
         </CardContent>
       </Card>
-    </div>
+    </section>
   );
 };
 

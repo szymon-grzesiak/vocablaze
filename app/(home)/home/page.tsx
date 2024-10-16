@@ -3,12 +3,15 @@ import Link from "next/link";
 import { Button } from "@nextui-org/button";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 
-import { get5lastMonthsWordsLearned, getAllWordSets, getDataToCalendar, getFolders } from "@/lib/data/rest";
+import {
+  get5lastMonthsWordsLearned,
+  getAllWordSets,
+  getDataToCalendar,
+  getFolders,
+} from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
 import { cn } from "@/lib/utils";
-import { WordSet } from "@/hooks/useWordProgress";
-import DeleteButton from "@/components/ui/delete-button";
-import { MyResponsiveCalendar } from "@/components/shared/calendar";
+import { MyResponsiveCalendar } from "@/components/shared/Calendar";
 import Search from "@/components/shared/search";
 import { RadialChart } from "@/components/shared/stats";
 
@@ -21,12 +24,13 @@ export default async function Page({
   searchParams: { [key: string]: string };
 }) {
   const currUser = await currentUser();
-  const [wordSetsResponse, folders, calendarData, radialChartData] = await Promise.all([
-    getAllWordSets(),
-    getFolders(),
-    getDataToCalendar(),
-    get5lastMonthsWordsLearned(currUser?.id as string),
-  ]);
+  const [wordSetsResponse, folders, calendarData, radialChartData] =
+    await Promise.all([
+      getAllWordSets(),
+      getFolders(),
+      getDataToCalendar(),
+      get5lastMonthsWordsLearned(currUser?.id as string),
+    ]);
 
   const { wordSets, error } = wordSetsResponse;
   const user = await currentUser();
@@ -36,7 +40,12 @@ export default async function Page({
   return (
     <div className="flex flex-col lg:flex-row w-full gap-4 p-4 h-full">
       <div className="flex flex-col lg:w-1/3 gap-4 h-full" id="left-panel">
-        <section className={cn("flex flex-col h-3/4 rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md", user?.role === 'PRO' && 'h-full')}>
+        <section
+          className={cn(
+            "flex flex-col h-3/4 rounded-lg bg-black/5 dark:bg-slate-900/90 backdrop-blur-xl shadow-md",
+            user?.role === "PRO" && "h-full"
+          )}
+        >
           <span className="flex justify-between p-5">
             <span className="flex gap-2 text-2xl font-bold">
               <p>🌍</p>
@@ -68,13 +77,13 @@ export default async function Page({
               Unlock all language games and features with a Premium
               subscription.
             </p>
-              <Button
-                className="font-bold p-4 rounded-lg"
-                variant="flat"
-                color="success"
-              >
-                <Link href={"/profile"}> Upgrade to Premium</Link>
-              </Button>
+            <Button
+              className="font-bold p-4 rounded-lg"
+              variant="flat"
+              color="success"
+            >
+              <Link href={"/profile"}> Upgrade to Premium</Link>
+            </Button>
           </section>
         )}
       </div>
@@ -95,7 +104,7 @@ export default async function Page({
                 <p>📈</p> <p>Monthly trends</p>
               </span>
               <div className="dark:bg-gray-800 rounded-lg w-full h-full">
-                <RadialChart wordSets={wordSets} data={radialChartData}/>
+                <RadialChart data={radialChartData} />
               </div>
             </div>
           </div>
