@@ -1,6 +1,10 @@
 "use client";
 
 import React from "react";
+
+import { Delete02Icon } from "@/components/icons";
+import { deleteWordSet } from "@/lib/actions/action";
+
 import {
   Button,
   Modal,
@@ -13,9 +17,6 @@ import {
 } from "@nextui-org/react";
 import { FileWarning } from "lucide-react";
 import { toast } from "sonner";
-
-import { deleteWordSet } from "@/lib/actions/action";
-import { Delete02Icon } from "@/components/icons";
 
 export default function DeleteModal({
   name,
@@ -34,7 +35,6 @@ export default function DeleteModal({
       toast.success(`${type} of name: ${name} deleted successfully`);
     } catch (error) {
       toast.error(`Failed to delete ${type} of name: ${name}`);
-      console.error("Failed to delete", error);
     }
   };
 
@@ -47,14 +47,14 @@ export default function DeleteModal({
       </Tooltip>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop="blur">
-        <ModalContent className="p-3 pl-5 m-0 box-border">
+        <ModalContent className="m-0 box-border p-3 pl-5">
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1 p-0 m-0 box-border">
+              <ModalHeader className="m-0 box-border flex flex-col gap-1 p-0">
                 Delete - {type}
               </ModalHeader>
-              <ModalBody className="flex flex-row items-center px-0 pt-4 m-0 box-border">
-                <FileWarning className="w-16 h-16 text-red-500" />
+              <ModalBody className="m-0 box-border flex flex-row items-center px-0 pt-4">
+                <FileWarning className="size-16 text-red-500" />
                 <div className="flex flex-col">
                   <p className="text-lg">
                     You are about to delete: <strong>{name}</strong>.
@@ -64,11 +64,11 @@ export default function DeleteModal({
                   </p>
                 </div>
               </ModalBody>
-              <ModalFooter className="p-0 m-0 box-border">
-                <Button variant="flat" onPress={onClose} className="font-bold text-medium">
+              <ModalFooter className="m-0 box-border p-0">
+                <Button variant="flat" onPress={onClose} className="text-medium font-bold">
                   Close
                 </Button>
-                <Button color="danger" onClick={handleClick} onPress={onClose} className="font-bold text-medium">
+                <Button color="danger" onClick={handleClick} onPress={onClose} className="text-medium font-bold">
                   Delete
                 </Button>
               </ModalFooter>

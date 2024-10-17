@@ -1,6 +1,7 @@
 "use server";
 
 import { getUserByEmail } from "@/lib/data/auth/user";
+
 import { getVerificationTokenByToken } from "@/lib/data/auth/verification-token";
 import db from "@/lib/db";
 

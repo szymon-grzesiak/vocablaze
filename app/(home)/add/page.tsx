@@ -1,7 +1,7 @@
 import React from "react";
 
+import { CardComponent } from "@/components/shared/card/Card";
 import { getFolders, getLanguages } from "@/lib/data/rest";
-import { CardComponent } from "@/components/shared/card/card";
 
 const Add = async () => {
   const languages = getLanguages();
@@ -10,7 +10,7 @@ const Add = async () => {
   const [lang, fold] = await Promise.all([languages, folders]);
 
   return (
-    <div className="border-none flex justify-center w-full">
+    <div className="flex w-full justify-center border-none">
       <CardComponent
         mode="add"
         languages={lang}

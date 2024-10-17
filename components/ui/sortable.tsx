@@ -1,6 +1,11 @@
 "use client"
 
 import * as React from "react"
+
+import { Button, type ButtonProps } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+
+import { composeRefs } from "./compose-refs"
 import type {
   DndContextProps,
   DraggableSyntheticListeners,
@@ -25,16 +30,12 @@ import {
 import {
   arrayMove,
   SortableContext,
+  type SortableContextProps,
   useSortable,
   verticalListSortingStrategy,
-  type SortableContextProps,
 } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 import { Slot, type SlotProps } from "@radix-ui/react-slot"
-
-import { composeRefs } from "./compose-refs"
-import { cn } from "@/lib/utils"
-import { Button, type ButtonProps } from "@/components/ui/button"
 
 interface SortableProps<TData extends { id: UniqueIdentifier }>
   extends DndContextProps {
@@ -54,6 +55,7 @@ interface SortableProps<TData extends { id: UniqueIdentifier }>
    * @example
    * onValueChange={(items) => console.log(items)}
    */
+  // eslint-disable-next-line no-unused-vars
   onValueChange?: (items: TData[]) => void
 
   /**
@@ -64,6 +66,7 @@ interface SortableProps<TData extends { id: UniqueIdentifier }>
    * @example
    * onMove={(event) => console.log(`Item moved from index ${event.activeIndex} to index ${event.overIndex}`)}
    */
+  // eslint-disable-next-line no-unused-vars
   onMove?: (event: { activeIndex: number; overIndex: number }) => void
 
   /**

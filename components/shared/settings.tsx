@@ -1,16 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { SettingsSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/react";
-import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 
-import { ExtendedUser } from "@/types/next-auth";
-import { settings } from "@/lib/actions/auth/settings";
+import { FormError } from "@/components/FormError";
+import { FormSuccess } from "@/components/FromSuccess";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Form,
@@ -23,8 +16,16 @@ import {
 } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { FormError } from "@/components/form-error";
-import { FormSuccess } from "@/components/form-success";
+import { settings } from "@/lib/actions/auth/settings";
+import { SettingsSchema } from "@/schemas";
+import { ExtendedUser } from "@/types/next-auth";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/button";
+import { Input } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 const Settings = ({ user }: { user: ExtendedUser }) => {
   const [error, setError] = useState<string | undefined>();
@@ -63,9 +64,9 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
 
   return (
     <section className="flex w-full">
-      <Card className="shadow-lg border-none flex flex-col justify-between w-full">
+      <Card className="flex w-full flex-col justify-between border-none shadow-lg">
         <CardHeader>
-          <p className="text-2xl font-semibold text-center">⚙️ Settings</p>
+          <p className="text-center text-2xl font-semibold">⚙️ Settings</p>
         </CardHeader>
         <Separator />
         <CardContent className="mt-4">

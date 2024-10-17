@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@nextui-org/react";
-import { Import, Paperclip, Trash2 } from "lucide-react";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
+
 import {
   Dialog,
   DialogContent,
@@ -25,7 +24,11 @@ import {
 } from "@/components/ui/drawer";
 import { Textarea } from "@/components/ui/textarea";
 
+import { Button } from "@nextui-org/react";
+import { Import, Paperclip, Trash2 } from "lucide-react";
+
 interface ImportWordsProps {
+  // eslint-disable-next-line no-unused-vars
   append: (value: { originalWord: string; translatedWord: string }) => void;
   existingWords: { originalWord: string; translatedWord: string }[];
 }
@@ -91,7 +94,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
               color="secondary"
               variant="flat"
               startContent={<Import />}
-              className="text-black dark:text-gray-200 bg-transparent/10"
+              className="bg-transparent/10 text-black dark:text-gray-200"
             >
               Import
             </Button>
@@ -125,17 +128,17 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
               />
               <Textarea
                 placeholder="Paste words here, format: original,translated"
-                className="rounded-md h-[150px] mt-2"
+                className="mt-2 h-[150px] rounded-md"
                 value={fileContent}
                 onChange={(e) => setFileContent(e.target.value)}
               />
-              <div className="flex gap-2 mt-2 justify-between">
+              <div className="mt-2 flex justify-between gap-2">
                 <Button
                   color="secondary"
                   variant="flat"
                   startContent={<Import className="size-5"/>}
                   onClick={handleTextImport}
-                  className="text-black bg-transparent/10 dark:text-gray-200"
+                  className="bg-transparent/10 text-black dark:text-gray-200"
                 >
                   Import
                 </Button>
@@ -151,7 +154,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
                 </Button>
               </div>
               {fileName && (
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="mt-2 text-sm text-muted-foreground">
                   File: {fileName}
                 </p>
               )}
@@ -189,11 +192,11 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
               />
               <Textarea
                 placeholder="Paste words here, format: original,translated"
-                className="bg-white/60 rounded-md h-[150px] mt-2"
+                className="mt-2 h-[150px] rounded-md bg-white/60"
                 value={fileContent}
                 onChange={(e) => setFileContent(e.target.value)}
               />
-              <div className="flex gap-2 mt-2">
+              <div className="mt-2 flex gap-2">
                 <Button
                   type="button"
                   onClick={handleTextImport}
@@ -210,7 +213,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
                 </Button>
               </div>
               {fileName && (
-                <p className="text-sm text-muted-foreground mt-2">
+                <p className="mt-2 text-sm text-muted-foreground">
                   File: {fileName}
                 </p>
               )}

@@ -1,7 +1,7 @@
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 
-import { BackButton } from "./back-button";
-import { Header } from "./header";
+import { BackButton } from "./BackButton";
+import { Header } from "./Header";
 
 export const ErrorCard = () => {
   return (

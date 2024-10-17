@@ -1,10 +1,9 @@
 import { cache } from "react";
-import { unstable_cache } from "next/cache";
-import { CalendarDatum } from "@nivo/calendar";
 
 import db from "@/lib/db";
 
 import { currentUser } from "../sessionData";
+import { CalendarDatum } from "@nivo/calendar";
 
 export const getLanguages = cache(async () => {
   const user = await currentUser();
@@ -16,7 +15,6 @@ export const getLanguages = cache(async () => {
   try {
     return await db.language.findMany();
   } catch (error) {
-    console.error("Error fetching languages:", error);
     throw new Error("An error occurred while fetching the languages");
   }
 });
@@ -34,7 +32,6 @@ export const getFolders = cache(async () => {
     });
     return folders;
   } catch (error) {
-    console.error("Error fetching folders:", error);
     throw new Error("An error occurred while fetching the folders");
   }
 });
@@ -55,7 +52,6 @@ export const getAllWordSets = cache(async () => {
     });
     return { wordSets };
   } catch (error) {
-    console.error("Error fetching word sets:", error);
     return { error: "An error occurred while fetching the word sets" };
   }
 });
@@ -97,7 +93,6 @@ export const getDataToCalendar = cache(async (): Promise<CalendarDatum[]> => {
 
     return formattedResult;
   } catch (error) {
-    console.error("Error fetching words:", error);
     throw new Error("An error occurred while fetching the words");
   }
 });
@@ -130,7 +125,6 @@ export const getWordSetById = async (id: string, userId: string) => {
     }
     return { wordSet };
   } catch (error) {
-    console.error("Error fetching word set:", error);
     return { error: "An error occurred while fetching the word set" };
   }
 };
@@ -148,7 +142,6 @@ export const getDisplayOrder = cache(async (wordSetId: string) => {
 
     return wordSet.displayTranslatedFirst;
   } catch (error) {
-    console.error("Error fetching display order:", error);
     throw new Error("An error occurred while fetching the display order");
   }
 });
@@ -185,7 +178,6 @@ export const get5lastMonthsWordsLearned = async (userId: string) => {
 
     return formattedResult;
   } catch (error) {
-    console.error("Error fetching words:", error);
     throw new Error("An error occurred while fetching the words");
   }
 };

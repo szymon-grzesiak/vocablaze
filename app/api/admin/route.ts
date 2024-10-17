@@ -1,6 +1,6 @@
-import { NextResponse } from "next/server"
-
 import { currentRole } from "@/lib/sessionData"
+
+import { NextResponse } from "next/server"
 
 export async function GET() {
   const role = await currentRole()

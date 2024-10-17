@@ -1,9 +1,9 @@
-import { LucideGamepad2 } from "lucide-react";
-
+import HangmanGame from "@/components/shared/Hangman";
+import NotFound from "@/components/shared/NotFound";
 import { getWordSetWithProgress } from "@/lib/actions/action";
 import { currentUser } from "@/lib/sessionData";
-import HangmanGame from "@/components/shared/hangman";
-import NotFound from "@/components/shared/NotFound";
+
+import { LucideGamepad2 } from "lucide-react";
 
 const Hangman = async ({ params }: { params: { id: string } }) => {
   const currUser = await currentUser();
@@ -14,16 +14,16 @@ const Hangman = async ({ params }: { params: { id: string } }) => {
   const wordSet = await getWordSetWithProgress(params.id);
 
   return (
-    <div className="relative h-full w-full px-6 pb-6 pt-0 flex flex-col gap-3">
-      <div className="flex flex-col justify-center items-center gap-4">
-        <div className="flex justify-center items-center gap-3">
-          <LucideGamepad2 className="text-indigo-500 w-16 h-16" />
-          <h1 className="font-bold text-4xl [text-shadow:_2px_2px_2px_rgb(0_0_190_/_40%)]">
+    <div className="relative flex size-full flex-col gap-3 px-6 pb-6 pt-0">
+      <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-3">
+          <LucideGamepad2 className="size-16 text-indigo-500" />
+          <h1 className="text-4xl font-bold [text-shadow:_2px_2px_2px_rgb(0_0_190_/_40%)]">
             Hangman game
           </h1>
         </div>
 
-        <p className="text-lg pb-2 md:w-1/2">
+        <p className="pb-2 text-lg md:w-1/2">
           Guess the translation of the word before the hangman is drawn. You can guess the word by
           entering a letter or by clicking on the buttons.
         </p>

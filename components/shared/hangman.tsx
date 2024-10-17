@@ -1,24 +1,25 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
+
+import { CheckIcon, HangmanDrawing } from "@/components/shared/HangmanDrawing";
 import { getCharacterSet } from "@/helpers/file";
+
+import { WordProgress } from "./WordProgress";
 import { Button, CircularProgress, Input } from "@nextui-org/react";
 import { WordSet as PrismaWordSetType } from "@prisma/client";
 import { ArrowLeft } from "lucide-react";
-
-import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
-import { CheckIcon, HangmanDrawing } from "@/components/shared/hangman-drawing";
-
-import { WordProgress } from "./word-progress";
-import { useMediaQuery } from "@/hooks/use-media-query";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
   const pathname = usePathname().split("/")[2];
   const { words, currentWord, loading, handleDontKnowWord, handleKnowWord } =
     useWordProgress(wordSet as WordSet);
-  const mediaQuery = useMediaQuery('(min-width: 768px)');
+  const mediaQuery = useMediaQuery("(min-width: 768px)");
 
   const [nWrong, setNWrong] = useState<number>(0);
   const [guessedLetters, setGuessedLetters] = useState<string[]>([]);
@@ -33,14 +34,19 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
   const guessedWord = useCallback(() => {
     return currentWord
       .split("")
-      .map((letter) => (guessedLetters.includes(letter.toLowerCase()) ? letter : "_"))
+      .map((letter) =>
+        guessedLetters.includes(letter.toLowerCase()) ? letter : "_"
+      )
       .join(" ");
   }, [currentWord, guessedLetters]);
 
   useEffect(() => {
     if (nWrong >= 6) {
       setGameState("lost");
-    } else if (currentWord && guessedWord().replace(/ /g, "").toLowerCase() === lowerCurrentWord) {
+    } else if (
+      currentWord &&
+      guessedWord().replace(/ /g, "").toLowerCase() === lowerCurrentWord
+    ) {
       setGameState("won");
     }
   }, [nWrong, guessedLetters, currentWord, guessedWord, lowerCurrentWord]);
@@ -80,7 +86,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
         isDisabled={guessedLetters.includes(letter.toLowerCase())}
         variant="shadow"
         size={mediaQuery ? "md" : "sm"}
-        className="font-bold text-white bg-indigo-400 p-0"
+        className="bg-indigo-400 p-0 font-bold text-white"
       >
         {letter}
       </Button>
@@ -92,19 +98,19 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
       .length > 0;
 
   return (
-    <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto w-full max-w-[850px] dark:bg-slate-900/90 rounded-[2rem] overflow-hidden py-6 px-2 md:px-6">
-      <div className="absolute top-0 right-0 p-2 z-20">
+    <div className="content mx-auto w-full max-w-[850px] overflow-hidden rounded-[2rem] bg-white/80 px-2 py-6 shadow-xl backdrop-blur-2xl dark:bg-slate-900/90 md:px-6">
+      <div className="absolute right-0 top-0 z-20 p-2">
         <WordProgress progress={words[currentWord]?.progress * 100} />
       </div>
       {loading ? (
-        <div className="flex justify-center items-center min-h-[656px]">
+        <div className="flex min-h-[656px] items-center justify-center">
           <CircularProgress size="lg" />
         </div>
       ) : (
-        <div className="h-full flex flex-col items-center justify-between ">
+        <div className="flex h-full flex-col items-center justify-between ">
           <Button
             isIconOnly
-            className="rounded-full max-w-[40px] cursor-pointer p-0 absolute top-[10px] left-[10px]"
+            className="absolute left-[10px] top-[10px] max-w-[40px] cursor-pointer rounded-full p-0"
           >
             <Link href={`/wordset/${pathname}`}>
               <ArrowLeft />
@@ -125,15 +131,15 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
                   Guessed wrong: <strong>{nWrong}</strong>
                 </p>
               </div>
-              <h1 className="flex pt-5 flex-wrap justify-center w-[90%] text-xl">
+              <h1 className="flex w-[90%] flex-wrap justify-center pt-5 text-xl">
                 {guessedWord()}
               </h1>
               <HangmanDrawing nWrong={nWrong} />
-              <div className="flex flex-wrap gap-2 justify-center items-center">
+              <div className="flex flex-wrap items-center justify-center gap-2">
                 {isLatin ? (
                   <Buttons />
                 ) : (
-                  <div className="flex gap-4 items-center">
+                  <div className="flex items-center gap-4">
                     <Input
                       value={manualGuess}
                       onChange={(e) => setManualGuess(e.target.value)}
@@ -149,7 +155,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
           {gameState === "won" && (
             <>
               <h1>You Win!</h1>
-              <div className="w-full mx-auto flex flex-col gap-3 justify-center items-center pt-5 ">
+              <div className="mx-auto flex w-full flex-col items-center justify-center gap-3 pt-5 ">
                 <p>The word was:</p>
                 <p>{currentWord}</p>
               </div>
@@ -167,7 +173,7 @@ const HangmanGame = ({ wordSet }: { wordSet: WordSet | PrismaWordSetType }) => {
           {gameState === "lost" && (
             <>
               <h1>Game Over</h1>
-              <div className="w-full mx-auto flex flex-col gap-3 justify-center items-center pt-5 ">
+              <div className="mx-auto flex w-full flex-col items-center justify-center gap-3 pt-5 ">
                 <p>The word was:</p>
                 <p>{currentWord}</p>
               </div>

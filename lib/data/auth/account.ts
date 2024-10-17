@@ -1,5 +1,6 @@
-import db from "@/lib/db";
 import { cache } from "react";
+
+import db from "@/lib/db";
 
 export const getAccountByUserId = cache(async (userId: string) => {
   try {

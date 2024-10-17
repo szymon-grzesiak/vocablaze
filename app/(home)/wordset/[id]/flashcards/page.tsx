@@ -1,12 +1,11 @@
-import { getWordSetWithProgress } from "@/lib/actions/action";
 import WordFlashcards from "@/components/shared/WordFlashcards";
+import { getWordSetWithProgress } from "@/lib/actions/action";
 
 const Flashcards = async ({ params }: { params: { id: string } }) => {
   const wordSet = await getWordSetWithProgress(params.id);
-  console.log(wordSet);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative size-full">
       <WordFlashcards wordSet={wordSet}  />
     </div>
   );

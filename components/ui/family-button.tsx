@@ -1,10 +1,12 @@
 "use client"
 
 import { FC, ReactNode, useState } from "react"
-import { motion } from "framer-motion"
-import { PlusIcon, XIcon } from "lucide-react"
+import React from "react"
 
 import { cn } from "@/lib/utils"
+
+import { motion } from "framer-motion"
+import { PlusIcon, XIcon } from "lucide-react"
 
 const CONTAINER_SIZE = 200
 
@@ -27,8 +29,8 @@ const FamilyButton: React.FC<FamilyButtonProps> = ({ children }) => {
       )}
     >
       <div className="rounded-[23px] border   border-black/10 ">
-        <div className="rounded-[22px] border  dark:border-stone-800 border-white/50 ">
-          <div className="rounded-[21px] border    border-neutral-950/20   flex items-center justify-center ">
+        <div className="rounded-[22px] border  border-white/50 dark:border-stone-800 ">
+          <div className="flex items-center    justify-center   rounded-[21px] border border-neutral-950/20 ">
             <FamilyButtonContainer
               isExpanded={isExpanded}
               toggleExpand={toggleExpand}
@@ -120,7 +122,7 @@ const FamilyButtonContainer: FC<FamilyButtonContainerProps> = ({
       >
         {isExpanded ? (
           <motion.div
-            className="p-[10px] group bg-neutral-800/50 dark:bg-black/50 border border-cyan-100/30 hover:border-neutral-200 text-orange-50 rounded-full shadow-2xl transition-colors duration-300 "
+            className="group rounded-full border border-cyan-100/30 bg-neutral-800/50 p-[10px] text-orange-50 shadow-2xl transition-colors duration-300 hover:border-neutral-200 dark:bg-black/50 "
             onClick={toggleExpand}
             layoutId="expand-toggle"
             initial={false}
@@ -153,7 +155,7 @@ const FamilyButtonContainer: FC<FamilyButtonContainerProps> = ({
               },
             }}
           >
-            <PlusIcon className="h-7 w-7 text-black dark:text-neutral-900" />
+            <PlusIcon className="size-7 text-black dark:text-neutral-900" />
           </motion.div>
         )}
       </motion.div>

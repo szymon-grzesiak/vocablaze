@@ -1,38 +1,11 @@
 "use client";
 
-import { AddWordSetSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Card,
-  Input,
-  Select,
-  SelectItem,
-  Spinner,
-} from "@nextui-org/react";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { Flag, Folder, Plus, TrashIcon } from "lucide-react";
-import { useFieldArray, useForm } from "react-hook-form";
-import * as z from "zod";
-
-import { addWordSet, updateWordSet } from "@/lib/actions/action";
-import {
-  Sortable,
-  SortableDragHandle,
-  SortableItem,
-} from "@/components/ui/sortable";
-import { Textarea } from "@/components/ui/textarea";
-import { Bookmark, Delete02Icon } from "@/components/icons";
-import { ImportWords } from "@/components/shared/import-words";
+import React, { useState } from "react";
 
 import "./background.css";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { toast } from "sonner";
-
-import { cn } from "@/lib/utils";
+import { Bookmark, Delete02Icon } from "@/components/icons";
+import { ImportWords } from "@/components/shared/ImportWords";
 import {
   Command,
   CommandEmpty,
@@ -53,6 +26,32 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Sortable,
+  SortableDragHandle,
+  SortableItem,
+} from "@/components/ui/sortable";
+import { Textarea } from "@/components/ui/textarea";
+import { addWordSet, updateWordSet } from "@/lib/actions/action";
+import { cn } from "@/lib/utils";
+import { AddWordSetSchema } from "@/schemas";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Button,
+  Card,
+  Input,
+  Select,
+  SelectItem,
+  Spinner,
+} from "@nextui-org/react";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { Flag, Folder, Plus } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -105,16 +104,12 @@ export const CardComponent = ({
     formState: { errors },
   } = form;
 
-  console.log("WATCHER", form.watch())
-
   const { fields, append, remove, move } = useFieldArray({
     control,
     name: "words",
   });
-  console.log("fields", fields);
 
   const onSubmit = async (input: Schema) => {
-    console.log("input", input);
     const uniqueWords = new Set<string>();
     const words = input.words.filter(({ originalWord, translatedWord }) => {
       const key = `${originalWord}-${translatedWord}`;
@@ -143,10 +138,10 @@ export const CardComponent = ({
   return (
     <Card
       radius="lg"
-      className="border-none flex flex-col gap-6 w-full md:w-[70%] bg-black/5 dark:bg-slate-900/90 backdrop-blur-2xl shadow-md mb-20 p-6"
+      className="mb-20 flex w-full flex-col gap-6 border-none bg-black/5 p-6 shadow-md backdrop-blur-2xl dark:bg-slate-900/90 md:w-[70%]"
     >
-      <div className="flex gap-4 justify-start items-center">
-        <Bookmark className="w-10 h-10 text-black fill-white/60" />
+      <div className="flex items-center justify-start gap-4">
+        <Bookmark className="size-10 fill-white/60 text-black" />
         <h1 className="text-[36px] font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
           {text}
         </h1>
@@ -166,7 +161,7 @@ export const CardComponent = ({
                     variant="bordered"
                     label="Title"
                     size="lg"
-                    className="bg-white/60 dark:bg-slate-800 dark:bg-none rounded-md text-3xl text-black dark:text-white"
+                    className="rounded-md bg-white/60 text-3xl text-black dark:bg-slate-800 dark:bg-none dark:text-white"
                   />
                 </FormControl>
                 <FormMessage />
@@ -182,14 +177,14 @@ export const CardComponent = ({
                   <Textarea
                     {...field}
                     placeholder="Enter your description"
-                    className="bg-white/60 dark:bg-slate-800 rounded-md h-[150px]"
+                    className="h-[150px] rounded-md bg-white/60 dark:bg-slate-800"
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="flex gap-4 flex-wrap">
+          <div className="flex flex-wrap gap-4">
             <FormField
               name="firstLanguageId"
               control={control}
@@ -216,7 +211,7 @@ export const CardComponent = ({
                                 (language) => language.id === field.value
                               )?.name
                             : "Select First Language"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-[200px] p-0">
@@ -278,7 +273,7 @@ export const CardComponent = ({
                                 (language) => language.id === field.value
                               )?.name
                             : "Select Second Language"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent className="w-[200px] p-0">
@@ -350,7 +345,7 @@ export const CardComponent = ({
             />
           </div>
 
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <div>
               <h4>Word List</h4>
               <p className="text-[0.8rem] text-muted-foreground">
@@ -360,7 +355,7 @@ export const CardComponent = ({
             </div>
             <ImportWords append={append} existingWords={fields} />
           </div>
-          <div className="flex justify-between space-y-2 mt-4">
+          <div className="mt-4 flex justify-between space-y-2">
             <Sortable
               value={fields}
               onMove={({ activeIndex, overIndex }) =>
@@ -370,8 +365,8 @@ export const CardComponent = ({
               <div className="w-full space-y-2">
                 {fields.map((field, index) => (
                   <SortableItem key={field.id} value={field.id} asChild>
-                    <div className="w-full flex gap-4 items-center">
-                      <div className="w-full flex gap-20 divItem">
+                    <div className="flex w-full items-center gap-4">
+                      <div className="divItem flex w-full gap-20">
                         <FormField
                           control={control}
                           name={`words.${index}.originalWord`}
@@ -418,7 +413,7 @@ export const CardComponent = ({
                       <Button
                         type="button"
                         isIconOnly
-                        className="size-2 shrink-0 text-black  hover:text-white hover:bg-white/20"
+                        className="size-2 shrink-0 text-black  hover:bg-white/20 hover:text-white"
                         onClick={() => remove(index)}
                         color="secondary"
                         variant="flat"
@@ -433,7 +428,7 @@ export const CardComponent = ({
             </Sortable>
           </div>
           {errors.words && (
-            <div className="text-red-500 text-sm">{errors.words.message}</div>
+            <div className="text-sm text-red-500">{errors.words.message}</div>
           )}
           <div className="flex justify-between pt-4">
             <Button type="submit" className="w-fit" disabled={isLoading}>
@@ -444,7 +439,7 @@ export const CardComponent = ({
               variant="flat"
               color="success"
               size="sm"
-              className="w-fit text-black text-sm font-bold"
+              className="w-fit text-sm font-bold text-black"
               startContent={<Plus className="text-emerald-400" />}
               onClick={() => append({ originalWord: "", translatedWord: "" })}
             >

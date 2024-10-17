@@ -2,7 +2,7 @@
 
 import { Input } from "@nextui-org/react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useSearchParams, usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter,useSearchParams } from 'next/navigation';
 
 
 export default function Search({
@@ -17,15 +17,13 @@ export default function Search({
   const { replace } = useRouter();
 
   const handleSearch = (term: string) => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams as any);
     if (term) {
       params.set(queryKey, term);
     } else {
       params.delete(queryKey);
     }
     replace(`${pathname}?${params.toString()}`);
-
-    console.log(term);
   };
 
   return (
@@ -36,10 +34,10 @@ export default function Search({
       <Input
         type="text"
         startContent={
-          <MagnifyingGlassIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+          <MagnifyingGlassIcon className="pointer-events-none shrink-0 text-2xl text-default-400" />
         }
         placeholder={placeholder}
-        className="max-w-40 w-full"
+        className="w-full max-w-40"
         variant="faded"
         onChange={(e) => {
           handleSearch(e.target.value);

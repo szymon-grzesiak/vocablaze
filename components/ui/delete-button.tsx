@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+
+import { deleteFolder } from "@/lib/actions/action";
+import { cn } from "@/lib/utils";
+
 import { Tooltip } from "@nextui-org/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Trash, X } from "lucide-react";
 import { toast } from "sonner";
-
-import { deleteFolder } from "@/lib/actions/action";
-import { cn } from "@/lib/utils";
 
 const DeleteButton = ({ folderId }: { folderId: string }) => {
   const [isActive, setIsActive] = useState(true);
@@ -32,7 +33,7 @@ const DeleteButton = ({ folderId }: { folderId: string }) => {
   }
 
   return (
-    <div className="center text-white h-full w-full">
+    <div className="size-full text-white">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
@@ -56,7 +57,7 @@ const DeleteButton = ({ folderId }: { folderId: string }) => {
         </defs>
       </svg>
       <div
-        className="flex items-center justify-center gap-3 relative"
+        className="relative flex items-center justify-center gap-3"
         style={{
           filter: "url(#goo)",
         }}
@@ -101,7 +102,7 @@ const DeleteButton = ({ folderId }: { folderId: string }) => {
                 )}
                 onClick={handleCancelClick}
               >
-                <X className="w-4 h-4" />
+                <X className="size-4" />
               </motion.button>
             </Tooltip>
           )}
@@ -133,7 +134,7 @@ const DeleteButton = ({ folderId }: { folderId: string }) => {
                 )}
                 onClick={handleDeleteClick}
               >
-                <Check className="w-4 h-4" />
+                <Check className="size-4" />
               </motion.button>
             </Tooltip>
           )}

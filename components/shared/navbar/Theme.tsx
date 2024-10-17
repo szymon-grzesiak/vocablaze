@@ -1,15 +1,17 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+
 import { themes } from "@/constants";
 import { useTheme } from "@/context/ThemeProvider";
+
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
+import Image from "next/image";
 
 const Theme = () => {
   const { mode, setMode } = useTheme();
@@ -26,7 +28,7 @@ const Theme = () => {
 
   return (
     <Dropdown>
-      <DropdownTrigger className="cursor-pointer w-fit">
+      <DropdownTrigger className="w-fit cursor-pointer">
         {mode === "light" ? (
           <Image
             src="/assets/icons/sun.svg"
@@ -66,15 +68,7 @@ const Theme = () => {
                 height={16}
                 className={getClassNameForTheme(theme.value)}
               />
-              <p
-                className={`body-semibold ${
-                  mode === theme.value
-                    ? "text-primary-500"
-                    : "text-dark100_light900"
-                }`}
-              >
-                {theme.label}
-              </p>
+              <p>{theme.label}</p>
             </div>
           </DropdownItem>
         ))}

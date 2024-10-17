@@ -1,15 +1,14 @@
 import React from "react";
-import { z } from "zod";
 
-import { getWordSetById } from "@/lib/data/rest";
-import { getFolders, getLanguages } from "@/lib/data/rest";
-import { CardComponent } from "@/components/shared/card/card";
+import { CardComponent } from "@/components/shared/card/Card";
 import NotFound from "@/components/shared/NotFound";
+import { getFolders, getLanguages, getWordSetById } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
+
 
 const Edit = async ({ params }: { params: { id: string } }) => {
   const currUser = await currentUser();
-  const wordsetPromise =  getWordSetById(params.id, currUser?.id as string);
+  const wordsetPromise = getWordSetById(params.id, currUser?.id as string);
   const languagesPromise = getLanguages();
   const foldersPromise = getFolders();
 
@@ -23,7 +22,7 @@ const Edit = async ({ params }: { params: { id: string } }) => {
 
   if (!wordSet) return <NotFound />;
   return (
-    <div className="border-none flex justify-center w-full">
+    <div className="flex w-full justify-center border-none">
       <CardComponent
         mode="edit"
         text="Edit word set"

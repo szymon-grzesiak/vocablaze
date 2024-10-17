@@ -1,7 +1,5 @@
 "use client";
 
-import { LabelList, RadialBar, RadialBarChart } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -15,6 +13,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+
+import { LabelList, RadialBar, RadialBarChart } from "recharts";
 
 interface ChartDataItem {
   nameOfMonth: string;
@@ -47,14 +47,14 @@ export function RadialChart({
   };
 
   return (
-    <Card className="flex flex-col bg-black/10 dark:bg-slate-950 border-none shadow-none h-full">
+    <Card className="flex h-full flex-col border-none bg-black/10 shadow-none dark:bg-slate-950">
       <CardHeader className="items-center pb-0">
         <CardDescription>Data from <span className="font-bold">{chartData[0].nameOfMonth}</span> to <span className="font-bold">{chartData[4].nameOfMonth}</span></CardDescription>
       </CardHeader>
-      <CardContent className="flex-grow p-0">
+      <CardContent className="grow p-0">
         <ChartContainer
           config={chartConfig}
-          className="flex-grow w-full h-full"
+          className="size-full grow"
         >
           <RadialBarChart
             data={chartData}
@@ -73,7 +73,7 @@ export function RadialChart({
               <LabelList
                 position="insideStart"
                 dataKey="nameOfMonth"
-                className="fill-black dark:fill-white capitalize mix-blend-luminosity"
+                className="fill-black capitalize mix-blend-luminosity dark:fill-white"
                 fontSize={11}
               />
             </RadialBar>

@@ -1,14 +1,14 @@
 "use server";
 
-import { revalidatePath, unstable_cache } from "next/cache";
-import { redirect } from "next/navigation";
 import { AddFolderSchema, AddWordSetSchema } from "@/schemas";
-import { Prisma } from "@prisma/client";
-import * as z from "zod";
 
 import db from "../db";
 import { currentUser } from "../sessionData";
 import stripe from "../stripe";
+import { Prisma } from "@prisma/client";
+import { revalidatePath, unstable_cache } from "next/cache";
+import { redirect } from "next/navigation";
+import * as z from "zod";
 
 export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
   const validatedFields = AddWordSetSchema.safeParse(values);
@@ -68,7 +68,6 @@ export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
     revalidatePath("/home");
     return { success: "Word set added successfully!" };
   } catch (error) {
-    console.error("Error adding word set:", error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         return { error: "The word set title has already been used" };
@@ -101,8 +100,7 @@ export const addFolder = async (values: z.infer<typeof AddFolderSchema>) => {
       },
     });
   } catch (error) {
-    console.log(error);
-    return null;
+    return { error: "An error occurred while adding the folder" };
   } finally {
     revalidatePath("/home");
   }
@@ -175,7 +173,6 @@ export const updateWordSet = async (
     revalidatePath("/home");
     return { success: "Word set updated successfully!" };
   } catch (error) {
-    console.error("Error updating word set:", error);
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         return { error: "The word set title has already been used" };
@@ -192,7 +189,6 @@ export const deleteWordSet = async (id: string) => {
       where: { id },
     });
   } catch (error) {
-    console.error("Error deleting word set:", error);
     return { error: "An error occurred while deleting the word set" };
   } finally {
     revalidatePath("/home");
@@ -204,8 +200,9 @@ export const getWordSetsByFolder = unstable_cache(async (folderId: string) => {
   const user = await currentUser();
 
   if (!user) {
-    console.log("User not logged in");
+    throw new Error("You must be logged in to view this folder");
   }
+    
   try {
     const wordSets = await db.wordSet.findMany({
       where: {
@@ -218,7 +215,7 @@ export const getWordSetsByFolder = unstable_cache(async (folderId: string) => {
     });
     return wordSets;
   } catch (error) {
-    console.error("Error fetching word sets by folder:", error);
+   throw new Error("An error occurred while fetching the word sets");
   }
 });
 
@@ -364,10 +361,40 @@ export async function deleteFolder(id: string) {
       where: { id },
     });
   } catch (error) {
-    console.error("Error deleting folder:", error);
     return { error: "An error occurred while deleting the folder" };
   } finally {
     revalidatePath("/home");
     redirect("/home");
+  }
+}
+
+export async function updateFolder({
+  id,
+  name,
+  color,
+  wordSets,
+}: {
+  id: string;
+  name: string;
+  color: string;
+  wordSets: string[];
+}) {
+  try {
+    await db.folder.update({
+      where: { id },
+      data: {
+        name,
+        color,
+        wordSets: {
+          set: wordSets.map((id) => ({ id })),
+        },
+      },
+    });
+
+    revalidatePath("/home");
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: "An error occurred while updating the folder" };
   }
 }

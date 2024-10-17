@@ -1,5 +1,4 @@
 import db from "@/lib/db";
-import { unstable_cache } from "next/cache";
 
 export const getUserByEmail = async (email: string) => {
   try {
@@ -10,8 +9,7 @@ export const getUserByEmail = async (email: string) => {
     });
     return user;
   } catch (error) {
-    console.log(error);
-    return null;
+   throw new Error("An error occurred while fetching the user");
   }
 };
 
@@ -24,7 +22,6 @@ export const getUserById = async (id: string) => {
     });
     return user;
   } catch (error) {
-    console.log(error);
-    return null;
+    throw new Error("An error occurred while fetching the user");
   }
 };

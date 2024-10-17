@@ -2,14 +2,9 @@
 
 // CustomModal.jsx
 import React, { useState } from "react";
-import { AddFolderSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, Spinner, Tooltip } from "@nextui-org/react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
+
 import {
   Dialog,
   DialogContent,
@@ -26,15 +21,22 @@ import {
   DrawerHeader,
   DrawerTitle,
 } from "@/components/ui/drawer";
+import { AddFolderSchema } from "@/schemas";
 
 import { Button as ShadcnButton } from "../ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input, Spinner, Tooltip } from "@nextui-org/react";
 import { Folder } from "lucide-react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 interface CustomModalProps {
   responsive?: boolean;
   triggerIcon?: React.ReactNode;
   title: string;
   description: string;
+  // eslint-disable-next-line no-unused-vars
   handleClick: (values: z.infer<typeof AddFolderSchema>) => void;
   onCloseDropdown?: () => void; // nowy prop
 }
@@ -92,9 +94,9 @@ const CustomModal: React.FC<CustomModalProps> = ({
             <span className="text-red-500">{errors.name.message}</span>
           )}
         </div>
-        <label htmlFor="color" className="text-sm pl-2">Choose a color:</label>
+        <label htmlFor="color" className="pl-2 text-sm">Choose a color:</label>
         <input
-          className="w-full rounded-xl cursor-pointer"
+          className="w-full cursor-pointer rounded-xl"
           type="color"
           id="color"
           {...register("color")}
@@ -122,9 +124,9 @@ const CustomModal: React.FC<CustomModalProps> = ({
             e.stopPropagation();
             setOpen(true);
           }}
-          className="ml-2 w-full flex  justify-start gap-3"
+          className="ml-2 flex w-full  justify-start gap-3"
         >
-          <Folder className="dark:text-gray-400 w-4 h-4" />
+          <Folder className="size-4 dark:text-gray-400" />
           Add a folder
         </ShadcnButton>
       ) : (
@@ -154,7 +156,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
         </Dialog>
       ) : (
         <Drawer open={open} onOpenChange={handleOpenChange}>
-          <DrawerContent className="pb-10 px-10">
+          <DrawerContent className="px-10 pb-10">
             <DrawerHeader>
               <DrawerTitle>{title}</DrawerTitle>
               <DrawerDescription>{description}</DrawerDescription>

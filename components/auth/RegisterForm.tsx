@@ -1,25 +1,24 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { RegisterSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 
-import { register } from "@/lib/actions/auth/register";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { register } from "@/lib/actions/auth/register";
+import { RegisterSchema } from "@/schemas";
 
-import { FormError } from "../form-error";
-import { FormSuccess } from "../form-success";
-import { CardWrapper } from "./card-wrapper";
+import { FormError } from "../FormError";
+import { FormSuccess } from "../FromSuccess";
+import { CardWrapper } from "./CardWrapper";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");

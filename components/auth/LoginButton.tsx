@@ -1,11 +1,12 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import React from "react";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-
-import { LoginForm } from "./login-form";
 import { cn } from "@/lib/utils";
+
+import { LoginForm } from "./LoginForm";
+import { useRouter } from "next/navigation";
 
 interface LoginButtonProps extends React.HTMLProps<HTMLDivElement> {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ export const LoginButton = ({
     return (
       <Dialog>
         <DialogTrigger asChild={asChild}>{children}</DialogTrigger>
-        <DialogContent className="p-0 w-auto bg-transparent border-none">
+        <DialogContent className="w-auto border-none bg-transparent p-0">
           <LoginForm />
         </DialogContent>
       </Dialog>

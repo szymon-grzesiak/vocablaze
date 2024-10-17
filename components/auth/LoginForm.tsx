@@ -1,16 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { LoginSchema } from "@/schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@nextui-org/react";
-import { Eye, EyeOff } from "lucide-react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 
-import { login } from "@/lib/actions/auth/login";
 import {
   Form,
   FormControl,
@@ -19,9 +10,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { login } from "@/lib/actions/auth/login";
+import { LoginSchema } from "@/schemas";
 
-import { FormError } from "../form-error";
-import { FormSuccess } from "../form-success";
+import { FormError } from "../FormError";
+import { FormSuccess } from "../FromSuccess";
 import { Button as SButon } from "../ui/button";
 import {
   InputOTP,
@@ -29,7 +22,14 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "../ui/input-otp";
-import { CardWrapper } from "./card-wrapper";
+import { CardWrapper } from "./CardWrapper";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@nextui-org/react";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 export const LoginForm = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -164,9 +164,9 @@ export const LoginForm = () => {
                               onClick={toggleVisibility}
                             >
                               {isVisible ? (
-                                <EyeOff className="text-2xl text-default-400 pointer-events-none" />
+                                <EyeOff className="pointer-events-none text-2xl text-default-400" />
                               ) : (
-                                <Eye className="text-2xl text-default-400 pointer-events-none" />
+                                <Eye className="pointer-events-none text-2xl text-default-400" />
                               )}
                             </button>
                           }

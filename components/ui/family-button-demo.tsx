@@ -1,11 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, MotionConfig } from "framer-motion";
-import { Folder, List } from "lucide-react";
+
 import useMeasure from "react-use-measure";
 
 import FamilyButton from "../ui/family-button";
+import { AnimatePresence, motion, MotionConfig } from "framer-motion";
+import { Folder, List } from "lucide-react";
 
 export function FamilyButtonDemo() {
   return (
@@ -75,20 +76,20 @@ export function OgImageSection() {
 
   return (
     <div className="flex flex-col items-center pt-4 ">
-      <div className="flex space-x-1 border border-none rounded-[8px] cursor-pointer bg-neutral-700  px-[3px] py-[3.2px] shadow-inner-shadow">
+      <div className="flex cursor-pointer space-x-1 rounded-[8px] border border-none  bg-neutral-700 px-[3px] py-[3.2px]">
         {tabs.map((tab, i) => (
           <button
             key={`${tab.id}-i-${i}`}
             onClick={() => handleTabClick(tab.id)}
             className={`${
               activeTab === tab.id ? "text-white " : "hover:text-neutral-300/60"
-            } relative rounded-[5px] px-3 py-1.5 text-xs sm:text-sm font-medium text-neutral-600  transition focus-visible:outline-1 focus-visible:ring-1 focus-visible:ring-blue-light focus-visible:outline-none`}
+            } relative rounded-[5px] px-3 py-1.5 text-xs font-medium text-neutral-600  transition focus-visible:outline-none focus-visible:outline-1 focus-visible:ring-1 sm:text-sm`}
             style={{ WebkitTapHighlightColor: "transparent" }}
           >
             {activeTab === tab.id && (
               <motion.span
                 layoutId="family-bubble"
-                className="absolute inset-0 z-10 bg-neutral-800  mix-blend-difference shadow-inner-shadow"
+                className="absolute inset-0 z-10  bg-neutral-800 mix-blend-difference"
                 style={{ borderRadius: 5 }}
                 transition={{ type: "spring", bounce: 0.19, duration: 0.4 }}
               />
@@ -99,11 +100,11 @@ export function OgImageSection() {
       </div>
       <MotionConfig transition={{ duration: 0.4, type: "spring", bounce: 0.2 }}>
         <motion.div
-          className="relative mx-auto my-[10px] w-[60px] md:w-[150px] overflow-hidden"
+          className="relative mx-auto my-[10px] w-[60px] overflow-hidden md:w-[150px]"
           initial={false}
           animate={{ height: bounds.height }}
         >
-          <div className="md:p-6 p-2" ref={ref}>
+          <div className="p-2 md:p-6" ref={ref}>
             <AnimatePresence
               custom={direction}
               mode="popLayout"

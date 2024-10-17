@@ -1,6 +1,6 @@
 import { IWordSetType } from "@/types";
 
-import SheetOpen from "./sheet-open";
+import SheetOpen from "./SheetOpen";
 
 interface FolderType {
   id: string;
@@ -25,7 +25,7 @@ const FoldersList = async ({
   );
 
   return (
-    <ul className="flex flex-wrap justify-start items-center gap-3">
+    <ul className="flex flex-wrap items-center justify-start gap-3">
       {filteredFolders?.map((folder) => {
         return (
           <SheetOpen

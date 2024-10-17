@@ -1,8 +1,16 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import React, { useState } from "react";
+
+import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import WordProgressDisplay from "./WordProgressDisplay";
 import { Button, CircularProgress, Switch } from "@nextui-org/react";
 import { WordSet as PrismaWordSetType } from "@prisma/client";
 import { CheckIcon } from "@radix-ui/react-icons";
@@ -13,15 +21,8 @@ import {
   useTransform,
 } from "framer-motion";
 import { ArrowLeft, EllipsisVertical, XIcon } from "lucide-react";
-
-import { useWordProgress, WordSet } from "@/hooks/useWordProgress";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import WordProgressDisplay from "./WordProgressDisplay";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 interface WordFlashcardsProps {
   wordSet: WordSet | PrismaWordSetType;
@@ -75,9 +76,9 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
   };
 
   return (
-    <div className="content bg-white/80 shadow-xl backdrop-blur-2xl mx-auto p-8 w-full max-w-[650px] dark:bg-slate-900/90 rounded-[2rem] full-screen-card overflow-hidden">
+    <div className="content full-screen-card mx-auto w-full max-w-[650px] overflow-hidden rounded-[2rem] bg-white/80 p-8 shadow-xl backdrop-blur-2xl dark:bg-slate-900/90">
       <Popover>
-        <PopoverTrigger className={`absolute top-0 left-0 mt-5 ml-2`}>
+        <PopoverTrigger className={`absolute left-0 top-0 ml-2 mt-5`}>
           <EllipsisVertical />
         </PopoverTrigger>
         <PopoverContent className="w-fit">
@@ -86,19 +87,19 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
             onValueChange={handleToggleOrder}
             color="success"
             size="lg"
-            className="flex flex-col-reverse items-center font-semibold gap-3"
+            className="flex flex-col-reverse items-center gap-3 font-semibold"
           >
             Reverse order
           </Switch>
         </PopoverContent>
       </Popover>
       {loading ? (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex h-full items-center justify-center">
           <CircularProgress size="lg" />
         </div>
       ) : (
         currentWord && (
-          <div className="h-full flex flex-col items-center justify-between content">
+          <div className="content flex h-full flex-col items-center justify-between">
             <WordProgressDisplay
               loading={loading}
               progress={words[currentWord]?.progress}
@@ -171,10 +172,10 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
                 style={{ pathLength: crossPathB }}
               />
             </svg>
-            <div className="flex justify-between items-center gap-4 w-full">
-              <div className="flex gap-3 flex-col-reverse sm:flex-row">
+            <div className="flex w-full items-center justify-between gap-4">
+              <div className="flex flex-col-reverse gap-3 sm:flex-row">
                 <Button
-                  className="text-xl rounded-full cursor-pointer"
+                  className="cursor-pointer rounded-full text-xl"
                   onClick={() => {
                     router.push(`/wordset/${pathname}`);
                     router.refresh();
@@ -191,18 +192,18 @@ const WordFlashcards: React.FC<WordFlashcardsProps> = ({ wordSet }) => {
                   onClick={() => handleDontKnowWord(currentWord)}
                   isIconOnly
                   size="lg"
-                  className="text-white rounded-lg"
+                  className="rounded-lg text-white"
                 >
-                  <XIcon className="w-10 h-10" />
+                  <XIcon className="size-10" />
                 </Button>
                 <Button
-                  className="text-white rounded-lg "
+                  className="rounded-lg text-white "
                   color="success"
                   onClick={() => handleKnowWord(currentWord)}
                   size="lg"
                   isIconOnly
                 >
-                  <CheckIcon className="w-10 h-10" />
+                  <CheckIcon className="size-10" />
                 </Button>
               </div>
             </div>

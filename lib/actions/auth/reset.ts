@@ -1,11 +1,12 @@
 "use server";
 
+import { getUserByEmail } from "@/lib/data/auth/user";
+
+import { sendPasswordResetEmail } from "@/lib/mail";
 import { ResetSchema } from "@/schemas";
-import * as z from "zod";
 
 import { generateResetPasswordToken } from "./tokens";
-import { getUserByEmail } from "@/lib/data/auth/user";
-import { sendPasswordResetEmail } from "@/lib/mail";
+import * as z from "zod";
 
 export const reset = async (values: z.infer<typeof ResetSchema>) => {
   const validatedFields = ResetSchema.safeParse(values);

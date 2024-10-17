@@ -9,7 +9,7 @@ const stripeClientSingleton = () => {
 
 // Extend the global object to include the Stripe instance
 declare global {
-  // eslint-disable-next-line no-var
+  // eslint-disable-next-line no-var, no-unused-vars
   var stripeGlobal: Stripe | undefined;
 }
 

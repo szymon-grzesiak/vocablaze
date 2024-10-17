@@ -1,12 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Button } from "@nextui-org/button";
-import { Word } from "@prisma/client";
-import { ArrowLeft, LucideGamepad2 } from "lucide-react";
 
+import { ConfettiStars } from "@/components/shared/ConfettiStars";
 import {
   Select,
   SelectContent,
@@ -16,7 +12,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { ConfettiStars } from "@/components/shared/confetti-stars";
+
+import { Button } from "@nextui-org/button";
+import { Word } from "@prisma/client";
+import { ArrowLeft, LucideGamepad2 } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Matching = ({ words }: { words: Word[] }) => {
   const [selectedSize, setSelectedSize] = useState(0);
@@ -120,16 +121,16 @@ const Matching = ({ words }: { words: Word[] }) => {
   const maxAvailableWords = words.length;
 
   return (
-    <div className="mx-auto p-6 flex justify-start items-center flex-col gap-6 w-full h-full">
-      <div className="flex flex-row justify-center items-center gap-4">
-        <LucideGamepad2 className="text-indigo-500 w-16 h-16" />
-        <h1 className="font-bold text-4xl [text-shadow:_2px_2px_2px_rgb(0_0_190_/_40%)]">
+    <div className="mx-auto flex size-full flex-col items-center justify-start gap-6 p-6">
+      <div className="flex flex-row items-center justify-center gap-4">
+        <LucideGamepad2 className="size-16 text-indigo-500" />
+        <h1 className="text-4xl font-bold [text-shadow:_2px_2px_2px_rgb(0_0_190_/_40%)]">
           Matching game
         </h1>
       </div>
       {!gameStarted ? (
         <>
-          <div className="w-full flex items-center justify-center flex-col">
+          <div className="flex w-full flex-col items-center justify-center">
             <Select onValueChange={(value) => setSelectedSize(Number(value))}>
               <SelectGroup>
                 <SelectLabel className="text-xl font-bold">
@@ -137,13 +138,13 @@ const Matching = ({ words }: { words: Word[] }) => {
                 </SelectLabel>
               </SelectGroup>
 
-              <SelectTrigger className="w-full md:w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
+              <SelectTrigger className="w-full rounded-full border-4 border-gray-300 p-10 text-xl dark:border-slate-500 md:w-1/2">
                 <SelectValue placeholder="Select size" />
               </SelectTrigger>
               <SelectContent className="rounded-3xl">
                 {sizeRange.map((size) => (
                   <SelectItem
-                    className="p-6 rounded-full flex justify-center"
+                    className="flex justify-center rounded-full p-6"
                     key={size}
                     value={String(size)}
                     disabled={size > maxAvailableWords + 1}
@@ -154,7 +155,7 @@ const Matching = ({ words }: { words: Word[] }) => {
               </SelectContent>
             </Select>
           </div>
-          <div className="w-full flex items-center justify-center flex-col gap-6">
+          <div className="flex w-full flex-col items-center justify-center gap-6">
             <Select
               onValueChange={(value) =>
                 setSelectedDifficulty(
@@ -167,7 +168,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                   Select the difficulty
                 </SelectLabel>
               </SelectGroup>
-              <SelectTrigger className="w-full md:w-1/2 p-10 rounded-full text-xl border-4 border-gray-300 dark:border-slate-500">
+              <SelectTrigger className="w-full rounded-full border-4 border-gray-300 p-10 text-xl dark:border-slate-500 md:w-1/2">
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
               <SelectContent>
@@ -179,7 +180,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                   }).length;
                   return (
                     <SelectItem
-                      className="p-6 rounded-full flex justify-center"
+                      className="flex justify-center rounded-full p-6"
                       key={rangeLabel}
                       value={range.join("-")}
                       disabled={wordsInRange < selectedSize}
@@ -194,8 +195,8 @@ const Matching = ({ words }: { words: Word[] }) => {
                 })}
               </SelectContent>
             </Select>
-            <div className="flex flex-wrap-reverse gap-6 justify-center pt-6">
-              <Button className="px-12 py-6 text-xl rounded-full cursor-pointer">
+            <div className="flex flex-wrap-reverse justify-center gap-6 pt-6">
+              <Button className="cursor-pointer rounded-full px-12 py-6 text-xl">
                 <Link href={`/wordset/${pathname}`}>Back to details</Link>
               </Button>
               <Button
@@ -206,7 +207,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                   selectedSize === 0 ||
                   selectedDifficulty[0] === null
                 }
-                className="px-12 py-6 text-xl rounded-full cursor-pointer bg-indigo-500 text-white"
+                className="cursor-pointer rounded-full bg-indigo-500 px-12 py-6 text-xl text-white"
               >
                 Start the game
               </Button>
@@ -214,8 +215,8 @@ const Matching = ({ words }: { words: Word[] }) => {
           </div>
         </>
       ) : (
-        <div className="w-full h-[600px] flex justify-start flex-col items-center gap-3">
-            <p className="text-lg pb-5 w-1/2">
+        <div className="flex h-[600px] w-full flex-col items-center justify-start gap-3">
+            <p className="w-1/2 pb-5 text-lg">
               Match the original word with its translation. Start by clicking on
               a word. If you find a match, the words will turn green, otherwise
               they will come back to their original color.
@@ -224,7 +225,7 @@ const Matching = ({ words }: { words: Word[] }) => {
               startContent={<ArrowLeft />}
               variant="flat"
               onClick={resetGame}
-              className="px-12 py-6 text-xl rounded-full cursor-pointer bg-indigo-500 text-white"
+              className="cursor-pointer rounded-full bg-indigo-500 px-12 py-6 text-xl text-white"
             >
               Reset game
             </Button>
@@ -234,7 +235,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                 key={word.id}
                 onClick={() => handleWordClick(word.id)}
                 disabled={matches.includes(word.id)}
-                className={`matchButton bg-[#e9f1f7] dark:bg-slate-700 dark:border-slate-500 dark:text-white text-lg font-bold text-indigo-900 border-4 border-gray-300 rounded-2xl shadow-xl p-10 ${selectedWords.includes(word.id) ? "selected" : ""}`}
+                className={`matchButton rounded-2xl border-4 border-gray-300 bg-[#e9f1f7] p-10 text-lg font-bold text-indigo-900 shadow-xl dark:border-slate-500 dark:bg-slate-700 dark:text-white ${selectedWords.includes(word.id) ? "selected" : ""}`}
               >
                 {word.id.endsWith("_original")
                   ? word.originalWord

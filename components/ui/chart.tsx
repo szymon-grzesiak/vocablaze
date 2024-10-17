@@ -1,19 +1,16 @@
 "use client"
 
 import * as React from "react"
-import * as RechartsPrimitive from "recharts"
-import {
-  NameType,
-  Payload,
-  ValueType,
-} from "recharts/types/component/DefaultTooltipContent"
 
 import { cn } from "@/lib/utils"
+
+import * as RechartsPrimitive from "recharts"
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
 
 export type ChartConfig = {
+  // eslint-disable-next-line no-unused-vars
   [k in string]: {
     label?: React.ReactNode
     icon?: React.ComponentType
@@ -74,6 +71,7 @@ ChartContainer.displayName = "Chart"
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
+    // eslint-disable-next-line no-unused-vars
     ([_, config]) => config.theme || config.color
   )
 
@@ -305,7 +303,7 @@ const ChartLegendContent = React.forwardRef<
                 <itemConfig.icon />
               ) : (
                 <div
-                  className="h-2 w-2 shrink-0 rounded-[2px]"
+                  className="size-2 shrink-0 rounded-[2px]"
                   style={{
                     backgroundColor: item.color,
                   }}

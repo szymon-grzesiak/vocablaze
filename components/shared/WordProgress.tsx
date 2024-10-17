@@ -1,5 +1,7 @@
 "use client";
 
+import { ChartConfig, ChartContainer } from "@/components/ui/chart";
+
 import {
   Label,
   PolarGrid,
@@ -7,8 +9,6 @@ import {
   RadialBar,
   RadialBarChart,
 } from "recharts";
-
-import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 
 type WordProgressProps = {
   progress: number;
@@ -34,7 +34,7 @@ export function WordProgress({ progress }: WordProgressProps) {
   return (
     <ChartContainer
       config={chartConfig}
-      className="aspect-square h-[60px] w-[60px]"
+      className="aspect-square size-[60px]"
     >
       <RadialBarChart
         data={chartData}
@@ -47,7 +47,7 @@ export function WordProgress({ progress }: WordProgressProps) {
           gridType="circle"
           radialLines={false}
           stroke="none"
-          className="first:fill-slate-300 dark:first:fill-slate-700 last:fill-background"
+          className="first:fill-slate-300 last:fill-background dark:first:fill-slate-700"
           polarRadius={[30, 23]}
         />
         <RadialBar dataKey="visitors" background cornerRadius={10} />

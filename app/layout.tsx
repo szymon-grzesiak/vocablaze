@@ -1,23 +1,18 @@
-import type { Metadata } from "next";
-import { Roboto_Slab, Space_Grotesk } from "next/font/google";
-import ThemeProvider from "@/context/ThemeProvider";
-import { Providers } from "./providers";
+import { ReactNode } from "react";
 
 import "./globals.css";
 
-
 import { Toaster } from "@/components/ui/sonner";
+import ThemeProvider from "@/context/ThemeProvider";
+
+import { Providers } from "./providers";
+import type { Metadata } from "next";
+import { Space_Grotesk } from "next/font/google";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-spaceGrotesk",
-});
-
-const robotoSlab = Roboto_Slab({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-robotoSlab",
 });
 
 export const metadata: Metadata = {
@@ -32,12 +27,12 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
 
   return (
       <html lang="en">
-        <body className={`${spaceGrotesk.className} antialiased h-full`}>
+        <body className={`${spaceGrotesk.className} h-full antialiased`}>
           <Toaster />
           <Providers>
             <ThemeProvider>{children}</ThemeProvider>

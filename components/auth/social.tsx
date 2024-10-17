@@ -1,12 +1,12 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
+
 import { useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-
-import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
-import { Button } from "@/components/ui/button";
 
 export const Social = () => {
   const searchParams = useSearchParams();
@@ -18,14 +18,14 @@ export const Social = () => {
   };
 
   return (
-    <div className="flex items-center w-full gap-x-2">
+    <div className="flex w-full items-center gap-x-2">
       <Button
         variant="outline"
         className="w-full"
         size="lg"
         onClick={() => onClick("google")}
       >
-        <FcGoogle className="h-5 w-5" />
+        <FcGoogle className="size-5" />
       </Button>
       <Button
         variant="outline"
@@ -33,7 +33,7 @@ export const Social = () => {
         size="lg"
         onClick={() => onClick("github")}
       >
-        <FaGithub className="h-5 w-5" />
+        <FaGithub className="size-5" />
       </Button>
     </div>
   );

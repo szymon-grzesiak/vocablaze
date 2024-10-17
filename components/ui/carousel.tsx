@@ -1,13 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons"
+
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
+
+import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons"
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -18,6 +20,7 @@ type CarouselProps = {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
+  // eslint-disable-next-line no-unused-vars
   setApi?: (api: CarouselApi) => void
 }
 
@@ -216,7 +219,7 @@ const CarouselPrevious = React.forwardRef<
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeftIcon className="h-4 w-4" />
+      <ArrowLeftIcon className="size-4" />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -245,7 +248,7 @@ const CarouselNext = React.forwardRef<
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRightIcon className="h-4 w-4" />
+      <ArrowRightIcon className="size-4" />
       <span className="sr-only">Next slide</span>
     </Button>
   )

@@ -1,5 +1,6 @@
-import { RegisterForm } from "@/components/auth/register-form";
 import { Suspense } from "react";
+
+import { RegisterForm } from "@/components/auth/RegisterForm";
 
 const RegisterPage = () => {
   return (

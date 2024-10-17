@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import Stripe from 'stripe';
 import db from '@/lib/db';
 import stripe from '@/lib/stripe';
+
+import { NextRequest, NextResponse } from 'next/server';
+import Stripe from 'stripe';
 
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -14,7 +15,6 @@ export async function POST(req: NextRequest) {
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err: any) {
-    console.error('Webhook signature verification failed:', err.message);
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
 
@@ -52,6 +52,6 @@ async function fulfillOrder(customerEmail: string) {
       },
     });
   } catch (error) {
-    console.error('Error fulfilling order:', error);
+    throw new Error('An error occurred while fulfilling the order');
   }
 }
