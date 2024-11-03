@@ -1,6 +1,7 @@
 import { UserButton } from "@/components/auth/UserButton";
 import Theme from "@/components/shared/navbar/Theme";
 import { addFolder } from "@/lib/actions/action";
+import { getWordSetsAmountForUser } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
 import logo from "@/public/assets/images/logo.png";
 
@@ -13,6 +14,11 @@ import Link from "next/link";
 
 export const Navbar = async () => {
   const user = await currentUser();
+  const wordSetsAmount = await getWordSetsAmountForUser(String(user?.id));
+
+  const isDisabled = wordSetsAmount >= 3 && user?.role === 'USER';
+
+
   return (
     <nav className="z-50 w-full p-4 backdrop-blur-lg">
       <div className="mx-auto flex w-full items-center justify-between gap-6">
@@ -34,7 +40,14 @@ export const Navbar = async () => {
               />
             )}
 
-            <Tooltip content="Add a words set">
+            {isDisabled ? (
+                <Tooltip content="You can have maximum of 3 word sets, upgrade your plan to have it more">
+                <Button isIconOnly color="secondary" aria-label="word-set">
+                    <Plus className="dark:text-gray-400" />
+                </Button>
+              </Tooltip>
+            ) : (
+              <Tooltip content="Add a words set">
               <Button isIconOnly color="secondary" aria-label="word-set">
                 <Link
                   href="/add"
@@ -44,6 +57,7 @@ export const Navbar = async () => {
                 </Link>
               </Button>
             </Tooltip>
+            )}
           </div>
           <Theme />
           <UserButton />

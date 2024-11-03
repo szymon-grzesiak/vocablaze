@@ -21,7 +21,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { hexToRgb } from "@/helpers/file";
-import { updateFolder } from "@/lib/actions/action"; // Adjust as necessary
+import { updateFolder } from "@/lib/actions/action";
 import { cn } from "@/lib/utils";
 import { FolderType, IWordSetType } from "@/types";
 

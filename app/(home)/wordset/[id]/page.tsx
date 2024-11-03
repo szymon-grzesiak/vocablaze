@@ -7,6 +7,7 @@ import ExportWords from "@/components/shared/ExportWords";
 import NotFound from "@/components/shared/NotFound";
 import { getWordSetById } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
+import { cn } from "@/lib/utils";
 
 import { Button, Tooltip } from "@nextui-org/react";
 import {
@@ -112,12 +113,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
                 </span>
               </Link>
             ) : (
-              <div className="relative w-full rounded-lg">
+              <div className="relative size-full rounded-lg">
                 <div className="absolute left-[-3%] top-[-20%] z-50 rounded-full border-5 bg-red-400 p-2 font-bold text-gray-100 shadow-xl">
                   PRO
                 </div>
                 <Button
-                  className="flex size-full flex-col items-center justify-center p-4 shadow-sm"
+                  className={cn("flex flex-col items-center justify-center p-4 shadow-sm", "h-full w-full")}
                   variant={"flat"}
                   disabled
                 >

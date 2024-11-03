@@ -35,7 +35,11 @@ const SettingsPage = async () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <CheckIcon className="size-5 text-green-500" />
-              <span>Unlimited amount of words in the word set</span>
+              <span>Unlimited amount of words in the word set (basic user can have up to 30 words per set)</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <CheckIcon className="size-5 text-green-500" />
+              <span>Unlimited amount of word sets (basic user can create up to 3 word sets)</span>
             </div>
             <div className="flex items-center space-x-2">
               <CheckIcon className="size-5 text-green-500" />
@@ -50,7 +54,7 @@ const SettingsPage = async () => {
           </div>
           <form action={updateUserWithId}>
             <Button
-              className="mt-4 w-full border-white text-white hover:bg-white hover:text-gray-900 dark:hover:text-gray-50"
+              className="mt-4 w-full border-white text-white hover:bg-white hover:text-gray-900 dark:hover:text-black"
               variant="bordered"
               target="_blank"
               type="submit"

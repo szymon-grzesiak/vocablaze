@@ -1,6 +1,7 @@
 import db from '@/lib/db';
 import stripe from '@/lib/stripe';
 
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -23,7 +24,6 @@ export async function POST(req: NextRequest) {
     const customerEmail = session?.metadata?.userEmail;
 
     if (customerEmail) {
-      // Fulfill the order
       await fulfillOrder(customerEmail);
     }
   }
@@ -51,6 +51,8 @@ async function fulfillOrder(customerEmail: string) {
         role: 'PRO',
       },
     });
+
+    revalidatePath('profile');
   } catch (error) {
     throw new Error('An error occurred while fulfilling the order');
   }

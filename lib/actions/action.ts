@@ -2,6 +2,7 @@
 
 import { AddFolderSchema, AddWordSetSchema } from "@/schemas";
 
+import { getWordSetsAmountForUser } from "../data/rest";
 import db from "../db";
 import { currentUser } from "../sessionData";
 import stripe from "../stripe";
@@ -11,6 +12,20 @@ import { redirect } from "next/navigation";
 import * as z from "zod";
 
 export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
+  const user = await currentUser();
+  const wordSetsAmount = await getWordSetsAmountForUser(String(user?.id));
+
+  const isDisabled = wordSetsAmount >= 3 && user?.role === 'USER';
+
+  if(isDisabled) {
+    return { error: "You can have maximum of 3 word sets, upgrade your plan to have it more" };
+  }
+
+  if (!user) {
+    return { error: "You must be logged in to add a word set" };
+  }
+
+  const userId = user.id as string;
   const validatedFields = AddWordSetSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -25,14 +40,6 @@ export const addWordSet = async (values: z.infer<typeof AddWordSetSchema>) => {
     folders,
     words,
   } = validatedFields.data;
-
-  const user = await currentUser();
-
-  if (!user) {
-    return { error: "You must be logged in to add a word set" };
-  }
-
-  const userId = user.id as string;
 
   try {
     const newWordSet = await db.wordSet.create({

@@ -181,3 +181,19 @@ export const get5lastMonthsWordsLearned = async (userId: string) => {
     throw new Error("An error occurred while fetching the words");
   }
 };
+
+export const getWordSetsAmountForUser = async (userId: string) => {
+  if (!userId) {
+    throw new Error("You must be logged in to view this data");
+  }
+
+  try {
+    const wordSetsAmount = await db.wordSet.count({
+      where: { userId },
+    });
+
+    return wordSetsAmount;
+  } catch (error) {
+    throw new Error("An error occurred while fetching the data");
+  }
+}
