@@ -7,7 +7,7 @@
     "plugin:tailwindcss/recommended",
     "plugin:react/recommended"
   ],
-  "plugins": ["simple-import-sort", "import", "tailwindcss", "prettier"],
+  "plugins": ["simple-import-sort", "import", "tailwindcss", "prettier", "jest"],
   "rules": {
     "no-console": "warn",
     "prettier/prettier": 0,
@@ -20,6 +20,9 @@
     ],
     "react/react-in-jsx-scope": "off",
     "react/display-name": "off"
+  },
+  "env": {
+    "jest/globals": true,
   },
   "settings": {
     "import/resolver": {

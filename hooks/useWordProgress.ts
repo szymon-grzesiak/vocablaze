@@ -80,9 +80,12 @@ export const useWordProgress = (wordSet: (WordSet )) => {
   const handleDontKnowWord = async (originalWord: string) => {
     setLoading(true);
     const wordId = words[originalWord].id;
-    const decreaseAmount = Math.max(0.1, 1 - words[originalWord].progress);
-    const newProgress = Math.max(words[originalWord].progress - decreaseAmount, 0);
-
+    const currentProgress = words[originalWord].progress;
+  
+    // Bazowy spadek 0.05 plus 40% aktualnego progresu
+    const decreaseAmount = Math.max(0.1,  0.05 + currentProgress * 0.4);
+    const newProgress = Math.max(currentProgress - decreaseAmount, 0);
+  
     setWords((prevWords) => ({
       ...prevWords,
       [originalWord]: {
@@ -90,11 +93,10 @@ export const useWordProgress = (wordSet: (WordSet )) => {
         progress: newProgress,
       },
     }));
-
+  
     await updateProgress(wordId, newProgress);
     setCurrentWord(selectRandomWord());
     setLoading(false);
-
   };
 
   const handleKnowWord = async (originalWord: string) => {
@@ -124,8 +126,10 @@ export const useWordProgress = (wordSet: (WordSet )) => {
   return {
     words,
     currentWord,
+    setCurrentWord,
     loading,
     showTranslatedFirst,
+    selectRandomWord,
     handleDontKnowWord,
     handleKnowWord,
     handleToggleOrder,

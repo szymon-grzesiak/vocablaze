@@ -321,6 +321,7 @@ export const CardComponent = ({
                     <Select
                       selectionMode="multiple"
                       placeholder="Select folders"
+                      data-cy={"folder-select"}
                       className="w-[270px]"
                       startContent={<Folder />}
                       selectedKeys={
