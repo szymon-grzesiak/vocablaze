@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { startOfYear, endOfYear } from 'date-fns';
 
 import db from "@/lib/db";
 
@@ -56,6 +57,11 @@ export const getAllWordSets = cache(async () => {
   }
 });
 
+interface ResultFormat {
+  date: Date;
+  wordCount: number;
+}
+
 export const getDataToCalendar = cache(async (): Promise<CalendarDatum[]> => {
   const user = await currentUser();
 
@@ -63,26 +69,26 @@ export const getDataToCalendar = cache(async (): Promise<CalendarDatum[]> => {
     throw new Error("You must be logged in to view this data");
   }
 
-  interface ResultFormat {
-    date: Date;
-    wordCount: number;
-  }
   try {
     const userId = user.id;
-    // tu jest czysty SQL ze względu na to, że prisma ma nielogiczne i długie zapytanie
-    const result: ResultFormat[] = await db.$queryRaw`
-        SELECT 
-          DATE("answerDate") AS "date",
-          COUNT(*) AS "wordCount"
-        FROM 
-          "ProgressWordHistory"
-        WHERE 
-          "userId" = ${userId}
-        GROUP BY 
-          DATE("answerDate")
-        ORDER BY 
-          DATE("answerDate");
-      `;
+
+   const startDate = startOfYear(new Date());
+   const endDate = endOfYear(new Date());
+
+   const result: ResultFormat[] = await db.$queryRaw`
+       SELECT 
+         DATE("answerDate") AS "date",
+         COUNT(*) AS "wordCount"
+       FROM 
+         "ProgressWordHistory"
+       WHERE 
+         "userId" = ${userId} AND
+         "answerDate" BETWEEN ${startDate} AND ${endDate}
+       GROUP BY 
+         DATE("answerDate")
+       ORDER BY 
+         DATE("answerDate");
+     `;
 
     const formattedResult: CalendarDatum[] = result.map(
       (entry: { date: Date; wordCount: number }) => ({

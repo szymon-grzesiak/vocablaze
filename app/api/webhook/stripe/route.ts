@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 400 });
   }
-
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object as Stripe.Checkout.Session;
     const customerEmail = session?.metadata?.userEmail;
@@ -27,7 +26,6 @@ export async function POST(req: NextRequest) {
       await fulfillOrder(customerEmail);
     }
   }
-
   return NextResponse.json({ received: true });
 }
 
@@ -38,11 +36,9 @@ async function fulfillOrder(customerEmail: string) {
         email: customerEmail,
       },
     });
-
     if (!user) {
       throw new Error('No user found');
     }
-
     await db.user.update({
       where: {
         id: user.id,
@@ -51,7 +47,6 @@ async function fulfillOrder(customerEmail: string) {
         role: 'PRO',
       },
     });
-
     revalidatePath('profile');
   } catch (error) {
     throw new Error('An error occurred while fulfilling the order');

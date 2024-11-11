@@ -89,6 +89,7 @@ export const languages: Prisma.LanguageCreateInput[] = [
   { name: "Shona" },
   { name: "Northern Sotho" },
   { name: "Swati" },
+  { name: "Other" },
 ];
 
 async function main() {

@@ -72,7 +72,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
       reset();
       setOpen(false);
       if (onCloseDropdown) {
-        onCloseDropdown(); // zamykanie dropdown
+        onCloseDropdown();
       }
     } catch (error) {
       toast.error("Failed to add folder.");

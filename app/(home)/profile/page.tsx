@@ -1,16 +1,13 @@
+import { Button } from "@nextui-org/button";
+import { CheckIcon, CrownIcon } from "lucide-react";
+
+import { ExtendedUser } from "@/types/next-auth";
+import { createCheckoutSession } from "@/lib/actions/action";
+import { get5lastMonthsWordsLearned, getDataToCalendar } from "@/lib/data/rest";
+import { currentUser } from "@/lib/sessionData";
 import { MyResponsiveCalendar } from "@/components/shared/Calendar";
 import Settings from "@/components/shared/Settings";
 import { RadialChart } from "@/components/shared/Stats";
-import { createCheckoutSession } from "@/lib/actions/action";
-import {
-  get5lastMonthsWordsLearned,
-  getDataToCalendar,
-} from "@/lib/data/rest";
-import { currentUser } from "@/lib/sessionData";
-import { ExtendedUser } from "@/types/next-auth";
-
-import { Button } from "@nextui-org/button";
-import { CheckIcon, CrownIcon } from "lucide-react";
 
 const SettingsPage = async () => {
   const user = await currentUser();
@@ -18,10 +15,6 @@ const SettingsPage = async () => {
     getDataToCalendar(),
     get5lastMonthsWordsLearned(user?.id as string),
   ]);
-
-  const updateUserWithId = createCheckoutSession.bind(null, {
-    userEmail: user?.email as string,
-  });
 
   return (
     <div className="mx-auto flex w-full flex-wrap gap-6 p-6 lg:w-1/2">
@@ -35,11 +28,17 @@ const SettingsPage = async () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <CheckIcon className="size-5 text-green-500" />
-              <span>Unlimited amount of words in the word set (basic user can have up to 30 words per set)</span>
+              <span>
+                Unlimited amount of words in the word set (basic user can have
+                up to 30 words per set)
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <CheckIcon className="size-5 text-green-500" />
-              <span>Unlimited amount of word sets (basic user can create up to 3 word sets)</span>
+              <span>
+                Unlimited amount of word sets (basic user can create up to 3
+                word sets)
+              </span>
             </div>
             <div className="flex items-center space-x-2">
               <CheckIcon className="size-5 text-green-500" />
@@ -52,13 +51,15 @@ const SettingsPage = async () => {
               <span>Lifetime access to the newest features</span>
             </div>
           </div>
-          <form action={updateUserWithId}>
-            <Button
-              className="mt-4 w-full border-white text-white hover:bg-white hover:text-gray-900 dark:hover:text-black"
-              variant="bordered"
-              target="_blank"
-              type="submit"
-            >
+          <form
+            action={async () => {
+              "use server";
+              return createCheckoutSession({
+                userEmail: user?.email as string,
+              });
+            }}
+          >
+            <Button target="_blank" type="submit">
               Upgrade Now
             </Button>
           </form>

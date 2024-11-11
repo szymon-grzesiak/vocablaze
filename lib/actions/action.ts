@@ -358,11 +358,15 @@ export async function createCheckoutSession({
       },
     ],
   });
-
   redirect(stripeSession?.url as string);
 }
 
 export async function deleteFolder(id: string) {
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("You must be logged in to save display order");
+  }
+
   try {
     await db.folder.delete({
       where: { id },
@@ -386,9 +390,15 @@ export async function updateFolder({
   color: string;
   wordSets: string[];
 }) {
+
+  const user = await currentUser();
+  if (!user) {
+    throw new Error("You must be logged in to save display order");
+  }
+  
   try {
     await db.folder.update({
-      where: { id },
+      where: { id, userId: user.id as string },
       data: {
         name,
         color,

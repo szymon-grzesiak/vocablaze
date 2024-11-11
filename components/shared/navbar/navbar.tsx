@@ -1,6 +1,6 @@
+import { addFolder } from "@/lib/actions/action";
 import { UserButton } from "@/components/auth/UserButton";
 import Theme from "@/components/shared/navbar/Theme";
-import { addFolder } from "@/lib/actions/action";
 import { getWordSetsAmountForUser } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
 import logo from "@/public/assets/images/logo.png";
@@ -15,9 +15,7 @@ import Link from "next/link";
 export const Navbar = async () => {
   const user = await currentUser();
   const wordSetsAmount = await getWordSetsAmountForUser(String(user?.id));
-
   const isDisabled = wordSetsAmount >= 3 && user?.role === 'USER';
-
 
   return (
     <nav className="z-50 w-full p-4 backdrop-blur-lg">
@@ -28,7 +26,6 @@ export const Navbar = async () => {
             Vocablaze
           </h1>
         </Link>
-
         <div className="flex items-center justify-end gap-6">
           <div className="hidden gap-6 sm:flex">
             {user && (
