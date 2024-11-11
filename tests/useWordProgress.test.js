@@ -15,29 +15,27 @@ const mockWordSet = {
       originalWord: 'Hello',
       translatedWord: 'Cześć',
       progress: 0.5,
-      progressHistory: [],
     },
     {
       id: 'word2',
       originalWord: 'World',
       translatedWord: 'Świat',
       progress: 0.2,
-      progressHistory: [],
     },
   ],
 };
 
-test('Czy słowa o niższym progresie są częściej wybierane?', () => {
+test('1. Czy słowa o niższym progresie są częściej wybierane?', () => {
   const extendedWordSet = {
     id: '1',
     title: 'Extended Test Set',
     displayTranslatedFirst: false,
     words: [
-      { id: 'word1', originalWord: 'Word1', translatedWord: 'Słowo1', progress: 0.1, progressHistory: [] },
-      { id: 'word2', originalWord: 'Word2', translatedWord: 'Słowo2', progress: 0.3, progressHistory: [] },
-      { id: 'word3', originalWord: 'Word3', translatedWord: 'Słowo3', progress: 0.5, progressHistory: [] },
-      { id: 'word4', originalWord: 'Word4', translatedWord: 'Słowo4', progress: 0.7, progressHistory: [] },
-      { id: 'word5', originalWord: 'Word5', translatedWord: 'Słowo5', progress: 0.9, progressHistory: [] },
+      { id: 'word1', originalWord: 'Word1', translatedWord: 'Słowo1', progress: 0.1 },
+      { id: 'word2', originalWord: 'Word2', translatedWord: 'Słowo2', progress: 0.3 },
+      { id: 'word3', originalWord: 'Word3', translatedWord: 'Słowo3', progress: 0.5 },
+      { id: 'word4', originalWord: 'Word4', translatedWord: 'Słowo4', progress: 0.7 },
+      { id: 'word5', originalWord: 'Word5', translatedWord: 'Słowo5', progress: 0.9 },
     ],
   };
 
@@ -66,7 +64,7 @@ test('Czy słowa o niższym progresie są częściej wybierane?', () => {
   expect(selectionCount['Word4']).toBeGreaterThan(selectionCount['Word5']);
 });
 
-test('Czy poprawnie oblicza zwiększenie progresu?', async () => {
+test('2. Czy poprawnie oblicza zwiększenie progresu?', async () => {
   const { result } = renderHook(() => useWordProgress(mockWordSet));
 
   const originalWord = 'Hello';
@@ -85,7 +83,7 @@ test('Czy poprawnie oblicza zwiększenie progresu?', async () => {
   expect(updatedProgress).toBeCloseTo(expectedProgress, 5);
 });
 
-test('Czy poprawnie oblicza zmniejszenie progresu?', async () => {
+test('3. Czy poprawnie oblicza zmniejszenie progresu?', async () => {
   const { result } = renderHook(() => useWordProgress(mockWordSet));
 
   const originalWord = 'Hello';

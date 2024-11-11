@@ -59,7 +59,12 @@ const SettingsPage = async () => {
               });
             }}
           >
-            <Button target="_blank" type="submit">
+            <Button
+              className="mt-4 w-full border-white text-white hover:bg-white hover:text-gray-900 dark:hover:text-black"
+              variant="bordered"
+              target="_blank"
+              type="submit"
+            >
               Upgrade Now
             </Button>
           </form>

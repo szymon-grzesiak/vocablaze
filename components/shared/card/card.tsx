@@ -4,8 +4,25 @@ import React, { useState } from "react";
 
 import "./background.css";
 
-import { Bookmark, Delete02Icon } from "@/components/icons";
-import { ImportWords } from "@/components/shared/ImportWords";
+import { useRouter } from "next/navigation";
+import { AddWordSetSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Button,
+  Card,
+  Input,
+  Select,
+  SelectItem,
+  Spinner,
+} from "@nextui-org/react";
+import { DragHandleDots2Icon } from "@radix-ui/react-icons";
+import { Check, ChevronsUpDown, Flag, Folder, Plus } from "lucide-react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
+
+import { addWordSet, updateWordSet } from "@/lib/actions/action";
+import { cn } from "@/lib/utils";
 import {
   Command,
   CommandEmpty,
@@ -32,26 +49,8 @@ import {
   SortableItem,
 } from "@/components/ui/sortable";
 import { Textarea } from "@/components/ui/textarea";
-import { addWordSet, updateWordSet } from "@/lib/actions/action";
-import { cn } from "@/lib/utils";
-import { AddWordSetSchema } from "@/schemas";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Card,
-  Input,
-  Select,
-  SelectItem,
-  Spinner,
-} from "@nextui-org/react";
-import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { Flag, Folder, Plus } from "lucide-react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useFieldArray, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
+import { Bookmark, Delete02Icon } from "@/components/icons";
+import { ImportWords } from "@/components/shared/ImportWords";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
@@ -158,6 +157,7 @@ export const CardComponent = ({
                   <Input
                     {...field}
                     type="text"
+                    data-cy="title"
                     variant="bordered"
                     label="Title"
                     size="lg"
@@ -176,6 +176,7 @@ export const CardComponent = ({
                 <FormControl>
                   <Textarea
                     {...field}
+                    data-cy="description"
                     placeholder="Enter your description"
                     className="h-[150px] rounded-md bg-white/60 dark:bg-slate-800"
                   />
@@ -199,6 +200,7 @@ export const CardComponent = ({
                         <Button
                           variant="shadow"
                           role="combobox"
+                          data-cy="firstLanguage"
                           startContent={<Flag />}
                           className={cn(
                             "w-[250px] justify-between bg-white/50 dark:bg-slate-800",
@@ -224,6 +226,7 @@ export const CardComponent = ({
                                 <CommandItem
                                   value={language.id}
                                   key={language.id}
+                                  data-cy={`firstLanguage-${language.id}`}
                                   onSelect={() => {
                                     field.onChange(language.id);
                                     setOpenFirstLang(false);
@@ -261,6 +264,7 @@ export const CardComponent = ({
                         <Button
                           variant="shadow"
                           role="combobox"
+                          data-cy="secondLanguage"
                           startContent={<Flag className="shrink-0" />}
                           className={cn(
                             "w-[270px] justify-between bg-white/50 dark:bg-slate-800",
@@ -286,6 +290,7 @@ export const CardComponent = ({
                                 <CommandItem
                                   value={language.id}
                                   key={language.id}
+                                  data-cy={`secondLanguage-${language.id}`}
                                   onSelect={() => {
                                     field.onChange(language.id);
                                     setOpenSecLang(false);
@@ -321,8 +326,8 @@ export const CardComponent = ({
                     <Select
                       selectionMode="multiple"
                       placeholder="Select folders"
-                      data-cy={"folder-select"}
                       className="w-[270px]"
+                      id="folders"
                       startContent={<Folder />}
                       selectedKeys={
                         Array.isArray(field.value)
@@ -334,7 +339,7 @@ export const CardComponent = ({
                       } // Konwersja Set na tablicę przy zmianie
                     >
                       {folders?.map((folder) => (
-                        <SelectItem key={folder.id} value={field.value}>
+                        <SelectItem key={folder.id} value={field.value} id={`folders-${folder.id}`}>
                           {folder.name}
                         </SelectItem>
                       ))}
@@ -377,6 +382,7 @@ export const CardComponent = ({
                                 <Input
                                   {...field}
                                   type="text"
+                                  data-cy={`originalWord-${index}`}
                                   variant="underlined"
                                   placeholder="First Language"
                                   className="h-8 text-blue-500"
@@ -395,6 +401,7 @@ export const CardComponent = ({
                                 <Input
                                   {...field}
                                   type="text"
+                                  data-cy={`translatedWord-${index}`}
                                   variant="underlined"
                                   placeholder="Second Language"
                                   className="h-8 text-blue-500"

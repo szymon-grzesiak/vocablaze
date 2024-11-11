@@ -92,6 +92,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
           <DialogTrigger asChild>
             <Button
               color="secondary"
+              data-cy="import-words"
               variant="flat"
               startContent={<Import />}
               className="bg-transparent/10 text-black dark:text-gray-200"
@@ -129,6 +130,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
               <Textarea
                 placeholder="Paste words here, format: original,translated"
                 className="mt-2 h-[150px] rounded-md"
+                data-cy="import-words-textarea"
                 value={fileContent}
                 onChange={(e) => setFileContent(e.target.value)}
               />
@@ -138,6 +140,7 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
                   variant="flat"
                   startContent={<Import className="size-5"/>}
                   onClick={handleTextImport}
+                  data-cy="import-words-button"
                   className="bg-transparent/10 text-black dark:text-gray-200"
                 >
                   Import

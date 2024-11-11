@@ -157,7 +157,7 @@ const SheetOpen = ({
           <SheetContent side="left">
             <SheetHeader className="h-[90%]">
               <div className="flex items-center justify-start gap-4 pb-4">
-                <SheetTitle className="text-2xl font-bold">
+                <SheetTitle className="text-2xl font-bold" data-cy='folder-title'>
                   {currentFolder.name}
                 </SheetTitle>
                 <ShadcnButton
@@ -259,7 +259,7 @@ const SheetOpen = ({
           <DrawerContent className="min-h-[50%]">
             <DrawerHeader>
               <div className="flex items-center justify-between">
-                <DrawerTitle>{currentFolder.name}</DrawerTitle>
+                <DrawerTitle data-cy='folder-title'>{currentFolder.name}</DrawerTitle>
                 <ShadcnButton
                   className="bg-blue-600 px-3 hover:bg-blue-600/80"
                   onClick={handleEditModeToggle}
