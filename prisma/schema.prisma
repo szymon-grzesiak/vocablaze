@@ -45,6 +45,7 @@ model User {
   isTwoFactorEnabled    Boolean                @default(false)
   folders               Folder[]
   wordSets              WordSet[]
+  isLinked              Boolean?               @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
   accounts              Account[]
 

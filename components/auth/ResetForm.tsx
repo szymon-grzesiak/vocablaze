@@ -1,7 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { ResetSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/button";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
+import { reset } from "@/lib/actions/auth/reset";
 import {
   Form,
   FormControl,
@@ -10,17 +16,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { reset } from "@/lib/actions/auth/reset";
-import { ResetSchema } from "@/schemas";
 
 import { FormError } from "../FormError";
 import { FormSuccess } from "../FromSuccess";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { Input } from "@nextui-org/react";
 import { CardWrapper } from "./CardWrapper";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 
 export const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -57,13 +57,15 @@ export const ResetForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       type="email"
                       disabled={isPending}
-                      placeholder="john.doe@example.com"
+                      label="E-mail"
+                      autoCorrect="off"
+                      autoComplete="off"
+                      isClearable
                     />
                   </FormControl>
                   <FormMessage />
@@ -73,7 +75,11 @@ export const ResetForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button
+            type="submit"
+            className="w-full bg-slate-700 text-white"
+            disabled={isPending}
+          >
             Send reset email
           </Button>
         </form>

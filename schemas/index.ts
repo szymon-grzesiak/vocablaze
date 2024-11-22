@@ -18,13 +18,10 @@ export const SettingsSchema = z
         .min(8, {
           message: "Password must be at least 8 characters",
         })
-        .regex(
-          new RegExp("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%&]).{8,32}"),
-          {
-            message:
-              "Password must contain one uppercase letter, one lowercase letter, one number and one of the following characters: * . ! @ $ % &",
-          }
-        )
+        .regex(new RegExp("(?=.*[a-z])(?=.*[A-Z]).{8,32}"), {
+          message:
+            "Password must contain one uppercase letter and one lowercase letter",
+        })
     ),
   })
   .refine(
@@ -60,13 +57,10 @@ export const NewPasswordSchema = z.object({
     .min(8, {
       message: "Password must be at least 8 characters",
     })
-    .regex(
-      new RegExp("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%&]).{8,32}"),
-      {
-        message:
-          "Password must contain one uppercase letter, one lowercase letter, one number and one of the following characters: * . ! @ $ % &",
-      }
-    ),
+    .regex(new RegExp("(?=.*[a-z])(?=.*[A-Z]).{8,32}"), {
+      message:
+        "Password must contain one uppercase letter and one lowercase letter",
+    }),
 });
 
 export const ResetSchema = z.object({
@@ -86,7 +80,7 @@ export const LoginSchema = z.object({
     z
       .string()
       .min(1, { message: "Code is required" })
-      .max(6, { message: "Code cannot be longer than six chracters" })
+      .max(6, { message: "Code cannot be longer than six characters" })
   ),
 });
 
@@ -99,13 +93,10 @@ export const RegisterSchema = z.object({
     .min(8, {
       message: "Password must be at least 8 characters",
     })
-    .regex(
-      new RegExp("(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%&]).{8,32}"),
-      {
-        message:
-          "Password must contain one uppercase letter, one lowercase letter, one number and one of the following characters: * . ! @ $ % &",
-      }
-    ),
+    .regex(new RegExp("(?=.*[a-z])(?=.*[A-Z]).{8,32}"), {
+      message:
+        "Password must contain one uppercase letter and one lowercase letter",
+    }),
   name: z.string().min(1, {
     message: "Name is required",
   }),
@@ -116,7 +107,7 @@ export const AddWordSetSchema = z.object({
   description: z.string().optional(),
   firstLanguageId: z.string().min(1, "First language is required"),
   secondLanguageId: z.string().min(1, "Second language is required"),
-  folders: z.array(z.string()).optional(), 
+  folders: z.array(z.string()).optional(),
   words: z
     .array(
       z.object({
@@ -125,7 +116,8 @@ export const AddWordSetSchema = z.object({
         id: z.string().optional(),
       })
     )
-    .min(5, "You must provide at least 5 word.").max(30, "You can provide at most 30 words"),
+    .min(5, "You must provide at least 5 word.")
+    .max(30, "You can provide at most 30 words"),
 });
 
 export const AddFolderSchema = z.object({
@@ -146,5 +138,6 @@ export const UpdateWordSetSchema = z.object({
         translated_word: z.string().min(1, "Translated word is required"),
       })
     )
-    .min(5, "You must provide at least 5 word.").max(30, "You can provide at most 30 words"),
+    .min(5, "You must provide at least 5 word.")
+    .max(30, "You can provide at most 30 words"),
 });

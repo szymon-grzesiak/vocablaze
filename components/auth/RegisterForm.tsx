@@ -19,6 +19,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import Image from "next/image";
+import book from "@/public/assets/images/book.jpg"
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -44,11 +46,14 @@ export const RegisterForm = () => {
     });
   };
   return (
+    <div className="hidden lg:flex h-[650px]">
+    <Image src={book} className="w-[300px] h-auto rounded-l-xl shadow object-cover" alt="A book"/>
     <CardWrapper
       headerLabel="Create an account"
       backButtonLabel="Already have an account?"
       backButtonHref="/auth/login"
       showSocial={true}
+      className="rounded-l-[0px] flex-grow"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -117,5 +122,6 @@ export const RegisterForm = () => {
         </form>
       </Form>
     </CardWrapper>
+    </div>
   );
 };

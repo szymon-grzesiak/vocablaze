@@ -22,7 +22,7 @@ export const {
     async linkAccount({ user }) {
       await db.user.update({
         where: { id: user.id },
-        data: { emailVerified: new Date() },
+        data: { emailVerified: new Date(), isLinked: true },
       });
     },
   },
@@ -72,6 +72,7 @@ export const {
         session.user.image = token.image as string;
         session.user.isOAuth = token.isOAuth as boolean;
         session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+        session.user.isLinked = token.isLinked as boolean;
       }
 
       return session;
@@ -93,6 +94,7 @@ export const {
       token.image = existingUser.image;
       token.role = existingUser.role;
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+      token.isLinked = existingUser.isLinked;
 
       return token;
     },

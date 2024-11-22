@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
+import { NewPasswordSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@nextui-org/react";
+import { Eye, EyeOff } from "lucide-react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
+import { newPassword } from "@/lib/actions/auth/new-password";
 import {
   Form,
   FormControl,
@@ -10,20 +18,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { newPassword } from "@/lib/actions/auth/new-password";
-import { NewPasswordSchema } from "@/schemas";
 
 import { FormError } from "../FormError";
 import { FormSuccess } from "../FromSuccess";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { CardWrapper } from "./CardWrapper";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
 
 export const NewPasswordForm = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const [error, setError] = useState<string | undefined>("");
@@ -60,13 +62,27 @@ export const NewPasswordForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
-                      type="password"
+                      type={isVisible ? "text" : "password"}
                       disabled={isPending}
-                      placeholder="******"
+                      autoCorrect="off"
+                      isClearable
+                      label="Password"
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={toggleVisibility}
+                        >
+                          {isVisible ? (
+                            <EyeOff className="pointer-events-none text-2xl text-default-400" />
+                          ) : (
+                            <Eye className="pointer-events-none text-2xl text-default-400" />
+                          )}
+                        </button>
+                      }
                     />
                   </FormControl>
                   <FormMessage />
@@ -76,7 +92,11 @@ export const NewPasswordForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button
+            type="submit"
+            className="w-full bg-slate-700 text-white"
+            disabled={isPending}
+          >
             Reset password
           </Button>
         </form>

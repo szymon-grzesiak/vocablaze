@@ -1,6 +1,6 @@
 import React from "react";
 
-import { CardComponent } from "@/components/shared/card/Card";
+import CardComponent from "@/components/shared/card";
 import NotFound from "@/components/shared/NotFound";
 import { getFolders, getLanguages, getWordSetById } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
