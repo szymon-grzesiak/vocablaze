@@ -120,12 +120,12 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
                         <FormItem>
                           <FormControl>
                             <Input
-                              type="password"
-                              {...field}
+                              type="password"                    
                               label="Password"
                               disabled={isPending}
                               autoComplete="off"
                               autoCorrect="off"
+                              {...field}
                             />
                           </FormControl>
                           <FormMessage />

@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@nextui-org/button";
+import { Word } from "@prisma/client";
+import { ArrowLeft, LucideGamepad2 } from "lucide-react";
 
-import { ConfettiStars } from "@/components/shared/ConfettiStars";
 import {
   Select,
   SelectContent,
@@ -12,21 +16,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ConfettiStars } from "@/components/shared/ConfettiStars";
 
-import { Button } from "@nextui-org/button";
-import { Word } from "@prisma/client";
-import { ArrowLeft, LucideGamepad2 } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+interface MatchingProps {
+  words: Word[];
+}
 
-const Matching = ({ words }: { words: Word[] }) => {
+interface ShuffledWords {
+  id: string;
+  originalWord: string;
+  translatedWord: string;
+}
+
+const Matching = ({ words }: MatchingProps) => {
   const [selectedSize, setSelectedSize] = useState(0);
   const [selectedDifficulty, setSelectedDifficulty] = useState<
     [number | null, number | null]
   >([null, null]);
-  const [shuffledWords, setShuffledWords] = useState<
-    { id: string; originalWord: string; translatedWord: string }[]
-  >([]);
+  const [shuffledWords, setShuffledWords] = useState<ShuffledWords[]>([]);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [matches, setMatches] = useState<string[]>([]);
   const [gameStarted, setGameStarted] = useState(false);
@@ -53,6 +60,7 @@ const Matching = ({ words }: { words: Word[] }) => {
           progress >= selectedDifficulty[0] && progress <= selectedDifficulty[1]
         );
       }
+      return false; // Ensure we return a boolean
     });
 
     const shuffled = filteredWords
@@ -118,7 +126,17 @@ const Matching = ({ words }: { words: Word[] }) => {
   ];
 
   const sizeRange = [3, 4, 5, 6, 7, 8, 9, 10];
-  const maxAvailableWords = words.length;
+
+  // Function to check if a size is available based on difficulty ranges
+  const isSizeAvailable = (size: number) => {
+    return difficultyRanges.some((range) => {
+      const wordsInRange = words.filter((word) => {
+        const progress = word.progress * 100;
+        return progress >= range[0] && progress <= range[1];
+      }).length;
+      return wordsInRange >= size;
+    });
+  };
 
   return (
     <div className="mx-auto flex size-full flex-col items-center justify-start gap-6 p-6">
@@ -147,7 +165,7 @@ const Matching = ({ words }: { words: Word[] }) => {
                     className="flex justify-center rounded-full p-6"
                     key={size}
                     value={String(size)}
-                    disabled={size > maxAvailableWords + 1}
+                    disabled={!isSizeAvailable(size)}
                   >
                     {size} words
                   </SelectItem>
@@ -155,87 +173,89 @@ const Matching = ({ words }: { words: Word[] }) => {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex w-full flex-col items-center justify-center gap-6">
-            <Select
-              onValueChange={(value) =>
-                setSelectedDifficulty(
-                  value.split("-").map(Number) as [number, number]
-                )
-              }
-            >
-              <SelectGroup>
-                <SelectLabel className="text-xl font-bold">
-                  Select the difficulty
-                </SelectLabel>
-              </SelectGroup>
-              <SelectTrigger className="w-full rounded-full border-4 border-gray-300 p-10 text-xl dark:border-slate-500 md:w-1/2">
-                <SelectValue placeholder="Select difficulty" />
-              </SelectTrigger>
-              <SelectContent>
-                {difficultyRanges.map((range) => {
-                  const rangeLabel = `${range[0]}% - ${range[1]}%`;
-                  const wordsInRange = words.filter((word) => {
-                    const progress = word.progress * 100;
-                    return progress >= range[0] && progress <= range[1];
-                  }).length;
-                  return (
-                    <SelectItem
-                      className="flex justify-center rounded-full p-6"
-                      key={rangeLabel}
-                      value={range.join("-")}
-                      disabled={wordsInRange < selectedSize}
-                    >
-                      {rangeLabel} (
-                      {wordsInRange >= selectedSize
-                        ? "Available"
-                        : "Not enough words"}
-                      )
-                    </SelectItem>
-                  );
-                })}
-              </SelectContent>
-            </Select>
-            <div className="flex flex-wrap-reverse justify-center gap-6 pt-6">
-              <Button className="cursor-pointer rounded-full px-12 py-6 text-xl">
-                <Link href={`/wordset/${pathname}`}>Back to details</Link>
-              </Button>
-              <Button
-                variant="shadow"
-                onClick={startGame}
-                disabled={
-                  maxAvailableWords < selectedSize ||
-                  selectedSize === 0 ||
-                  selectedDifficulty[0] === null
+          {selectedSize > 0 && (
+            <div className="flex w-full flex-col items-center justify-center gap-6">
+              <Select
+                onValueChange={(value) =>
+                  setSelectedDifficulty(
+                    value.split("-").map(Number) as [number, number]
+                  )
                 }
-                className="cursor-pointer rounded-full bg-indigo-500 px-12 py-6 text-xl text-white"
               >
-                Start the game
-              </Button>
+                <SelectGroup>
+                  <SelectLabel className="text-xl font-bold">
+                    Select the difficulty
+                  </SelectLabel>
+                </SelectGroup>
+                <SelectTrigger className="w-full rounded-full border-4 border-gray-300 p-10 text-xl dark:border-slate-500 md:w-1/2">
+                  <SelectValue placeholder="Select difficulty" />
+                </SelectTrigger>
+                <SelectContent>
+                  {difficultyRanges.map((range) => {
+                    const rangeLabel = `${range[0]}% - ${range[1]}%`;
+                    const wordsInRange = words.filter((word) => {
+                      const progress = word.progress * 100;
+                      return progress >= range[0] && progress <= range[1];
+                    }).length;
+                    return (
+                      <SelectItem
+                        className="flex justify-center rounded-full p-6"
+                        key={rangeLabel}
+                        value={range.join("-")}
+                        disabled={wordsInRange < selectedSize}
+                      >
+                        {rangeLabel} (
+                        {wordsInRange >= selectedSize
+                          ? "Available"
+                          : "Not enough words"}
+                        )
+                      </SelectItem>
+                    );
+                  })}
+                </SelectContent>
+              </Select>
             </div>
+          )}
+          <div className="flex flex-wrap-reverse justify-center gap-6 pt-6">
+            <Button className="cursor-pointer rounded-full px-12 py-6 text-xl">
+              <Link href={`/wordset/${pathname}`}>Back to details</Link>
+            </Button>
+            <Button
+              variant="shadow"
+              onClick={startGame}
+              disabled={
+                selectedSize === 0 || selectedDifficulty[0] === null
+              }
+              className="cursor-pointer rounded-full bg-indigo-500 px-12 py-6 text-xl text-white disabled:bg-indigo-500/40"
+            >
+              Start the game
+            </Button>
           </div>
         </>
       ) : (
         <div className="flex h-[600px] w-full flex-col items-center justify-start gap-3">
-            <p className="w-1/2 pb-5 text-lg">
-              Match the original word with its translation. Start by clicking on
-              a word. If you find a match, the words will turn green, otherwise
-              they will come back to their original color.
-            </p>
-            <Button
-              startContent={<ArrowLeft />}
-              variant="flat"
-              onClick={resetGame}
-              className="cursor-pointer rounded-full bg-indigo-500 px-12 py-6 text-xl text-white"
-            >
-              Reset game
-            </Button>
-            <div className="flex flex-wrap justify-center gap-4 p-6">
+          <p className="w-1/2 pb-5 text-lg">
+            Match the original word with its translation. Start by clicking on a
+            word. If you find a match, the words will turn green, otherwise they
+            will come back to their original color.
+          </p>
+          <Button
+            startContent={<ArrowLeft />}
+            variant="flat"
+            onClick={resetGame}
+            className="cursor-pointer rounded-full bg-indigo-500 px-12 py-6 text-xl text-white"
+          >
+            Reset game
+          </Button>
+          <div className="flex flex-wrap justify-center gap-4 p-6">
             {shuffledWords.map((word) => (
               <button
                 key={word.id}
                 onClick={() => handleWordClick(word.id)}
                 disabled={matches.includes(word.id)}
-                className={`matchButton rounded-2xl border-4 border-gray-300 bg-[#e9f1f7] p-10 text-lg font-bold text-indigo-900 shadow-xl dark:border-slate-500 dark:bg-slate-700 dark:text-white ${selectedWords.includes(word.id) ? "selected" : ""}`}
+                className={`matchButton rounded-2xl border-4 border-gray-300 bg-[#e9f1f7] p-10 text-lg font-bold text-indigo-900 shadow-xl dark:border-slate-500 dark:bg-slate-700 dark:text-white ${
+                  selectedWords.includes(word.id) ? "selected" : ""
+                }`}
               >
                 {word.id.endsWith("_original")
                   ? word.originalWord

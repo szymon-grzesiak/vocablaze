@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import book from "@/public/assets/images/book.jpg";
 import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,7 +11,6 @@ import { Button, Input } from "@nextui-org/react";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useRouter } from 'next/navigation'
 
 import { login } from "@/lib/actions/auth/login";
 import {
@@ -36,7 +35,7 @@ import { CardWrapper } from "./CardWrapper";
 
 export const LoginForm = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const searchParams = useSearchParams();
@@ -205,7 +204,7 @@ export const LoginForm = () => {
                     setShowTwoFactor(false);
                   }}
                 >
-                 Back
+                  Back
                 </Button>
                 <Button
                   variant="shadow"

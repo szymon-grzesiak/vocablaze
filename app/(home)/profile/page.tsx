@@ -75,7 +75,9 @@ const SettingsPage = async () => {
           <p>📚</p>
           <p>Your learning history</p>
         </span>
-        <MyResponsiveCalendar data={calendarData} />
+        <div className="mx-auto">
+          <MyResponsiveCalendar data={calendarData} isMobile />
+        </div>
       </section>
       <section className="w-full" id="monthlyTrends">
         <div className="flex h-full flex-col gap-4 rounded-lg bg-black/5 p-5 shadow-md backdrop-blur-xl dark:bg-slate-900/90 lg:hidden">
