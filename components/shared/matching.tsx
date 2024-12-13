@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/select";
 import { ConfettiStars } from "@/components/shared/ConfettiStars";
 
+import { BiggerSwitch } from "../ui/switch";
+
 interface MatchingProps {
   words: Word[];
 }
@@ -33,6 +35,7 @@ const Matching = ({ words }: MatchingProps) => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<
     [number | null, number | null]
   >([null, null]);
+  const [randomProgress, setRandomProgress] = useState(false);
   const [shuffledWords, setShuffledWords] = useState<ShuffledWords[]>([]);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [matches, setMatches] = useState<string[]>([]);
@@ -48,20 +51,36 @@ const Matching = ({ words }: MatchingProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [matches, shuffledWords.length]);
 
+  useEffect(() => {
+    if (randomProgress) {
+      setSelectedDifficulty([null, null]);
+    }
+  }, [randomProgress]);
+
   const startGame = () => {
-    if (selectedSize === 0 || selectedDifficulty[0] === null) {
+    if (
+      selectedSize === 0 ||
+      (!randomProgress && selectedDifficulty[0] === null)
+    ) {
       return;
     }
 
-    const filteredWords = words.filter((word) => {
-      const progress = word.progress * 100;
-      if (selectedDifficulty[0] !== null && selectedDifficulty[1] !== null) {
-        return (
-          progress >= selectedDifficulty[0] && progress <= selectedDifficulty[1]
-        );
-      }
-      return false; // Ensure we return a boolean
-    });
+    let filteredWords;
+
+    if (randomProgress) {
+      filteredWords = words;
+    } else {
+      filteredWords = words.filter((word) => {
+        const progress = word.progress * 100;
+        if (selectedDifficulty[0] !== null && selectedDifficulty[1] !== null) {
+          return (
+            progress >= selectedDifficulty[0] &&
+            progress <= selectedDifficulty[1]
+          );
+        }
+        return false;
+      });
+    }
 
     const shuffled = filteredWords
       .sort(() => 0.5 - Math.random())
@@ -92,6 +111,7 @@ const Matching = ({ words }: MatchingProps) => {
     setMatches([]);
     setSelectedSize(0);
     setSelectedDifficulty([null, null]);
+    setRandomProgress(false);
   };
 
   const handleWordClick = (wordId: string) => {
@@ -127,15 +147,19 @@ const Matching = ({ words }: MatchingProps) => {
 
   const sizeRange = [3, 4, 5, 6, 7, 8, 9, 10];
 
-  // Function to check if a size is available based on difficulty ranges
+  // Function to check if a size is available based on difficulty ranges or total words
   const isSizeAvailable = (size: number) => {
-    return difficultyRanges.some((range) => {
-      const wordsInRange = words.filter((word) => {
-        const progress = word.progress * 100;
-        return progress >= range[0] && progress <= range[1];
-      }).length;
-      return wordsInRange >= size;
-    });
+    if (randomProgress) {
+      return words.length >= size;
+    } else {
+      return difficultyRanges.some((range) => {
+        const wordsInRange = words.filter((word) => {
+          const progress = word.progress * 100;
+          return progress >= range[0] && progress <= range[1];
+        }).length;
+        return wordsInRange >= size;
+      });
+    }
   };
 
   return (
@@ -148,7 +172,7 @@ const Matching = ({ words }: MatchingProps) => {
       </div>
       {!gameStarted ? (
         <>
-          <div className="flex w-full flex-col items-center justify-center">
+          <div className="flex w-full flex-col items-center justify-center gap-6">
             <Select onValueChange={(value) => setSelectedSize(Number(value))}>
               <SelectGroup>
                 <SelectLabel className="text-xl font-bold">
@@ -172,9 +196,23 @@ const Matching = ({ words }: MatchingProps) => {
                 ))}
               </SelectContent>
             </Select>
-          </div>
-          {selectedSize > 0 && (
-            <div className="flex w-full flex-col items-center justify-center gap-6">
+
+            <div className="flex flex-col items-center space-y-4 mt-4">
+              <label
+                htmlFor="randomProgress"
+                className="text-xl font-bold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Use random words (ignore difficulty)
+              </label>
+              <BiggerSwitch
+                id="randomProgress"
+                checked={randomProgress}
+                onCheckedChange={setRandomProgress}
+              />
+            </div>
+
+            {/* Difficulty selection */}
+            {selectedSize > 0 && !randomProgress && (
               <Select
                 onValueChange={(value) =>
                   setSelectedDifficulty(
@@ -214,8 +252,8 @@ const Matching = ({ words }: MatchingProps) => {
                   })}
                 </SelectContent>
               </Select>
-            </div>
-          )}
+            )}
+          </div>
           <div className="flex flex-wrap-reverse justify-center gap-6 pt-6">
             <Button className="cursor-pointer rounded-full px-12 py-6 text-xl">
               <Link href={`/wordset/${pathname}`}>Back to details</Link>
@@ -224,7 +262,8 @@ const Matching = ({ words }: MatchingProps) => {
               variant="shadow"
               onClick={startGame}
               disabled={
-                selectedSize === 0 || selectedDifficulty[0] === null
+                selectedSize === 0 ||
+                (!randomProgress && selectedDifficulty[0] === null)
               }
               className="cursor-pointer rounded-full bg-indigo-500 px-12 py-6 text-xl text-white disabled:bg-indigo-500/40"
             >
