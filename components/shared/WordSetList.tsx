@@ -42,7 +42,7 @@ const WordSetsList = ({
     return <div>Error: {error}</div>;
   }
 
-  const query = searchParams.sets || "";
+  const query = searchParams?.sets || "";
 
   const filteredWordSets = wordSets?.filter((wordSet) =>
     wordSet.title.toLowerCase().includes(query.toLowerCase()) ||  wordSet?.description?.toLowerCase().includes(query.toLowerCase())
