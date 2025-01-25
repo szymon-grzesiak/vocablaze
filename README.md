@@ -59,6 +59,11 @@ Utwórz plik `.env` z następującymi konfiguracjami:
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Klucz publiczny Stripe
 - `STRIPE_SECRET_KEY`: Klucz tajny Stripe
 
+Jeśli, jest potrzeba wytestowania zakupienia wersji premium aplikacji, trzeba wpisać komendę:
+```bash
+npm run stripe
+```
+
 ### 4. Uruchomienie Projektu
 ```bash
 npm run dev
