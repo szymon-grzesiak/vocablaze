@@ -10,6 +10,7 @@ const WordSetsList = ({
   wordSets,
   error,
   className,
+  searchParams,
   liStyle,
 }: {
   wordSets:
@@ -33,18 +34,24 @@ const WordSetsList = ({
     | undefined;
   error?: string;
   className?: string;
+  searchParams: { [key: string]: string };
   liStyle?: string;
 }) => {
-
 
   if (error) {
     return <div>Error: {error}</div>;
   }
 
+  const query = searchParams.sets || "";
+
+  const filteredWordSets = wordSets?.filter((wordSet) =>
+    wordSet.title.toLowerCase().includes(query.toLowerCase()) ||  wordSet?.description?.toLowerCase().includes(query.toLowerCase())
+  );
+
   return (
     <ScrollArea className={cn("h-3/4 overflow-auto", className)}>
       <ul className="mb-5 flex flex-col gap-4">
-        {wordSets?.map((wordSet) => (
+        {filteredWordSets?.map((wordSet) => (
           <Link href={`/wordset/${wordSet.id}`} key={wordSet.id}>
             <li
               key={wordSet.id}

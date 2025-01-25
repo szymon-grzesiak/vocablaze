@@ -52,7 +52,7 @@ export default async function Page({
             <Search queryKey="sets" />
           </span>
           {(wordSets as any)?.length > 0 ? (
-            <WordSetsList wordSets={wordSets} error={error as string} />
+            <WordSetsList wordSets={wordSets} searchParams={searchParams} error={error as string} />
           ) : (
             <div className="mx-auto flex h-full w-1/2 flex-col items-center justify-center gap-6">
               <QuestionMarkCircledIcon className="size-8 text-indigo-500" />
