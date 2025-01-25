@@ -1,66 +1,75 @@
+# Przewodnik Instalacji Projektu
 
-# Vocablaze - Language Learning Made Fun
+## Wymagania
+- Node.js (18.x lub nowsza)
+- npm
+- Konto GitHub (opcjonalne)
+- Konto Google Cloud Console (opcjonalne)
+- Konto Supabase
+- Konto Resend
+- Konto Stripe
 
-![Vocablaze Logo](/public/assets/images/logo.png)
+## Konfiguracja OAuth
+### GitHub
+1. Przejdź do GitHub Developer Settings
+2. Utwórz nową rejestrację OAuth
+3. Wygeneruj Client ID i Client Secret
 
-Vocablaze is an innovative language learning app designed to make learning new languages engaging and enjoyable. Using a combination of flashcards and interactive games such as hangman and word matching, Vocablaze helps users build vocabulary and improve their language skills in a fun and effective way.
+### Google
+1. Przejdź do Google Cloud Console
+2. Utwórz projekt
+3. Skonfiguruj ekran zgody OAuth
+4. Wygeneruj Credentiale
 
-## TODO List
+## Kroki Instalacji
 
-### Completed
-- [x] **Google Authentication:**
-  - Implemented Google Sign-In for seamless user authentication.
-- [x] **Credentials Management:**
-  - Set up secure credentials management.
-- [x] **Password Reset:**
-  - Developed a feature for users to reset their passwords.
-- [x] **Two-Factor Authentication (2FA):**
-  - Added 2FA for enhanced security.
-- [x] **Project Layout:**
-  - Designing the overall layout and user interface of the project.
-- [x] **Database Structure:**
-  - Design and implement the database structure.
+### 1. Instalacja Zależności
+```bash
+npm install
+```
 
-### In Progress
-- [ ] **CRUD Operations for WordSet Table:**
-  - Develop Create, Read, Update, and Delete operations for the WordSet table.
+### 2. Generowanie Prisma
+```bash
+npx prisma generate
+```
+- Generuje typy TypeScript
+- Tworzy klienta Prisma
+- Wymagane przed migracjami i uruchomieniem projektu
 
-### Upcoming
-- [ ] **Stripe Integration:**
-  - Integrate Stripe for payment processing.
-- [ ] **Google Analytics:**
-  - Add Google Analytics for tracking user interactions and engagement.
+### 3. Konfiguracja Środowiska
+Utwórz plik `.env` z następującymi konfiguracjami:
 
+#### Uwierzytelnianie
+- `AUTH_TRUST_HOST`: `http://localhost:3000/api/auth/session`
+- `AUTH_SECRET`: Wygeneruj losowy sekret (np. `openssl rand -hex 32`)
+- `GITHUB_CLIENT_ID`: Z GitHub Developer Settings
+- `GITHUB_CLIENT_SECRET`: Z GitHub Developer Settings
+- `GOOGLE_CLIENT_ID`: Z Google Cloud Console
+- `GOOGLE_CLIENT_SECRET`: Z Google Cloud Console
 
-## Features
+#### Baza Danych
+- `DATABASE_URL`: Parametry połączenia Supabase (połączenie pulowe)
+- `DIRECT_URL`: Bezpośrednie połączenie do bazy (migracje)
 
-- **Flashcards:** Quickly learn and review vocabulary with customizable flashcards.
-- **Hangman:** Test your knowledge and spelling skills with this classic word game.
-- **Word Matching:** Enhance your memory and recall by matching words with their translations.
-- **User-Friendly Interface:** Intuitive design that makes navigation and learning seamless.
-- **Progress Tracking:** Keep track of your learning progress and see how far you've come.
+#### Usługa E-mail
+- `RESEND_API_KEY`: Klucz API z Resend
 
-## Installation
+#### Płatności
+- `STRIPE_WEBHOOK_SECRET`: Sekret webhooka Stripe
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Klucz publiczny Stripe
+- `STRIPE_SECRET_KEY`: Klucz tajny Stripe
 
-To get started with Vocablaze, follow these steps:
+### 4. Uruchomienie Projektu
+```bash
+npm run dev
+```
 
-1. **Clone the repository:**
-    ```bash
-    git clone xyz
-    ```
-2. **Navigate to the project directory:**
-    ```bash
-    cd vocablaze
-    ```
-3. **Install dependencies:**
-    ```bash
-    npm install
-    ```
-4. **Start the app:**
-    ```bash
-    npm start
-    ```
+## Rozwiązywanie Problemów
+- Sprawdź poprawność wszystkich kluczy
+- Upewnij się, że masz włączone odpowiednie uprawnienia w konsolach usług
+- Zweryfikuj wersje oprogramowania
 
-## License
-
-Vocablaze is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+## Uwagi Bezpieczeństwa
+- Nie udostępniaj pliku `.env`
+- Zachowaj klucze w tajemnicy
+- Użyj silnych, unikalnych haseł
