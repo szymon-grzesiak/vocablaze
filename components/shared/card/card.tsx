@@ -203,7 +203,7 @@ export const CardComponent = ({
                           data-cy="firstLanguage"
                           startContent={<Flag />}
                           className={cn(
-                            "w-[250px] justify-between bg-white/50 dark:bg-slate-800",
+                            "w-[270px] justify-between bg-white/50 dark:bg-slate-800",
                             !field.value &&
                               "text-muted-foreground dark:text-white"
                           )}

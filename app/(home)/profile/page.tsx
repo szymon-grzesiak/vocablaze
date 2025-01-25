@@ -27,27 +27,27 @@ const SettingsPage = async () => {
           </div>
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <CheckIcon className="size-5 text-green-500" />
+              <CheckIcon className="size-5 shrink-0 text-green-500" />
               <span>
                 Unlimited amount of words in the word set (basic user can have
                 up to 30 words per set)
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <CheckIcon className="size-5 text-green-500" />
+              <CheckIcon className="size-5 shrink-0 text-green-500" />
               <span>
                 Unlimited amount of word sets (basic user can create up to 3
                 word sets)
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <CheckIcon className="size-5 text-green-500" />
+              <CheckIcon className="size-5 shrink-0 text-green-500" />
               <span>
                 Access to the premium games: <br />- hangman game
               </span>
             </div>
             <div className="flex items-center space-x-2">
-              <CheckIcon className="size-5 text-green-500" />
+              <CheckIcon className="size-5 shrink-0 text-green-500" />
               <span>Lifetime access to the newest features</span>
             </div>
           </div>

@@ -167,7 +167,15 @@ export const ImportWords = ({ append, existingWords }: ImportWordsProps) => {
       ) : (
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>
-            <Button variant="faded">Import words</Button>
+          <Button
+              color="secondary"
+              data-cy="import-words"
+              variant="flat"
+              startContent={<Import className="shrink-0" />}
+              className="bg-transparent/10 text-black dark:text-gray-200"
+            >
+              Import
+            </Button>
           </DrawerTrigger>
           <DrawerContent>
             <DrawerHeader className="text-left">
