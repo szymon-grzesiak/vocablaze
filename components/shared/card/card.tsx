@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 
-import "./background.css";
-
 import { useRouter } from "next/navigation";
 import { AddWordSetSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";

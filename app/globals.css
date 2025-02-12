@@ -321,3 +321,14 @@ main {
   color: black;
   cursor: default;
 }
+
+.divItem div[data-slot="input-wrapper"] {
+  border-bottom: 1px solid #000;
+}
+.divItem div[data-slot="input-wrapper"]:hover {
+  border-bottom: 1px solid #000;
+}
+
+.divItem div[data-slot="input-wrapper"]::after {
+  background-color: rgba(68, 0, 255, 0.647);
+}
