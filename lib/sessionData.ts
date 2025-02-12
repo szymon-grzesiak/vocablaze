@@ -1,5 +1,5 @@
 
-import { auth } from "@/lib/auth";
+import { auth } from "@/auth";
 
 export const currentUser = async () => {
   const session = await auth();

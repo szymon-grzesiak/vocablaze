@@ -1,9 +1,9 @@
-import { getUserById } from "./data/auth/user";
+import { getUserById } from "./lib/data/auth/user";
 
 import authConfig from "./auth.config";
-import { getAccountByUserId } from "./data/auth/account";
-import { getTwoFactorConfirmationByUserId } from "./data/auth/two-factor-confirmation";
-import db from "./db";
+import { getAccountByUserId } from "./lib/data/auth/account";
+import { getTwoFactorConfirmationByUserId } from "./lib/data/auth/two-factor-confirmation";
+import db from "./lib/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { UserRole } from "@prisma/client";
 import NextAuth from "next-auth";

@@ -1,10 +1,7 @@
-/* eslint-disable tailwindcss/no-contradicting-classname */
-import { ReactNode } from "react";
+import { ReactNode } from "react";import { auth } from "@/auth";
+import { SessionProvider } from "next-auth/react";
 
 import { Navbar } from "@/components/shared/navbar/Navbar";
-import { auth } from "@/lib/auth";
-
-import { SessionProvider } from "next-auth/react";
 
 const ProtectedLayout = async ({ children }: { children: ReactNode }) => {
   const session = await auth();

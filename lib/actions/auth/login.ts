@@ -1,22 +1,19 @@
 "use server";
 
-import { getUserByEmail } from "@/lib/data/auth/user";
-
-import { signIn } from "@/lib/auth";
-import { getTwoFactorConfirmationByUserId } from "@/lib/data/auth/two-factor-confirmation";
-import { getTwoFactorTokenByEmail } from "@/lib/data/auth/two-factor-token";
-import db from "@/lib/db";
-import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
-import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
+import { signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
-
-import {
-  generateTwoFactorToken,
-  generateVerificationToken,
-} from "./tokens";
 import bcrypt from "bcryptjs";
 import { AuthError } from "next-auth";
 import * as z from "zod";
+
+import { getTwoFactorConfirmationByUserId } from "@/lib/data/auth/two-factor-confirmation";
+import { getTwoFactorTokenByEmail } from "@/lib/data/auth/two-factor-token";
+import { getUserByEmail } from "@/lib/data/auth/user";
+import db from "@/lib/db";
+import { sendTwoFactorTokenEmail, sendVerificationEmail } from "@/lib/mail";
+import { DEFAULT_LOGIN_REDIRECT } from "@/lib/routes";
+
+import { generateTwoFactorToken, generateVerificationToken } from "./tokens";
 
 export const login = async (
   values: z.infer<typeof LoginSchema>,
