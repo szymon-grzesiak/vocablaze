@@ -49,8 +49,8 @@ export const RegisterForm = () => {
     });
   };
   return (
-    <div className="hidden lg:flex h-[650px]">
-    <Image src={book} className="w-[300px] h-auto rounded-l-xl shadow object-cover" alt="A book"/>
+    <div className="h-[650px]">
+    <Image src={book} className="hidden lg:flex lg:w-[300px] h-auto rounded-l-xl shadow object-cover" alt="A book"/>
     <CardWrapper
       headerLabel="Create an account"
       backButtonLabel="Already have an account?"
