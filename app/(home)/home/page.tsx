@@ -1,8 +1,8 @@
 import React from "react";
 
-import { MyResponsiveCalendar } from "@/components/shared/Calendar";
-import Search from "@/components/shared/Search";
-import { RadialChart } from "@/components/shared/Stats";
+import { MyResponsiveCalendar } from "../../../components/shared/Calendar";
+import Search from "../../../components/shared/Search";
+import { RadialChart } from "../../../components/shared/Stats";
 import {
   get5lastMonthsWordsLearned,
   getAllWordSets,
