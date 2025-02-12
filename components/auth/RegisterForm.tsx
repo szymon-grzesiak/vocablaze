@@ -18,12 +18,15 @@ import { CardWrapper } from "./CardWrapper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react";
 import * as z from "zod";
 import Image from "next/image";
 import book from "@/public/assets/images/book.jpg"
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -67,6 +70,7 @@ export const RegisterForm = () => {
                     <Input
                       {...field}
                       label="Name"
+                      autoComplete="off"
                       type="name"
                       disabled={isPending}
                     />
@@ -85,6 +89,7 @@ export const RegisterForm = () => {
                       {...field}
                       type="email"
                       disabled={isPending}
+                      autoComplete="off"
                       label="E-mail"
                     />
                   </FormControl>
@@ -100,9 +105,23 @@ export const RegisterForm = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      type="password"
+                      type={isVisible ? "text" : "password"}
+                      autoComplete="off"
                       label="Password"
                       disabled={isPending}
+                      endContent={
+                        <button
+                          className="focus:outline-none"
+                          type="button"
+                          onClick={toggleVisibility}
+                        >
+                          {isVisible ? (
+                            <EyeOff className="pointer-events-none text-2xl text-default-400" />
+                          ) : (
+                            <Eye className="pointer-events-none text-2xl text-default-400" />
+                          )}
+                        </button>
+                      }
                     />
                   </FormControl>
                   <FormMessage />

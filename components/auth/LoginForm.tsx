@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import book from "@/public/assets/images/book.jpg";
 import { LoginSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +35,6 @@ import { CardWrapper } from "./CardWrapper";
 
 export const LoginForm = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const router = useRouter();
 
   const toggleVisibility = () => setIsVisible(!isVisible);
   const searchParams = useSearchParams();
