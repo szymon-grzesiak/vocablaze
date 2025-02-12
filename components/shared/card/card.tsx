@@ -65,13 +65,13 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 type Schema = z.infer<typeof AddWordSetSchema>;
 
-export const CardComponent = ({
+export default function CardComponent({
   text,
   languages,
   mode,
   wordSet,
   folders,
-}: CardProps) => {
+}: CardProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [openFirstLang, setOpenFirstLang] = useState(false);
   const [openSecLang, setOpenSecLang] = useState(false);

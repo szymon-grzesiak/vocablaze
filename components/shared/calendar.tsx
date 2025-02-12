@@ -8,7 +8,7 @@ export const MyResponsiveCalendar = ({
   isMobile = false,
 }: {
   data: CalendarDatum[];
-  isMobile: boolean;
+  isMobile?: boolean;
 }) => {
   const theme = useTheme();
 

@@ -22,7 +22,7 @@
     "react/display-name": "off"
   },
   "env": {
-    "jest/globals": true,
+    "jest/globals": true
   },
   "settings": {
     "import/resolver": {

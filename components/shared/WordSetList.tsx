@@ -34,7 +34,7 @@ const WordSetsList = ({
     | undefined;
   error?: string;
   className?: string;
-  searchParams: { [key: string]: string };
+  searchParams?: { [key: string]: string };
   liStyle?: string;
 }) => {
 

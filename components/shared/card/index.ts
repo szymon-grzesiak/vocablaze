@@ -1,3 +1,3 @@
-import { CardComponent } from "./Card";
+import CardComponent from "@/components/shared/card/card";
 
 export default CardComponent;
