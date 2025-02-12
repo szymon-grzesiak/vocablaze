@@ -336,8 +336,8 @@ export async function createCheckoutSession({
   }
 
   const stripeSession = await stripe.checkout.sessions.create({
-    success_url: `http://localhost:3000/profile`,
-    cancel_url: `http://localhost:3000/profile?canceled=true`,
+    success_url: `https://tregdf6546456cfszc2cs476123dsgh.vercel.app/profile`,
+    cancel_url: `https://tregdf6546456cfszc2cs476123dsgh.vercel.app/profile?canceled=true`,
     payment_method_types: ["card", "paypal", "blik"],
     mode: "payment",
     customer_email: userEmail,
