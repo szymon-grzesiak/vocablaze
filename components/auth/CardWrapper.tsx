@@ -1,10 +1,16 @@
 import { ReactNode } from "react";
 
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { BackButton } from "./BackButton";
+import { cn } from "@/lib/utils";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Header } from "@/components/auth/Header";
 import { Social } from "@/components/auth/Social";
-import { cn } from "@/lib/utils";
+
+import { BackButton } from "./BackButton";
 
 interface CardWrapperProps {
   children: ReactNode;
