@@ -90,10 +90,10 @@ export const LoginForm = () => {
   };
   // devtools 1347px szerokości
   return (
-    <div className="h-[650px]">
+    <div className="flex h-[650px]">
       <Image
         src={book}
-        className="hidden lg:flex lg:w-[300px] h-auto rounded-l-xl shadow object-cover"
+        className="hidden lg:block lg:w-[300px] h-auto rounded-l-xl shadow object-cover"
         alt="A book"
       />
       <CardWrapper
