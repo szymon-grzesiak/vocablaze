@@ -1,7 +1,7 @@
 import React from "react";
 
-import { MyResponsiveCalendar } from "../../../components/shared/Calendar";
-import Search from "../../../components/shared/Search";
+import { MyResponsiveCalendar } from "@/components/shared/Calendar";
+import Search from "@/components/shared/Search";
 import { RadialChart } from "../../../components/shared/Stats";
 import {
   get5lastMonthsWordsLearned,
@@ -12,8 +12,8 @@ import {
 import { currentUser } from "@/lib/sessionData";
 import { cn } from "@/lib/utils";
 
-import FoldersList from "../../../components/shared/FolderList";
-import WordSetsList from "../../../components/shared/WordSetList";
+import FoldersList from "@/components/shared/FolderList";
+import WordSetsList from "@/components/shared/WordSetList";
 import { Button } from "@nextui-org/button";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
