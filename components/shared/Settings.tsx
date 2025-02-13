@@ -63,6 +63,8 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
 
   console.log("useeer", user)
 
+  const moreFields = user?.isOAuth === false || user?.isLinked === true;
+
   return (
     <section className="flex w-full">
       <Card className="flex w-full flex-col justify-between border-none shadow-lg">
@@ -93,7 +95,7 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
                     </FormItem>
                   )}
                 />
-                {user?.isOAuth === false || user?.isLinked === true && (
+                {moreFields && (
                   <>
                     <FormField
                       control={form.control}
