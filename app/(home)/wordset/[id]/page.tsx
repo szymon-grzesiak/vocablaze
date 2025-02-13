@@ -1,5 +1,3 @@
-import React from "react";
-
 import { PencilEdit02Icon } from "@/components/icons";
 import ClientWordSet from "@/components/shared/ClientWordSet";
 import DeleteWordSet from "@/components/shared/DeleteWordSetModal";
