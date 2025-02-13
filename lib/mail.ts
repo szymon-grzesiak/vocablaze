@@ -15,7 +15,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
 export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `https://www.hgfhkmfgklmdslkr665464fdsf.space/auth/new-verification?token=${token}`;
   await resend.emails.send({
-    from: "Vocablaze <onboarding@resend.dev>",
+    from: "noreply@hgfhkmfgklmdslkr665464fdsf.space",
     to: email,
     subject: "Confirm your email",
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm your email</p>`,
@@ -24,7 +24,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
 
 export const sendTwoFactorTokenEmail = async (email: string, token: string) => {
   await resend.emails.send({
-    from: "Vocablaze <onboarding@resend.dev>",
+    from: "noreply@hgfhkmfgklmdslkr665464fdsf.space",
     to: email,
     subject: "[🔐Auth]: Please verify Login Attempt.",
     html: `<p>Your 2FA code: ${token}</p>`,
