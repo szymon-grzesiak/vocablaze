@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `https://www.hgfhkmfgklmdslkr665464fdsf.space/auth/new-password?token=${token}`;
   await resend.emails.send({
-    from: "Vocablaze <onboarding@resend.dev>",
+    from: "noreply@hgfhkmfgklmdslkr665464fdsf.space",
     to: email,
     subject: "Reset your password",
     html: `<p>Click <a href="${resetLink}">here</a> to reset your password</p>`,
