@@ -35,7 +35,7 @@ export default function UpgradeButton({ userEmail }: UpgradeButtonProps) {
       isDisabled={loading}
     >
       {loading ? (
-        <Spinner />
+        <Spinner className="text-white" />
       ) : (
         "Upgrade Now"
       )}
