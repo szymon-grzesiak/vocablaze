@@ -177,7 +177,7 @@ export const updateWordSet = async (
         }
       })
     );
-    revalidatePath("/home");
+    revalidatePath(`/wordset/${id}`);
     return { success: "Word set updated successfully!" };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
