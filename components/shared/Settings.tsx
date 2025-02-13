@@ -103,7 +103,8 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
                               type="email"
                               {...field}
                               label="E-mail"
-                              disabled={isPending}
+                              disabled={true}
+                              isDisabled={true}
                               autoComplete="off"
                               autoCorrect="off"
                               autoCapitalize="on"
