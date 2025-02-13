@@ -324,13 +324,8 @@ export const saveDisplayOrder = async (
   });
 };
 
-export async function createCheckoutSession({
-  userEmail,
-}: {
-  userEmail: string;
-}) {
+export async function createCheckoutSession({ userEmail }: { userEmail: string }) {
   const user = await currentUser();
-
   if (!user) {
     throw new Error("User not found");
   }
@@ -341,9 +336,7 @@ export async function createCheckoutSession({
     payment_method_types: ["card", "paypal", "blik"],
     mode: "payment",
     customer_email: userEmail,
-    metadata: {
-      userEmail,
-    },
+    metadata: { userEmail },
     line_items: [
       {
         price_data: {
@@ -358,8 +351,10 @@ export async function createCheckoutSession({
       },
     ],
   });
-  redirect(stripeSession?.url as string);
+
+  return { url: stripeSession.url };
 }
+
 
 export async function deleteFolder(id: string) {
   const user = await currentUser();

@@ -1,13 +1,12 @@
-import { Button } from "@nextui-org/button";
 import { CheckIcon, CrownIcon } from "lucide-react";
 
 import { ExtendedUser } from "@/types/next-auth";
-import { createCheckoutSession } from "@/lib/actions/action";
 import { get5lastMonthsWordsLearned, getDataToCalendar } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
 import { MyResponsiveCalendar } from "@/components/shared/Calendar";
 import Settings from "@/components/shared/Settings";
 import { RadialChart } from "@/components/shared/Stats";
+import UpgradeButton from "@/components/auth/UpgradeButton";
 
 const SettingsPage = async () => {
   const user = await currentUser();
@@ -51,23 +50,7 @@ const SettingsPage = async () => {
               <span>Lifetime access to the newest features</span>
             </div>
           </div>
-          <form
-            action={async () => {
-              "use server";
-              return createCheckoutSession({
-                userEmail: user?.email as string,
-              });
-            }}
-          >
-            <Button
-              className="mt-4 w-full border-white text-white hover:bg-white hover:text-gray-900 dark:hover:text-black"
-              variant="bordered"
-              target="_blank"
-              type="submit"
-            >
-              Upgrade Now
-            </Button>
-          </form>
+          <UpgradeButton userEmail={user?.email as string} />
         </section>
       )}
       <section className="relative block h-[400px] w-full overflow-y-hidden rounded-lg bg-black/5 p-5 shadow-md backdrop-blur-xl dark:bg-slate-900/90 lg:hidden">
