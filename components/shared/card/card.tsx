@@ -222,7 +222,7 @@ export default function CardComponent({
                             <CommandList>
                               {languages.map((language) => (
                                 <CommandItem
-                                  value={language.id}
+                                  value={language.name}
                                   key={language.id}
                                   data-cy={`firstLanguage-${language.id}`}
                                   onSelect={() => {
@@ -286,7 +286,7 @@ export default function CardComponent({
                             <CommandList>
                               {languages.map((language) => (
                                 <CommandItem
-                                  value={language.id}
+                                  value={language.name}
                                   key={language.id}
                                   data-cy={`secondLanguage-${language.id}`}
                                   onSelect={() => {
