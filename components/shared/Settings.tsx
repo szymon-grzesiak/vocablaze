@@ -61,6 +61,8 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
     });
   };
 
+  console.log("useeer", user)
+
   return (
     <section className="flex w-full">
       <Card className="flex w-full flex-col justify-between border-none shadow-lg">
