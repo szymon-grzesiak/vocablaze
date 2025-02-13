@@ -91,7 +91,7 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
                     </FormItem>
                   )}
                 />
-                {user?.isOAuth === false || user?.isLinked === true && (
+                {user?.isOAuth === false && (
                   <>
                     <FormField
                       control={form.control}
