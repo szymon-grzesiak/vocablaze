@@ -1,6 +1,6 @@
-import { MyResponsiveCalendar } from "@/components/shared/Calendar";
-import Search from "@/components/shared/Search";
-import { RadialChart } from "../../../components/shared/Stats";
+import Link from "next/link";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+
 import {
   get5lastMonthsWordsLearned,
   getAllWordSets,
@@ -9,12 +9,13 @@ import {
 } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
 import { cn } from "@/lib/utils";
-
+import { Button } from "@/components/ui/button";
+import { MyResponsiveCalendar } from "@/components/shared/Calendar";
 import FoldersList from "@/components/shared/FolderList";
+import Search from "@/components/shared/Search";
 import WordSetsList from "@/components/shared/WordSetList";
-import { Button } from "@nextui-org/button";
-import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
+
+import { RadialChart } from "../../../components/shared/Stats";
 
 export default async function Page({
   searchParams,
@@ -50,7 +51,11 @@ export default async function Page({
             <Search queryKey="sets" />
           </span>
           {(wordSets as any)?.length > 0 ? (
-            <WordSetsList wordSets={wordSets} searchParams={searchParams} error={error as string} />
+            <WordSetsList
+              wordSets={wordSets}
+              searchParams={searchParams}
+              error={error as string}
+            />
           ) : (
             <div className="mx-auto flex h-full w-1/2 flex-col items-center justify-center gap-6">
               <QuestionMarkCircledIcon className="size-8 text-indigo-500" />
@@ -58,9 +63,11 @@ export default async function Page({
                 Oh, it looks like you don&apos;t have any word sets yet, go
                 ahead and create one.
               </p>
-              <Link href={"/add"} className="flex w-full justify-start">
-                <Button className="w-full">Create word set</Button>
-              </Link>
+              <Button asChild className="w-full">
+                <Link href={"/add"} className="flex w-full justify-start">
+                  Create word set
+                </Link>
+              </Button>
             </div>
           )}
         </section>
@@ -74,8 +81,9 @@ export default async function Page({
               subscription.
             </p>
             <Button
+              asChild
               className="rounded-lg p-4 font-bold"
-              variant="flat"
+              variant="secondary"
               color="success"
             >
               <Link href={"/profile"}> Upgrade to Premium</Link>
