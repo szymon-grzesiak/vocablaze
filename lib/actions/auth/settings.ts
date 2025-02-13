@@ -24,7 +24,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     return { error: "Unauthorized!" };
   }
 
-  if (user.isOAuth) {
+  if (user.isOAuth && !user.isLinked) {
     values.email = undefined;
     values.password = undefined;
     values.newPassword = undefined;

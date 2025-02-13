@@ -91,7 +91,7 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
                     </FormItem>
                   )}
                 />
-                {user?.isOAuth === false && (
+                {user?.isOAuth === false || user?.isLinked === true && (
                   <>
                     <FormField
                       control={form.control}
@@ -103,8 +103,7 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
                               type="email"
                               {...field}
                               label="E-mail"
-                              isDisabled={true}
-                              disabled={true}
+                              disabled={isPending}
                               autoComplete="off"
                               autoCorrect="off"
                               autoCapitalize="on"
