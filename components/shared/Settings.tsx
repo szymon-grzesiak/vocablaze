@@ -61,8 +61,6 @@ const Settings = ({ user }: { user: ExtendedUser }) => {
     });
   };
 
-  console.log("useeer", user)
-
   const moreFields = user?.isOAuth === false || user?.isLinked === true;
 
   return (

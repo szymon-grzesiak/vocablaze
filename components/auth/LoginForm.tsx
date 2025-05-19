@@ -94,7 +94,7 @@ export const LoginForm = () => {
       <Image
         src={book}
         className="hidden lg:block lg:w-[300px] h-auto rounded-l-xl shadow object-cover"
-        alt="A book"
+        alt="A book" 
       />
       <CardWrapper
         headerLabel="Dive in."
