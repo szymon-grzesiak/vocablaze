@@ -1,21 +1,24 @@
 import { JSX, SVGProps } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import logo from "@/public/assets/images/logo.png";
 
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/LoginButton";
-import logo from "@/public/assets/images/logo.png";
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="">
-      <Link href={"/home"} className="absolute top-2 left-10 z-[100] flex justify-center items-center">
-        <Image src={logo} alt="logo" width={60} height={60} />
-        <h1 className="text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
-        Vocablaze
-        </h1>
-      </Link>
+        <Link
+          href={"/home"}
+          className="absolute top-2 left-10 z-[100] flex justify-center items-center"
+        >
+          <Image src={logo} alt="logo" width={60} height={60} />
+          <h1 className="text-3xl font-bold [text-shadow:_1px_1px_1px_rgb(255_0_255_/_40%)]">
+            Vocablaze
+          </h1>
+        </Link>
         <section className="w-full flex banner-custom bg-primary text-primary-foreground h-screen">
           <div className="flex justify-center items-center backdrop-blur-lg w-full">
             <div className="container flex px-4 md:px-10">
@@ -47,10 +50,8 @@ export default function Home() {
                       </Button>
                     </LoginButton>
                     <Button variant="secondary" className="w-full">
-                      <Link href="#pricing">
-                        Pricing
-                      </Link>
-                      </Button>
+                      <Link href="#pricing">Pricing</Link>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -117,9 +118,7 @@ export default function Home() {
                   Pricing
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl dark:text-slate-700">
-                  <a href="#pricing">
-                  Unlock More Features
-                  </a>
+                  <a href="#pricing">Unlock More Features</a>
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Choose the plan that best suits your language learning needs.
@@ -131,7 +130,9 @@ export default function Home() {
             <div className="mx-auto grid max-w-5xl gap-4 rounded-3xl md:grid-cols-2">
               <div className="grid gap-6 rounded-xl p-8 md:p-10 bg-white/30 backdrop-blur-xl">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold dark:text-slate-700">Free</h3>
+                  <h3 className="text-2xl font-bold dark:text-slate-700">
+                    Free
+                  </h3>
                   <p className="text-muted-foreground">
                     Get started with our basic features.
                   </p>
@@ -162,7 +163,9 @@ export default function Home() {
               </div>
               <div className="grid gap-6 rounded-3xl p-8 md:p-10 bg-white/30 backdrop-blur-xl">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold dark:text-slate-700">Premium</h3>
+                  <h3 className="text-2xl font-bold dark:text-slate-700">
+                    Premium
+                  </h3>
                   <p className="text-muted-foreground dark:text-slate-700">
                     Unlock all features for advanced learning.
                   </p>
@@ -197,7 +200,8 @@ export default function Home() {
       </main>
       <footer className="flex bg-slate-800 text-white flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs">
-          &copy; 2025 Szymon Grzesiak. All rights reserved.
+          &copy; 2025 <a href="https://szymongrzesiak.dev" className="underline text-sky-300 p-2 bg-slate-600 rounded-xl">Szymon Grzesiak</a>.
+          All rights reserved.
         </p>
         <nav className="sm:ml-auto flex gap-4 sm:gap-6">
           <Link
