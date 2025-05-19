@@ -131,12 +131,12 @@ export default function Home() {
             <div className="mx-auto grid max-w-5xl gap-4 rounded-3xl md:grid-cols-2">
               <div className="grid gap-6 rounded-xl p-8 md:p-10 bg-white/30 backdrop-blur-xl">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold">Free</h3>
+                  <h3 className="text-2xl font-bold dark:text-slate-700">Free</h3>
                   <p className="text-muted-foreground">
                     Get started with our basic features.
                   </p>
                 </div>
-                <ul className="grid gap-2">
+                <ul className="grid gap-2 dark:text-slate-700">
                   <li>
                     <CheckIcon className="mr-2 inline-block h-4 w-4" />
                     Create custom word sets
@@ -162,12 +162,12 @@ export default function Home() {
               </div>
               <div className="grid gap-6 rounded-3xl p-8 md:p-10 bg-white/30 backdrop-blur-xl">
                 <div className="space-y-2">
-                  <h3 className="text-2xl font-bold">Premium</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-2xl font-bold dark:text-slate-700">Premium</h3>
+                  <p className="text-muted-foreground dark:text-slate-700">
                     Unlock all features for advanced learning.
                   </p>
                 </div>
-                <ul className="grid gap-2">
+                <ul className="grid gap-2 dark:text-slate-700">
                   <li>
                     <CheckIcon className="mr-2 inline-block h-4 w-4" />
                     Create custom word sets
