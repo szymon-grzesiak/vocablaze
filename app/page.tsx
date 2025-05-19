@@ -116,7 +116,7 @@ export default function Home() {
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">
                   Pricing
                 </div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl dark:text-slate-700">
                   <a href="#pricing">
                   Unlock More Features
                   </a>
