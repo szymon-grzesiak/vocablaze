@@ -88,8 +88,9 @@ Working solo on this project provided comprehensive experience across the full d
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the `LICENSE` file (suggested - add a LICENSE file) for more information.
+Copyright (c) 2025 Szymon Grzesiak. All Rights Reserved.
 
+Please refer to the `LICENSE` file in the root directory of this source tree for the full terms and conditions regarding the use of this software.
 ---
 
 Made with ❤️ by Szymon Grzesiak
