@@ -2,7 +2,7 @@
 
 Vocablaze is an interactive web platform designed to facilitate foreign language learning through personalized vocabulary sets, engaging games, and progress tracking.
 
-![Vocablaze Main Interface](public/assets/images/github/main.png)
+![Vocablaze Main Interface](src/assets/images/github/main.png)
 
 ## 🚀 Overview
 
@@ -20,18 +20,18 @@ Current technologies offer countless possibilities to facilitate learning and ac
 Here's a breakdown of key functionalities:
 
 * **📚 Custom Vocabulary Sets:** Users can create and manage their own vocabulary lists with translations.
-    ![Custom Vocabulary Set Creation](public/assets/images/github/create.png)
+    ![Custom Vocabulary Set Creation](src/assets/images/github/create.png)
 
 * **🎲 Language Games:** Engage with interactive games designed to make learning fun and effective.
     * **Flashcards:** Classic method for learning and reviewing vocabulary.
-        ![Flashcards Game Screenshot](public/assets/images/github/flashcards.png)
+        ![Flashcards Game Screenshot](src/assets/images/github/flashcards.png)
     * **Matching Tiles:** Interactive game involving matching words with their translations.
-        ![Matching Tiles Game Screenshot](public/assets/images/github/matching.png)
+        ![Matching Tiles Game Screenshot](src/assets/images/github/matching.png)
     * **Hangman:** Popular word game to help reinforce spelling.
-        ![Hangman Game Screenshot](public/assets/images/github/hangman.png)
+        ![Hangman Game Screenshot](src/assets/images/github/hangman.png)
 
 * **📊 Progress Tracking:** Detailed statistics and visualizations to monitor learning progress.
-    ![Progress Tracking Dashboard](public/assets/images/github/progress.png)
+    ![Progress Tracking Dashboard](src/assets/images/github/progress.png)
 
 * **🎨 Customizable Appearance:** Personalize the platform's interface to match user preferences.
     Light/dark mode toggle and custom color themes.

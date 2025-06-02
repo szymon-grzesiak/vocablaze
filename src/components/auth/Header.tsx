@@ -1,8 +1,6 @@
 import Image from "next/image";
-import logo from "@/public/assets/images/logo.png";
-import { LanguagesIcon } from "lucide-react";
-
 import { cn } from "@/lib/utils";
+import logo from '@/assets/images/logo.png';
 
 interface HeaderProps {
   label: string;

@@ -1,7 +1,7 @@
 import { JSX, SVGProps } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@/public/assets/images/logo.png";
+import logo from "@/assets/images/logo.png";
 
 import { Button } from "@/components/ui/button";
 import { LoginButton } from "@/components/auth/LoginButton";

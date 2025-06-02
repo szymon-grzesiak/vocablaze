@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 import * as z from "zod";
 import Image from "next/image";
-import book from "@/public/assets/images/book.jpg"
+import book from "@/assets/images/book.jpg"
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");

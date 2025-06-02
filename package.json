@@ -2,6 +2,9 @@
   "name": "vocablaze",
   "version": "0.1.0",
   "private": true,
+  "prisma": {
+    "schema": "./src/prisma/schema.prisma"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,7 +16,7 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "format": "prettier --write .",
-    "seed": "tsx ./prisma/seed.ts",
+    "seed": "tsx ./src/prisma/seed.ts", 
     "stripe": "stripe listen --forward-to localhost:3000/api/webhook/stripe",
     "reset": "rm -rf .next && rm -rf .node_modules && rm -rf package-lock.json && npm install && npm run build",
     "test": "jest",

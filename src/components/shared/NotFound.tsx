@@ -1,4 +1,4 @@
-import emptyListImage from "@/public/assets/images/no-results.png";
+import emptyListImage from "@/assets/images/no-results.png";
 
 import { ArrowLeft } from "lucide-react";
 import Image from "next/image";

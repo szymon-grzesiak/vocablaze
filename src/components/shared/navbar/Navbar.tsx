@@ -3,7 +3,7 @@ import { UserButton } from "@/components/auth/UserButton";
 import Theme from "@/components/shared/navbar/Theme";
 import { getWordSetsAmountForUser } from "@/lib/data/rest";
 import { currentUser } from "@/lib/sessionData";
-import logo from "@/public/assets/images/logo.png";
+import logo from "@/assets/images/logo.png";
 
 import CustomModal from "../FolderModal";
 import { Button } from "@nextui-org/button";
