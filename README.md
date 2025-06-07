@@ -1,8 +1,6 @@
 # Vocablaze - Language Learning Platform
 
-#
 Whole documentation of this codebase available at: [https://deepwiki.com/szymon-grzesiak/vocablaze](https://deepwiki.com/szymon-grzesiak/vocablaze)
-#
 
 Vocablaze is an interactive web platform designed to facilitate foreign language learning through personalized vocabulary sets, engaging games, and progress tracking.
 
