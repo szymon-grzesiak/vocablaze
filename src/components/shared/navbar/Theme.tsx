@@ -31,7 +31,7 @@ const Theme = () => {
       <DropdownTrigger className="w-fit cursor-pointer">
         {mode === "light" ? (
           <Image
-            src="/assets/icons/sun.svg"
+            src={themes[0].icon}
             alt="sun"
             width={20}
             height={20}
@@ -39,7 +39,7 @@ const Theme = () => {
           />
         ) : (
           <Image
-            src="/assets/icons/moon.svg"
+            src={themes[1].icon}
             alt="moon"
             width={20}
             height={20}

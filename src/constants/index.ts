@@ -1,9 +1,12 @@
 import { SidebarLink } from "@/types";
+import sun from "@/assets/icons/sun.svg";
+import moon from "@/assets/icons/moon.svg";
+import computer from "@/assets/icons/computer.svg";
 
 export const themes = [
-    { value: "light", label: "Light", icon: "./assets/icons/sun.svg" },
-    { value: "dark", label: "Dark", icon: "./assets/icons/moon.svg" },
-    { value: "system", label: "System", icon: "./assets/icons/computer.svg" },
+    { value: "light", label: "Light", icon: sun },
+    { value: "dark", label: "Dark", icon: moon },
+    { value: "system", label: "System", icon: computer },
   ];
 
   export const sidebarLinks: SidebarLink[] = [

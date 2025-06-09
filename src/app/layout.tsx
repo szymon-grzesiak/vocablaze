@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description:
     "Vocablaze is an innovative language learning app that uses flashcards and interactive games like hangman and word matching to make learning new languages engaging and enjoyable.",
   icons: {
-    icon: "/assets/images/logo.png",
+    icon: "/src/assets/images/logo.png",
   },
 };
 
